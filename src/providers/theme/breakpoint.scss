@@ -1,0 +1,64 @@
+@use "sass:math";
+
+$breakpoint-sm: 480px;
+$breakpoint-md: 600px;
+$breakpoint-lg: 800px;
+
+$breakpoint-list: sm, md, lg, xl;
+
+$sizes:
+  sm -1px $breakpoint-sm,
+  md $breakpoint-sm $breakpoint-md,
+  lg $breakpoint-md $breakpoint-lg,
+  xl $breakpoint-lg 100vw;
+
+@mixin apply-to-breakpoint($breakpoint) {
+  @each $br, $min, $max in $sizes {
+    @if $br ==$breakpoint {
+      @media ($min < width <=$max) {
+        @content;
+      }
+    }
+  }
+  // @if $br ==sm {
+  //     @media (width <=$breakpoint-sm) {
+  //         @content
+  //     }
+  // }
+
+  // @else if $br ==md {
+  //     @media ($breakpoint-sm < width <=$breakpoint-md) {
+  //         @content
+  //     }
+  // }
+
+  // @else if $br ==lg {
+  //     @media ($breakpoint-md < width <=$breakpoint-lg) {
+  //         @content
+  //     }
+  // }
+
+  // @else if $br ==xl {
+  //     @media ($breakpoint-lg < width) {
+  //         @content
+  //     }
+  // }
+}
+
+@mixin with-size($from) {
+  @each $breakpoint in $breakpoint-list {
+    &.#{$breakpoint}-to-#{$from} {
+      @each $br, $min, $max in $sizes {
+        @if $br ==$breakpoint {
+          @media ($min < width <=$max) {
+            @content;
+          }
+        }
+      }
+
+      // @include apply-to-breakpoint($breakpoint) {
+      //     @content
+      // }
+    }
+  }
+}

@@ -1,0 +1,141 @@
+.multi-content {
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+    align-items: stretch;
+    // width: fit-content;
+    // height: fit-content;
+
+    &>* {
+        flex-shrink: 0;
+        width: inherit;
+        height: inherit;
+    }
+
+    // flex-direction: column-reverse;
+    // flex-direction: column;
+
+    // animation-duration: 300ms;
+    // animation-timing-function: ease;
+
+    // --start-old: 0,
+    // 0;
+    // --end-new :0,
+    // 0;
+
+    &.to-left {
+        --end: 0 0 0 -100%;
+        flex-direction: row;
+    }
+
+    &.to-right {
+        --end: 0 -100% 0;
+        flex-direction: row-reverse;
+    }
+
+    &.to-top {
+        --end: -100% 0 0 0;
+        flex-direction: column;
+    }
+
+    &.to-bottom {
+        --end: 0 0 -100% 0;
+        flex-direction: column-reverse;
+    }
+}
+
+/* .multi-content { */
+/* display:inline-block; */
+/* view-transition-name: content; */
+
+
+/* &.to-left{
+        --start-old: 0,0;
+        --end-old : -100%, 0;
+
+          --start-new: 100%,0;
+          --end-new :0,0;
+  }
+
+  &.to-right{
+        --start-old: 0,0;
+        --end-old : 100%, 0;
+
+          --start-new: -100%,0;
+          --end-new :0,0;
+  } */
+/* } */
+/* &::view-transition-group(.multi-content) {
+    animation-duration: 10000ms;
+    animation-timing-function: ease;
+    overflow: hidden;
+    border-radius: inherit;
+  } */
+/* &::view-transition-group(.multi-content) {
+  animation-duration: 1000ms;
+  animation-timing-function: ease;
+  overflow: hidden;
+    border-radius: inherit;
+} */
+
+
+/*
+&::view-transition-old(*) {
+    --start: 0,0;
+    --end : -100%, 0;
+  animation-name: slide;
+}
+
+&::view-transition-new(*) {
+    --start: 100%,0;
+    --end :0,0;
+  animation-name: slide;
+} */
+
+@keyframes slide {
+    from {
+        transform: translate(var(--start));
+    }
+
+    to {
+        transform: translate(var(--end));
+    }
+}
+
+@keyframes old-content {
+    from {
+        margin: 0 0 0 0;
+    }
+
+    to {
+        margin: var(--end);
+    }
+}
+
+// @keyframes descrease-opacity {
+//     from {
+//         opacity: 100%;
+//     }
+
+//     50% {
+//         opacity: 30%;
+//     }
+
+//     to {
+//         opacity: 0;
+//     }
+// }
+
+// @keyframes increase-opacity {
+//     from {
+//         opacity: 0;
+//     }
+
+//     50% {
+//         opacity: 30%;
+//     }
+
+//     to {
+//         opacity: 100%;
+//     }
+// }

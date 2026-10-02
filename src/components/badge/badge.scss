@@ -1,0 +1,36 @@
+@use "../../providers/theme/palette" as palette;
+@use "../../providers/theme/typography" as typography;
+
+.badge {
+    right: anchor(right);
+    top: anchor(top);
+
+    @include palette.colorMode();
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    border-radius: var(--radius-full);
+    background-color: hsla(var(--color), 1);
+    transform: translate(50%, -50%);
+
+    &:empty {
+        width: 6px;
+        height: 6px;
+    }
+
+    &:not(.badge-simple):not(:empty) {
+        @include typography.bodySmall();
+        font-family: monospace;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 16px;
+        height: 16px;
+        padding: 4px;
+        color: hsla(var(--on-color), 1);
+    }
+
+    &.badge-simple {
+        display: inline-flex;
+    }
+}

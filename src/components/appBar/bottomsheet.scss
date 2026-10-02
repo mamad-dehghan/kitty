@@ -1,0 +1,189 @@
+@use "../../providers/theme/typography" as typography;
+@use "../../providers/theme/palette" as palette;
+@use "../../providers/theme/elevation" as elevation;
+@use "../../providers/theme/animation" as animation;
+@use "../../providers/theme/breakpoint.scss" as breakpoint;
+
+@mixin wide-bottom-sheet() {
+  @include elevation.elevation-shadow-1();
+  @include elevation.elevation-1();
+  max-height: calc(100vh - 72px);
+  margin-inline: 56px;
+  border-top-left-radius: 1.75rem;
+  border-top-right-radius: 1.75rem;
+
+  .bottom-sheet-tumb {
+    background: inherit;
+    border-radius: inherit;
+  }
+}
+@mixin narrow-bottom-sheet() {
+  .bottom-sheet-tumb {
+    @include elevation.elevation-shadow-1();
+    @include elevation.elevation-1();
+    border-top-left-radius: 1.75rem;
+    border-top-right-radius: 1.75rem;
+    animation-timeline: view(block 2rem calc(100% - 2rem));
+    animation-name: bottom-sheet--tumb;
+    animation-timing-function: linear;
+  }
+  .bottom-sheet-content {
+    @include elevation.elevation-1();
+  }
+}
+
+.bottom-sheet-layer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  background-color: hsla(var(--natural-0), 0.1);
+
+  .bottom-sheet-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    transition: transform 200ms;
+
+    /* 1 method , TODO: add swipe close */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    min-height: 100vh;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: y mandatory;
+
+    &:not(.open) {
+      transform: translateY(100%);
+    }
+
+    .toper-padding {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      pointer-events: none;
+      flex: 0 0 50vh;
+    }
+
+    .top-padding {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      pointer-events: none;
+      flex: 0 0 50vh;
+    }
+
+    .bottom-sheet {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+
+      /* 1 method */
+      scroll-snap-align: end;
+      scroll-snap-stop: always;
+      overscroll-behavior-y: contain;
+      // max-height: calc(95vh - 2rem);
+      max-height: 100vh;
+      width: 100%;
+      align-self: center;
+      max-width: 640px;
+      flex: 0 1 100%;
+
+      @include breakpoint.apply-to-breakpoint(sm) {
+        @include narrow-bottom-sheet();
+      }
+      @include breakpoint.apply-to-breakpoint(md) {
+        @include narrow-bottom-sheet();
+      }
+      @include breakpoint.apply-to-breakpoint(lg) {
+        @include wide-bottom-sheet();
+      }
+      @include breakpoint.apply-to-breakpoint(xl) {
+        @include wide-bottom-sheet();
+      }
+
+      .bottom-sheet-tumb {
+        flex: 0 0 2rem;
+        display: flex;
+        flex-direction: inherit;
+        align-items: center;
+        justify-content: center;
+
+        // @include breakpoint.apply-to-breakpoint(sm) {
+        //   @include elevation.elevation-shadow-1();
+        //   @include elevation.elevation-1();
+        //   border-top-left-radius: 1.75rem;
+        //   border-top-right-radius: 1.75rem;
+        //   animation-timeline: view(block 2rem calc(100% - 2rem));
+        //   animation-name: bottom-sheet--tumb;
+        //   animation-timing-function: linear;
+        // }
+
+        .bottom-sheet-divider {
+          height: 2px;
+          width: 32px;
+          border: none;
+          pointer-events: none;
+          border-radius: var(--radius-full);
+          background-color: hsl(var(--on-surface-variant));
+          transition: transform 100ms;
+        }
+        // &:active {
+        //   .bottom-sheet-divider {
+        //     transform: scale(2, 1.25);
+        //     background-color: hsl(var(--secondary));
+        //   }
+        // }
+      }
+
+      .bottom-sheet-content {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-x: hidden;
+
+        // @include breakpoint.apply-to-breakpoint(sm) {
+        //   @include elevation.elevation-1();
+        // }
+
+        animation-timeline: view(block 1rem 60%);
+        animation-name: bottom-sheet--content;
+        animation-timing-function: linear;
+        overflow-y: hidden;
+        // max-height: 90vh;
+      }
+    }
+  }
+}
+
+/* @container sticky-header scroll-state(
+stuck:top
+) {
+    .bottom-sheet {
+        background-color: rebeccapurple;
+    }
+} */
+
+@keyframes bottom-sheet--tumb {
+  from {
+    border-top-left-radius: 1.75rem;
+    border-top-right-radius: 1.75rem;
+  }
+
+  to {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+@keyframes bottom-sheet--content {
+  from {
+    overflow-y: unset;
+    max-height: unset;
+    overscroll-behavior: chain;
+  }
+
+  to {
+    overflow-y: hidden;
+    max-height: 90vh;
+    // overscroll-behavior: contain;
+  }
+}

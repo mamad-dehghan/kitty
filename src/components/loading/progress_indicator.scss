@@ -1,0 +1,93 @@
+.progress-indicator {
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    border-radius: 4px;
+    height: var(--size);
+    width: 12rem;
+    display: flex;
+    align-items: stretch;
+
+    &.medium {
+        --size: 4px;
+    }
+
+    &.large {
+        --size: 8px;
+    }
+
+    .progress-indicator--empty {
+        background-color: hsl(var(--primary));
+        height: var(--size);
+        flex-grow: 1;
+        margin-left: 4px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row-reverse;
+        container-type: inline-size;
+        min-width: 4px;
+
+        .progress-indicator--stop-marker {
+            background-color: hsl(var(--on-primary));
+            height: 4px;
+            width: 4px;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            /*@container (width < 8px) {
+            display: none;
+        }*/
+        }
+    }
+
+    .progress-indicator--value {
+        background-color: hsl(var(--on-primary));
+        flex: 0 1;
+        position: relative;
+        border-radius: 4px;
+    }
+}
+
+// .loading {
+//     position: relative;
+//     width: 12rem;
+//     height: 12rem;
+//     animation: loading-rotate 5s ease-in-out infinite;
+//     transform-origin: center;
+
+//     .loading-svg {
+//         width: 100%;
+//         height: 100%;
+
+//         mask-image: conic-gradient(from -75deg,
+//                 transparent 0deg 150deg,
+//                 black 150deg 360deg);
+
+//         -webkit-mask-image: conic-gradient(from -75deg,
+//                 transparent 0deg 150deg,
+//                 black 150deg 360deg);
+//     }
+// }
+
+// .loading {
+//     --loading-size: 48px;
+
+//     width: var(--loading-size);
+//     height: var(--loading-size);
+
+//     display: grid;
+//     place-items: center;
+
+//     &__svg {
+//         width: 100%;
+//         height: 100%;
+//         overflow: visible;
+
+//         // The rotation is independent from the shape morph.
+//         animation: loading-rotate 5s linear infinite;
+//     }
+
+//     &__path {
+//         fill: royalblue;
+//         transform-origin: center;
+//     }
+// }

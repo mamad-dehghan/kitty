@@ -1,0 +1,40 @@
+.loading-indicator {
+    position: relative;
+    transform-origin: center center;
+    display: inline-block;
+    aspect-ratio: 1;
+    min-width: 24px;
+    max-width: 240px;
+    border-radius: 100%;
+
+    &.with-frame {
+        background-color: hsl(var(--primary-container));
+
+        svg {
+            color: hsl(var(--on-primary-container));
+        }
+    }
+
+    &.without-frame {
+        color: hsl(var(--primary));
+    }
+
+    svg {
+        position: absolute;
+        animation: loading-rotate cubic-bezier(0, 1, 1, 0) infinite;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 12.5%;
+    }
+}
+
+@keyframes loading-rotate {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
