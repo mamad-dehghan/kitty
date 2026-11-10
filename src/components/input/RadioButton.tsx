@@ -1,36 +1,62 @@
-import { type ButtonHTMLAttributes } from "react";
-import { colorOptions } from "../../providers/theme/types";
 import classNames from "classnames";
+import { type ComponentPropsWithRef } from "react";
 import { CircleIcon, RadioButtonIcon } from "@phosphor-icons/react";
+import { colorOptions } from "../../providers/theme/types";
+import "./RadioButton.scss";
 
-// TODO: add disable and half mode
-export interface ICheckBoxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  disabled?: boolean;
+export interface IRadioButtonProps
+  extends Omit<ComponentPropsWithRef<"input">, "type"> {
   mode: colorOptions;
-  active: boolean;
 }
 
 export const RadioButton = ({
   mode,
   disabled,
-  active,
+  className,
+  onChange,
+  readOnly,
+  ref,
   ...others
-}: ICheckBoxProps) => {
-  const className = classNames(
-    "radio-button",
-    disabled && "radio-button--disabled",
-    mode === colorOptions.primary && "element--primary",
-    mode === colorOptions.error && "element--error",
-    mode === colorOptions.warning && "element--warning",
-    mode === colorOptions.success && "element--success",
-  );
+}: IRadioButtonProps) => {
+  const isControlled = others.checked !== undefined;
+
   return (
-    <button className={className} {...others}>
-      {active ? (
-        <RadioButtonIcon weight={"fill"} />
-      ) : (
-        <CircleIcon weight={"regular"} />
+    <label
+      className={classNames(
+        "radio-button",
+        disabled && "disabled",
+        mode === colorOptions.primary && "element--primary",
+        mode === colorOptions.secondary && "element--secondary",
+        mode === colorOptions.tertiary && "element--tertiary",
+        mode === colorOptions.error && "element--error",
+        mode === colorOptions.warning && "element--warning",
+        mode === colorOptions.success && "element--success",
+        className,
       )}
-    </button>
+    >
+      <input
+        {...others}
+        ref={ref}
+        type="radio"
+        className="radio-button--input"
+        disabled={disabled}
+        readOnly={readOnly ?? (isControlled && !onChange)}
+        onChange={onChange}
+      />
+
+      {/* Decorative icons; the native input above exposes the state to assistive tech. */}
+      <span
+        className="radio-button--icon radio-button--icon--unchecked"
+        aria-hidden="true"
+      >
+        <CircleIcon weight="regular" />
+      </span>
+      <span
+        className="radio-button--icon radio-button--icon--checked"
+        aria-hidden="true"
+      >
+        <RadioButtonIcon weight="fill" />
+      </span>
+    </label>
   );
 };
