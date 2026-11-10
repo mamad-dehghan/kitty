@@ -1,42 +1,101 @@
-import { type ButtonHTMLAttributes } from "react";
-import { colorOptions } from "../../providers/theme/types";
 import classNames from "classnames";
+import {
+  type ComponentPropsWithRef,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import {
   CheckSquareIcon,
   SquareIcon,
   SquareLogoIcon,
 } from "@phosphor-icons/react";
+import { colorOptions } from "../../providers/theme/types";
+import "./Checkbox.scss";
 
-// TODO: add disable and half mode
-export interface ICheckBoxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  disabled?: boolean;
+export interface ICheckBoxProps
+  extends Omit<ComponentPropsWithRef<"input">, "type"> {
   mode: colorOptions;
-  active: true | false | "half";
+  /** Renders the mixed state (the native `indeterminate` DOM property). */
+  indeterminate?: boolean;
 }
 
 export const Checkbox = ({
   mode,
+  indeterminate,
   disabled,
-  active,
+  className,
+  onChange,
+  readOnly,
+  "aria-checked": ariaChecked,
+  ref,
   ...others
 }: ICheckBoxProps) => {
-  const className = classNames(
-    "checkbox",
-    disabled && "checkbox--disabled",
-    mode === colorOptions.primary && "element--primary",
-    mode === colorOptions.error && "element--error",
-    mode === colorOptions.warning && "element--warning",
-    mode === colorOptions.success && "element--success",
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const isIndeterminate = Boolean(indeterminate);
+  const isControlled = others.checked !== undefined;
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
+
+  const setInputRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      inputRef.current = node;
+
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
   );
+
   return (
-    <button className={className} {...others}>
-      {active === true ? (
-        <CheckSquareIcon weight={"fill"} />
-      ) : active === false ? (
-        <SquareIcon weight={"regular"} />
-      ) : (
-        <SquareLogoIcon weight={"fill"} />
+    <label
+      className={classNames(
+        "checkbox",
+        disabled && "disabled",
+        mode === colorOptions.primary && "element--primary",
+        mode === colorOptions.secondary && "element--secondary",
+        mode === colorOptions.tertiary && "element--tertiary",
+        mode === colorOptions.error && "element--error",
+        mode === colorOptions.warning && "element--warning",
+        mode === colorOptions.success && "element--success",
+        className,
       )}
-    </button>
+    >
+      <input
+        {...others}
+        ref={setInputRef}
+        type="checkbox"
+        className="checkbox--input"
+        disabled={disabled}
+        readOnly={readOnly ?? (isControlled && !onChange)}
+        aria-checked={isIndeterminate ? "mixed" : ariaChecked}
+        onChange={onChange}
+      />
+
+      {/* Decorative icons; the native input above exposes the state to assistive tech. */}
+      <span
+        className="checkbox--icon checkbox--icon--unchecked"
+        aria-hidden="true"
+      >
+        <SquareIcon weight="regular" />
+      </span>
+      <span
+        className="checkbox--icon checkbox--icon--checked"
+        aria-hidden="true"
+      >
+        <CheckSquareIcon weight="fill" />
+      </span>
+      <span
+        className="checkbox--icon checkbox--icon--indeterminate"
+        aria-hidden="true"
+      >
+        <SquareLogoIcon weight="fill" />
+      </span>
+    </label>
   );
 };
