@@ -16,27 +16,28 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@phosphor-icons/react": "catalog:",
-    "classnames": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-inlinesvg": "catalog:",
-    "sass": "catalog:",
-    "typescript-cookie": "catalog:"
+    "@phosphor-icons/react": "^2.1.7",
+    "classnames": "^2.5.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-inlinesvg": "^4.4.1",
+    "sass": "^1.57.1",
+    "typescript-cookie": "^1.0.6"
   },
   "devDependencies": {
+    "@types/bun": "latest",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "vite": "^6.3.1",
-    "wouter": "catalog:"
+    "wouter": "^3.9.0"
   },
   "peerDependencies": {}
 }
