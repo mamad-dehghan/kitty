@@ -51,7 +51,7 @@ export const MenuDemoPage = () => {
       <Tooltip title="start">
         <Button
           fill={fillOptions.outline}
-          mode={colorOptions.error}
+          colorMode={colorOptions.error}
           onClick={(event) => {
             setTargetEl(event.currentTarget);
           }}
@@ -81,7 +81,7 @@ export const MenuDemoPage = () => {
           <Button
             size={sizeOptions.small}
             fill={fillOptions.outline}
-            mode={colorOptions.warning}
+            colorMode={colorOptions.warning}
             onClick={() => {
               setOpenM(false);
             }}

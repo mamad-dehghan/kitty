@@ -2,16 +2,22 @@ import { type ReactNode } from "react";
 
 import "./groupButton.scss";
 import classNames from "classnames";
+import { sizeOptions } from "../../providers/theme/types";
+import { sizeClass } from "../../providers/theme/variants";
 
 type props = {
   children: ReactNode[];
-  size?: "xs" | "s" | "m" | "l" | "xl";
+  /** @default sizeOptions.medium */
+  size?: sizeOptions;
 };
 // const GroupButtonSeparator = () => <div className="group-button--separator" />;
 
-export const GroupButton = ({ children, size = "m" }: props) => {
+export const GroupButton = ({
+  children,
+  size = sizeOptions.medium,
+}: props) => {
   return (
-    <div className={classNames("group-button", size)}>
+    <div className={classNames("group-button", sizeClass(size))}>
       {children}
       {/*{children.reduce((first, second) => (
         <>

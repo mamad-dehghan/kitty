@@ -46,7 +46,7 @@
                         }
                     }
 
-                    &:not(.element-focused) {
+                    &:not(.element--focused) {
                         .navbar-button-content {
                             .navbar-button-icon {
                                 @include palette.state-layer-background(var(--on-surface-variant));
@@ -54,7 +54,7 @@
                         }
                     }
 
-                    &.element-focused {
+                    &.element--focused {
                         .navbar-button-content {
                             .navbar-button-icon {
                                 @include palette.state-layer-background(var(--secondary));
@@ -81,14 +81,14 @@
                         gap: 8px;
                     }
 
-                    &:not(.element-focused) {
+                    &:not(.element--focused) {
                         .navbar-button-content {
                             // --state-layer-radius: inherit;
                             @include palette.state-layer-background(var(--on-surface-variant));
                         }
                     }
 
-                    &.element-focused {
+                    &.element--focused {
                         .navbar-button-content {
                             @include palette.state-layer-background(var(--secondary));
                         }
@@ -117,14 +117,14 @@
                 padding: 8px 16px;
             }
 
-            &:not(.element-focused) {
+            &:not(.element--focused) {
                 .navbar-button-content {
                     // --state-layer-radius: inherit;
                     @include palette.state-layer-background(var(--on-surface-variant));
                 }
             }
 
-            &.element-focused {
+            &.element--focused {
                 .navbar-button-content {
                     @include palette.state-layer-background(var(--secondary));
                 }
@@ -155,7 +155,7 @@
                 }
             }
 
-            &:not(.element-focused) {
+            &:not(.element--focused) {
                 .navbar-button-content {
                     .navbar-button-icon {
                         @include palette.state-layer-background(var(--on-surface-variant));
@@ -163,7 +163,7 @@
                 }
             }
 
-            &.element-focused {
+            &.element--focused {
                 .navbar-button-content {
                     .navbar-button-icon {
                         @include palette.state-layer-background(var(--secondary));
@@ -241,13 +241,13 @@
                 }
             }
 
-            &:not(.element-focused) {
+            &:not(.element--focused) {
                 .navbar-button-content {
                     color: hsl(var(--on-surface-variant));
                 }
             }
 
-            &.element-focused {
+            &.element--focused {
                 .navbar-button-content {
                     color: hsl(var(--on-secondary-container));
                 }

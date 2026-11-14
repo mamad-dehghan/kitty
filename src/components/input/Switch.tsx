@@ -1,21 +1,24 @@
 import { CheckIcon, XIcon } from "@phosphor-icons/react";
-import { InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes } from "react";
 
 import classNames from "classnames";
 import { colorOptions } from "../../providers/theme/types";
+import { colorClass } from "../../providers/theme/variants";
 import "./Switch.scss";
 
 export interface ISwitchProps extends InputHTMLAttributes<HTMLInputElement> {
-  checkedColor?: colorOptions;
+  /** Color role when checked. @default colorOptions.primary */
+  checkedColorMode?: colorOptions;
+  /** Color role when unchecked. @default colorOptions.surface */
+  uncheckedColorMode?: colorOptions;
   hasCheckedIcon?: boolean;
-  uncheckedColor?: colorOptions;
   hasUncheckedIcon?: boolean;
 }
 // TODO: always has icon but not show, color
 export const Switch = ({
-  checkedColor = colorOptions.primary,
+  checkedColorMode = colorOptions.primary,
+  uncheckedColorMode = colorOptions.surface,
   hasCheckedIcon = true,
-  uncheckedColor = colorOptions.surface,
   hasUncheckedIcon = false,
   className,
   ...others
@@ -27,25 +30,9 @@ export const Switch = ({
         "switch",
         others.checked && "checked",
         others.disabled && "disabled",
-        others.checked
-          ? {
-              "element--primary": checkedColor === colorOptions.primary,
-              "element--secondary": checkedColor === colorOptions.secondary,
-              "element--success": checkedColor === colorOptions.success,
-              "element--error": checkedColor === colorOptions.error,
-              "element--warning": checkedColor === colorOptions.warning,
-              "element--tertiary": checkedColor === colorOptions.tertiary,
-              "element--surface": checkedColor === colorOptions.surface,
-            }
-          : {
-              "element--surface": uncheckedColor === colorOptions.surface,
-              "element--primary": uncheckedColor === colorOptions.primary,
-              "element--secondary": uncheckedColor === colorOptions.secondary,
-              "element--success": uncheckedColor === colorOptions.success,
-              "element--error": uncheckedColor === colorOptions.error,
-              "element--warning": uncheckedColor === colorOptions.warning,
-              "element--tertiary": uncheckedColor === colorOptions.tertiary,
-            },
+        colorClass(
+          others.checked ? checkedColorMode : uncheckedColorMode,
+        ),
         className,
       )}
       disabled={others.disabled}

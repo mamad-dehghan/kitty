@@ -201,7 +201,7 @@ const NestedMenuItem = React.memo(
     return (
       <>
         <MenuItem
-          className={isOpen ? "element-focused" : undefined}
+          className={isOpen ? "element--focused" : undefined}
           key={item.label}
           LeadingIcon={item.leadingIcon}
           title={item.label}

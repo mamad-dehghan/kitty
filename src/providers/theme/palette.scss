@@ -291,12 +291,12 @@
   animation-timing-function: linear;
   animation-iteration-count: 1;
   animation-duration: 300ms;
-  &.element-focused {
+  &.element--focused {
     animation-name: state-layer-background-animation;
     --state-layer-opacity: 0.16;
   }
 
-  &:not(.element-focused) {
+  &:not(.element--focused) {
     animation-name: state-layer-background-animation-reset;
     --state-layer-opacity: 0;
 

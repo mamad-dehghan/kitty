@@ -8,10 +8,10 @@ export const SwitchDemo = () => {
     <div>
       <Switch
         checked={isActive}
-        checkedColor={colorOptions.success}
-        // uncheckedColor={colorOptions.error}
+        checkedColorMode={colorOptions.success}
+        // uncheckedColorMode={colorOptions.error}
         hasUncheckedIcon
-        // mode={colorOptions.primary}
+        // colorMode={colorOptions.primary}
         onChange={(e) => {
           setIsActive(e.target.checked);
         }}

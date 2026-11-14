@@ -2,6 +2,7 @@ import { Check, type Icon } from "@phosphor-icons/react";
 import classNames from "classnames";
 import { type ButtonHTMLAttributes } from "react";
 import { fillOptions } from "../../providers/theme/types";
+import { fillClass } from "../../providers/theme/variants";
 import "./chip.scss";
 
 type assistChip = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -35,8 +36,7 @@ export const AssistChip = ({
         others.disabled && "disabled",
         Icon && "with-icon",
         iconSide === "start" ? "start-icon" : "end-icon",
-        fill === fillOptions.outline ? "element-outline" : "",
-        fill === fillOptions.elevated ? "element-elevated" : "",
+        fillClass(fill),
         className,
       )}
       {...others}
@@ -63,9 +63,8 @@ export const FilterChip = ({
         "filter-chip",
         "start-icon",
         others.disabled && "disabled",
-        enable && "enable with-icon",
-        fill === fillOptions.outline ? "element-outline" : "",
-        fill === fillOptions.elevated ? "element-elevated" : "",
+        enable && "element--enabled with-icon",
+        fillClass(fill),
         className,
       )}
       {...others}

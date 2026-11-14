@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { type InputHTMLAttributes, type ReactNode, forwardRef } from "react";
 import { colorOptions, fillOptions } from "../../providers/theme/types";
+import { fillClass, variantClasses } from "../../providers/theme/variants";
 import "./Input.scss";
 
 export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,16 +10,11 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean;
   iconEnd?: ReactNode;
   iconStart?: ReactNode;
-  color?:
-    | colorOptions.primary
-    | colorOptions.secondary
-    | colorOptions.tertiary
-    // | colorOptions.surface
-    | colorOptions.success;
+  /** Color role. @default colorOptions.primary */
+  colorMode?: colorOptions;
   fullWidth?: boolean;
   disabled?: boolean;
-  mode: colorOptions;
-  fill?: fillOptions.elevated | fillOptions.outline | fillOptions.fill;
+  fill?: fillOptions.fill | fillOptions.outline | fillOptions.elevated;
   label?: string;
 }
 
@@ -28,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
     {
       // disabled,
       supportText,
-      color = colorOptions.primary,
+      colorMode = colorOptions.primary,
       hasError = false,
       label,
       iconStart,
@@ -46,10 +42,10 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
     //         'input--wrapper',
     //         fill === fillOptions.shadow && 'input--wrapper--shadow',
     //         fill === fillOptions.outline && 'input--wrapper--outline',
-    //         mode === modeOptions.primary && 'element--primary',
-    //         mode === modeOptions.danger && 'element--danger',
-    //         mode === modeOptions.warning && 'element--warning',
-    //         mode === modeOptions.success && 'element--success'
+    //         colorMode === colorOptions.primary && 'element--primary',
+    //         colorMode === colorOptions.danger && 'element--danger',
+    //         colorMode === colorOptions.warning && 'element--warning',
+    //         colorMode === colorOptions.success && 'element--success'
     //     )}
     // >
 
@@ -57,14 +53,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
       <div
         className={classNames(
           "input--outer-wrapper",
-          color === colorOptions.primary && "element--primary",
-          color === colorOptions.secondary && "element--secondary",
-          color === colorOptions.tertiary && "element--tertiary",
-          color === colorOptions.success && "element--success",
-          // color === colorOptions.surface && "element--surface",
-          fill === fillOptions.outline && "input--outline",
-          fill === fillOptions.elevated && "input--elevated",
-          fill === fillOptions.fill && "input--fill",
+          variantClasses({ colorMode, fill }),
           fullWidth && "full-width",
           others.disabled && "disabled",
           className,
@@ -75,14 +64,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
         <div
           className={classNames(
             "input--inner-wrapper",
-            color === colorOptions.primary && "element--primary",
-            color === colorOptions.secondary && "element--secondary",
-            color === colorOptions.tertiary && "element--tertiary",
-            color === colorOptions.success && "element--success",
-            // color === colorOptions.surface && "element--surface",
-            fill === fillOptions.outline && "input--outline",
-            fill === fillOptions.elevated && "input--elevated",
-            fill === fillOptions.fill && "input--fill",
+            variantClasses({ colorMode, fill }),
             fullWidth && "full-width",
             others.disabled && "disabled",
           )}
@@ -95,9 +77,7 @@ export const Input = forwardRef<HTMLInputElement, IInputProps>(
             ref={ref}
             className={classNames(
               "input",
-              fill === fillOptions.outline && "input--outline",
-              fill === fillOptions.elevated && "input--elevated",
-              fill === fillOptions.fill && "input--fill",
+              fillClass(fill),
               fullWidth && "full-width",
               Boolean(iconStart || iconEnd) && "with-icon",
               Boolean(iconStart) && "input--with-start-icon",

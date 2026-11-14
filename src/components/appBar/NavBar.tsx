@@ -43,7 +43,7 @@ export const NavBar = ({
         <Button
           className="navbar-collapse-button"
           fill={fillOptions.link}
-          mode={colorOptions.warning}
+          colorMode={colorOptions.warning}
           onClick={() => setIsCollapsed((pre) => !pre)}
         >
           {isCollapsed ? (
@@ -82,7 +82,7 @@ const NavBarButton = ({
 }: props["items"][0] & { isActive: boolean }) => {
   return (
     <button
-      className={classNames("navbar-button", isActive && "element-focused")}
+      className={classNames("navbar-button", isActive && "element--focused")}
       onClick={onClick}
     >
       <div className="navbar-button-content">

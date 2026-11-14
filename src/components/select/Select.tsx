@@ -15,6 +15,7 @@ import {
 import { createPortal } from "react-dom";
 import { AppLayer } from "../../providers/appLayer/appLayer";
 import { colorOptions, fillOptions } from "../../providers/theme/types";
+import { colorClass } from "../../providers/theme/variants";
 import { Button } from "../button/Button";
 import { type marginsT, type positionType } from "../PlaceFinder/finder";
 import { PlaceFinder } from "../PlaceFinder/PlaceFinder";
@@ -33,22 +34,17 @@ export interface ISelectProps<T extends string | number = string>
     "children" | "value" | "defaultValue" | "onChange" | "type"
   > {
   options: SelectOption<T>[];
-  /** Controlled selected value. Omit to use `defaultValue`/`initialValue`. */
+  /** Controlled selected value. Omit to use `defaultValue`. */
   value?: T;
   /** Initial selected value for the uncontrolled mode. */
   defaultValue?: T;
-  /** @deprecated use `defaultValue` */
-  initialValue?: T;
   onChange?: (value: T) => void;
   /** Rendered when no option is selected. @default "Select" */
   placeholder?: ReactNode;
   /** Visible label, also used as the accessible name. */
   label?: ReactNode;
   /** @default colorOptions.primary */
-  mode?: Extract<
-    colorOptions,
-    "primary" | "error" | "warning" | "success" | "surface"
-  >;
+  colorMode?: colorOptions;
   /** @default fillOptions.outline */
   fill?: fillOptions;
   fullWidth?: boolean;
@@ -78,11 +74,10 @@ export const Select = <T extends string | number = string>({
   options,
   value,
   defaultValue,
-  initialValue,
   onChange,
   placeholder = "Select",
   label,
-  mode = colorOptions.primary,
+  colorMode = colorOptions.primary,
   fill = fillOptions.outline,
   fullWidth,
   position = DEFAULT_POSITION,
@@ -105,7 +100,7 @@ export const Select = <T extends string | number = string>({
 
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState<T | undefined>(
-    defaultValue ?? initialValue,
+    defaultValue,
   );
   const selectedValue = isControlled ? value : internalValue;
 
@@ -375,7 +370,7 @@ export const Select = <T extends string | number = string>({
         }
         aria-labelledby={ariaLabelledBy ?? (label ? labelId : undefined)}
         aria-required={required || undefined}
-        mode={mode}
+        colorMode={colorMode}
         fill={fill}
         fullWidth={fullWidth}
         className={classNames("select", className)}
@@ -429,10 +424,7 @@ export const Select = <T extends string | number = string>({
                   aria-labelledby={label ? labelId : undefined}
                   className={classNames(
                     "menu select--listbox scroller fit-content",
-                    mode === colorOptions.primary && "element--primary",
-                    mode === colorOptions.error && "element--error",
-                    mode === colorOptions.warning && "element--warning",
-                    mode === colorOptions.success && "element--success",
+                    colorClass(colorMode),
                   )}
                   style={{
                     minWidth: isMobile() ? undefined : triggerWidth,
@@ -454,7 +446,7 @@ export const Select = <T extends string | number = string>({
                           className={classNames(
                             "menu-item",
                             "select--option",
-                            index === activeIndex && "element-focused",
+                            index === activeIndex && "element--focused",
                             option.disabled && "disabled",
                             isSelected && "select--option--selected",
                           )}

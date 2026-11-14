@@ -13,10 +13,7 @@ export type IToastProps = {
     content: string;
     onClick: MouseEventHandler<HTMLButtonElement>;
     position: "right" | "bottom";
-    mode: Extract<
-      colorOptions,
-      "primary" | "error" | "warning" | "success" | "surface"
-    >;
+    colorMode: colorOptions;
   };
 };
 // TODO: change button size to compact
@@ -39,7 +36,7 @@ export const Toast = ({ children, action }: IToastProps) => {
           onClick={action.onClick}
           size={sizeOptions.small}
           fill={fillOptions.link}
-          mode={action.mode}
+          colorMode={action.colorMode}
         >
           {action?.content}
         </Button>

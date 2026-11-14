@@ -87,7 +87,7 @@ export const SelectDemo = () => {
       </section>
 
       <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Fill and mode</h2>
+        <h2 style={{ margin: 0 }}>Fill and color mode</h2>
         <div
           style={{
             display: "flex",
@@ -106,20 +106,20 @@ export const SelectDemo = () => {
             aria-label="Warning fill"
             options={frameworks}
             defaultValue="vue"
-            mode={colorOptions.warning}
+            colorMode={colorOptions.warning}
             fill={fillOptions.fill}
           />
           <Select
             aria-label="Error outline"
             options={frameworks}
             defaultValue="angular"
-            mode={colorOptions.error}
+            colorMode={colorOptions.error}
           />
           <Select
             aria-label="Surface elevated"
             options={frameworks}
             defaultValue="solid"
-            mode={colorOptions.surface}
+            colorMode={colorOptions.surface}
             fill={fillOptions.elevated}
           />
         </div>

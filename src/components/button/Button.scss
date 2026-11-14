@@ -21,6 +21,18 @@
     border-width: 0.0625rem;
     border-style: solid;
     //background-clip: border-box;
+
+    &.element--small {
+        height: 2rem;
+    }
+
+    &.element--medium {
+        height: 2.5rem;
+    }
+
+    &.element--large {
+        height: 3rem;
+    }
     // @include elevation.elevation-0();
 
     &.button--full-width {
@@ -31,34 +43,34 @@
     &:is(:disabled, .disabled) {
         cursor: default;
 
-        &.button--fill {
+        &.element--fill {
             color: hsla(var(--on-surface), 0.38);
             //border: .0625rem solid transparent;
             border-color: transparent;
             background-color: hsla(var(--on-surface), 0.12);
         }
 
-        &.button--outline {
+        &.element--outline {
             color: hsla(var(--on-surface), 0.38);
             //border: .0625rem solid hsla(var(--outline), 0.12);
             border-color: hsla(var(--outline), 0.12);
             background-color: hsla(var(--surface), 1);
         }
 
-        &.button--link {
+        &.element--link {
             border-color: transparent;
             background-color: transparent;
             color: hsla(var(--on-surface), 0.38);
         }
 
-        &.button--elevated {
+        &.element--elevated {
             color: hsla(var(--on-surface), 0.38);
             //border: .0625rem solid hsla(var(--on-surface), 0.12);
             border-color: hsla(var(--on-surface), 0.12);
             background-color: hsla(var(--on-surface), 0.12);
         }
 
-        &.button--tonal {
+        &.element--tonal {
             color: hsla(var(--on-surface), 0.38);
             //border: .0625rem solid hsla(var(--on-surface), 0.12);
             border-color: hsla(var(--on-surface), 0.12);
@@ -69,7 +81,7 @@
     &:not(:disabled, .disabled) {
         cursor: pointer;
 
-        &.button--fill {
+        &.element--fill {
             @include elevation.elevation-shadow-0();
             color: hsl(var(--on-color));
             //border: .0625rem solid hsl(var(--color));
@@ -86,7 +98,7 @@
             }
         }
 
-        &.button--link {
+        &.element--link {
             // TODO: fix background
             color: hsl(var(--color));
             //border: .0625rem solid transparent;
@@ -97,7 +109,7 @@
             @include palette.state-layer(var(--color));
         }
 
-        &.button--outline {
+        &.element--outline {
             color: hsl(var(--color));
             //border: .0625rem solid hsl(var(--outline));
             border-color: hsl(var(--color));
@@ -108,7 +120,7 @@
             @include palette.state-layer(var(--color));
         }
 
-        &.button--elevated {
+        &.element--elevated {
             color: hsl(var(--color));
             // surface container low
             //border: .0625rem solid hsl(var(--surface));
@@ -127,7 +139,7 @@
             );
         }
 
-        &.button--tonal {
+        &.element--tonal {
             @include elevation.elevation-shadow-0();
             color: hsl(var(--on-container));
             background-color: hsl(var(--container));

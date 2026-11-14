@@ -2,7 +2,6 @@
 @use "../../providers/theme/elevation" as elevation;
 @use "../../providers/theme/typography" as typography;
 
-// TODO: add sizing
 // TODO: remove border on fill elevated tonal and link
 .icon-button {
     @include palette.colorMode();
@@ -24,25 +23,31 @@
     &:is(:disabled, .disabled) {
         cursor: default;
 
-        &.icon-button--fill {
+        &.element--fill {
             color: hsla(var(--on-surface), 0.38);
             border: 0.0625rem solid transparent;
             background-color: hsla(var(--on-surface), 0.12);
         }
 
-        &.icon-button--outline {
+        &.element--outline {
             color: hsla(var(--on-surface), 0.38);
             border: 0.0625rem solid transparent;
             background-color: hsla(var(--on-surface), 0.12);
         }
 
-        &.icon-button--link {
+        &.element--link {
             color: hsla(var(--on-surface), 0.38);
             border: 0.0625rem solid transparent;
             background-color: transparent;
         }
 
-        &.icon-button--tonal {
+        &.element--tonal {
+            color: hsla(var(--on-surface), 0.38);
+            border: 0.0625rem solid transparent;
+            background-color: hsla(var(--on-surface), 0.12);
+        }
+
+        &.element--elevated {
             color: hsla(var(--on-surface), 0.38);
             border: 0.0625rem solid transparent;
             background-color: hsla(var(--on-surface), 0.12);
@@ -52,14 +57,14 @@
     &:not(:disabled, .disabled) {
         cursor: pointer;
 
-        &.icon-button--fill {
-            &.icon-button--enable {
+        &.element--fill {
+            &.element--enabled {
                 color: hsl(var(--on-color));
                 border: 0.0625rem solid hsl(var(--color));
                 background-color: hsl(var(--color));
             }
 
-            &:not(.icon-button--enable) {
+            &:not(.element--enabled) {
                 color: hsl(var(--color));
                 border: 0.0625rem solid hsl(var(--surface-container-highest));
                 background-color: hsl(var(--surface-container-highest));
@@ -71,15 +76,15 @@
             }
         }
 
-        &.icon-button--link {
-            &.icon-button--enable {
+        &.element--link {
+            &.element--enabled {
                 color: hsl(var(--color));
                 border: 0.0625rem solid transparent;
                 background-color: transparent;
                 @include palette.state-layer(var(--color));
             }
 
-            &:not(.icon-button--enable) {
+            &:not(.element--enabled) {
                 color: hsl(var(--on-surface-variant));
                 border: 0.0625rem solid transparent;
                 background-color: transparent;
@@ -87,8 +92,8 @@
             }
         }
 
-        &.icon-button--outline {
-            &.icon-button--enable {
+        &.element--outline {
+            &.element--enabled {
                 //on inverse
                 color: hsl(var(--surface-container-highest));
                 border: 0.0625rem solid transparent;
@@ -97,7 +102,7 @@
                 @include palette.state-layer(var(--surface-container-highest));
             }
 
-            &:not(.icon-button--enable) {
+            &:not(.element--enabled) {
                 color: hsl(var(--on-surface-variant));
                 border: 0.0625rem solid hsl(var(--outline));
                 background-color: transparent;
@@ -105,22 +110,58 @@
             }
         }
 
-        &.icon-button--tonal {
-            &.icon-button--enable {
+        &.element--tonal {
+            &.element--enabled {
                 color: hsl(var(--on-secondary-container));
                 border: 0.0625rem solid transparent;
                 background-color: hsl(var(--secondary-container));
                 @include palette.state-layer(var(--on-secondary-container));
             }
 
-            &:not(.icon-button--enable) {
+            &:not(.element--enabled) {
                 color: hsl(var(--on-surface-variant));
                 border: 0.0625rem solid transparent;
                 background-color: hsl(var(--surface-container-highest));
                 @include palette.state-layer(var(--on-surface-variant));
             }
         }
+
+        &.element--elevated {
+            color: hsl(var(--color));
+            border: 0.0625rem solid hsl(var(--surface));
+            background-color: hsl(var(--surface));
+            @include elevation.elevation-shadow-1();
+            @include palette.state-layer(var(--color));
+
+            &:hover {
+                @include elevation.elevation-shadow-2();
+            }
+        }
     }
+
+    &.element--small {
+        width: 2rem;
+        height: 2rem;
+
+        svg {
+            font-size: 1rem;
+        }
+    }
+
+    &.element--medium {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    &.element--large {
+        width: 3rem;
+        height: 3rem;
+
+        svg {
+            font-size: 1.5rem;
+        }
+    }
+
     svg {
         font-size: 1rem;
     }

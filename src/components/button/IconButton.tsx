@@ -1,20 +1,20 @@
 import { type ButtonHTMLAttributes } from "react";
 import classNames from "classnames";
-import {
-  sizeOptions,
-  fillOptions,
-  colorOptions,
-} from "../../providers/theme/types";
 import { type Icon, type IconWeight } from "@phosphor-icons/react";
+import { variantClasses } from "../../providers/theme/variants";
+import {
+  type ColorMode,
+  type Fill,
+  type Size,
+} from "../../providers/theme/variants";
 import "./iconButton.scss";
 
-// TODO: add sizing
-// TODO: add disabled
-export interface IIconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  size: sizeOptions;
+export interface IIconButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: Size;
   disabled?: boolean;
-  mode?: colorOptions;
-  fill: Exclude<fillOptions, fillOptions.elevated>;
+  colorMode?: ColorMode;
+  fill?: Fill;
   Icon: Icon;
   enable?: boolean;
   weight?: IconWeight;
@@ -24,7 +24,7 @@ export interface IIconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement
 export const IconButton = ({
   fill,
   Icon,
-  mode,
+  colorMode,
   disabled,
   size,
   dataFocused,
@@ -35,25 +35,15 @@ export const IconButton = ({
 }: IIconButtonProps) => {
   const classname = classNames(
     "icon-button",
-    disabled && "icon-button--disabled",
-    enable && "icon-button--enable",
-    mode === "primary" && "element--primary",
-    mode === "error" && "element--error",
-    mode === "warning" && "element--warning",
-    mode === "success" && "element--success",
-    fill === fillOptions.fill && "icon-button--fill",
-    fill === fillOptions.link && "icon-button--link",
-    fill === fillOptions.outline && "icon-button--outline",
-    fill === fillOptions.tonal && "icon-button--tonal",
-    size === sizeOptions.small && "element--small",
-    size === sizeOptions.medium && "element--medium",
-    size === sizeOptions.large && "element--large",
+    disabled && "disabled",
+    enable && "element--enabled",
+    variantClasses({ colorMode, fill, size }),
     dataFocused && "element--focused",
     className,
   );
 
   return (
-    <button className={classname} {...others}>
+    <button className={classname} disabled={disabled} {...others}>
       <Icon weight={weight ?? (enable ? "fill" : "regular")} />
     </button>
   );

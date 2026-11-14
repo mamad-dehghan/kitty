@@ -2,15 +2,17 @@ import classNames from "classnames";
 import { type ComponentPropsWithRef } from "react";
 import { CircleIcon, RadioButtonIcon } from "@phosphor-icons/react";
 import { colorOptions } from "../../providers/theme/types";
+import { colorClass } from "../../providers/theme/variants";
 import "./RadioButton.scss";
 
 export interface IRadioButtonProps
   extends Omit<ComponentPropsWithRef<"input">, "type"> {
-  mode: colorOptions;
+  /** @default colorOptions.primary */
+  colorMode?: colorOptions;
 }
 
 export const RadioButton = ({
-  mode,
+  colorMode = colorOptions.primary,
   disabled,
   className,
   onChange,
@@ -25,12 +27,7 @@ export const RadioButton = ({
       className={classNames(
         "radio-button",
         disabled && "disabled",
-        mode === colorOptions.primary && "element--primary",
-        mode === colorOptions.secondary && "element--secondary",
-        mode === colorOptions.tertiary && "element--tertiary",
-        mode === colorOptions.error && "element--error",
-        mode === colorOptions.warning && "element--warning",
-        mode === colorOptions.success && "element--success",
+        colorClass(colorMode),
         className,
       )}
     >

@@ -8,11 +8,15 @@
     display: flex;
     align-items: stretch;
 
-    &.medium {
+    &.element--small {
+        --size: 2px;
+    }
+
+    &.element--medium {
         --size: 4px;
     }
 
-    &.large {
+    &.element--large {
         --size: 8px;
     }
 

@@ -11,6 +11,7 @@ import {
   useId,
 } from "react";
 import { colorOptions } from "../../providers/theme/types";
+import { colorClass } from "../../providers/theme/variants";
 import classNames from "classnames";
 
 type props = {
@@ -21,8 +22,8 @@ type props = {
   children: ReactElement<{
     style?: CSSProperties;
   }>;
-  color?: colorOptions;
-} & Omit<HTMLAttributes<HTMLDivElement>, "children" | "color" | "value">;
+  colorMode?: colorOptions;
+} & Omit<HTMLAttributes<HTMLDivElement>, "children" | "value">;
 
 export const Badge = ({
   children,
@@ -30,7 +31,7 @@ export const Badge = ({
   // display = "number",
   value,
   maxValue = 999,
-  color = colorOptions.error,
+  colorMode = colorOptions.error,
   ...badgeProps
 }: props) => {
   const id = useId();
@@ -38,9 +39,7 @@ export const Badge = ({
   // NEW METHOD
   if (!isValidElement(children)) return children;
   if (children.type === Fragment) {
-    console.warn(
-      "Tooltip: Fragment not supported. Wrap in <span> or <div> instead.",
-    );
+    console.warn("Badge: Fragment not supported. Wrap in <span> or <div>.");
     return children;
   }
 
@@ -58,13 +57,7 @@ export const Badge = ({
           className={classNames(
             "badge",
             typeof value === "object" && "badge-simple",
-            color === colorOptions.primary && "element--primary",
-            color === colorOptions.secondary && "element--secondary",
-            color === colorOptions.success && "element--success",
-            color === colorOptions.error && "element--error",
-            color === colorOptions.warning && "element--warning",
-            color === colorOptions.tertiary && "element--tertiary",
-            color === colorOptions.surface && "element--surface",
+            colorClass(colorMode),
             badgeProps.className,
           )}
           style={{

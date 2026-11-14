@@ -3,6 +3,7 @@ import {
   fillOptions,
   sizeOptions,
 } from "../../providers/theme/types";
+import { variantClasses } from "../../providers/theme/variants";
 import classNames from "classnames";
 import {
   type ButtonHTMLAttributes,
@@ -13,7 +14,6 @@ import {
 
 import "./Button.scss";
 
-// TODO: add sizing
 export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: sizeOptions;
   disabled?: boolean;
@@ -22,10 +22,7 @@ export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconSide?: "start" | "end";
   fullWidth?: boolean;
   /** @default colorOptions.primary */
-  mode?: Extract<
-    colorOptions,
-    "primary" | "error" | "warning" | "success" | "surface"
-  >;
+  colorMode?: colorOptions;
 }
 
 export const Button = forwardRef(
@@ -33,7 +30,7 @@ export const Button = forwardRef(
     {
       size = sizeOptions.medium,
       disabled,
-      mode = colorOptions.primary,
+      colorMode = colorOptions.primary,
       fill = fillOptions.fill,
       fullWidth,
       icon,
@@ -51,16 +48,7 @@ export const Button = forwardRef(
           "button",
           disabled && "disabled",
           fullWidth && "button--full-width",
-          mode === colorOptions.primary && "element--primary",
-          mode === colorOptions.error && "element--error",
-          mode === colorOptions.warning && "element--warning",
-          mode === colorOptions.success && "element--success",
-          mode === colorOptions.surface && "element--surface",
-          fill === fillOptions.fill && "button--fill",
-          fill === fillOptions.link && "button--link",
-          fill === fillOptions.outline && "button--outline",
-          fill === fillOptions.elevated && "button--elevated",
-          fill === fillOptions.tonal && "button--tonal",
+          variantClasses({ colorMode, fill, size }),
           Boolean(icon) &&
             `button-with-icon ${
               iconSide === "start"

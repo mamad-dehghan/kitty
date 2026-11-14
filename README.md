@@ -68,7 +68,7 @@ import { HeartIcon } from "@phosphor-icons/react";
 export function FavoriteButton() {
   return (
     <Button
-      mode={colorOptions.primary}
+      colorMode={colorOptions.primary}
       fill={fillOptions.tonal}
       size={sizeOptions.medium}
       icon={<HeartIcon />}
@@ -304,19 +304,34 @@ Role tokens include `--primary`, `--on-primary`, `--primary-container`,
 `inverse-*` roles. The numbered `--natural-*` and
 `--natural-variant-*` scales supply the neutral roles.
 
-### Element color/fill classes
+### Element variant classes
 
-Components translate their `mode`, `color`, and `fill` props into classes:
+Components translate their `colorMode`, `fill`, and `size` props into a single
+`element--*` namespace:
 
-- `element--primary`, `element--secondary`, `element--tertiary`,
+- color: `element--primary`, `element--secondary`, `element--tertiary`,
   `element--error`, `element--warning`, `element--success`,
   `element--surface`
-- Component-specific fill classes such as `button--fill`, `button--tonal`,
-  `icon-button--outline`, `input--elevated`, `chip` + `element-outline`
+- fill: `element--fill`, `element--outline`, `element--tonal`,
+  `element--elevated`, `element--link`
+- size: `element--small`, `element--medium`, `element--large`
+
+Fill and size values never overlap with color values, so one prefix is enough.
+State modifiers use the same prefix (`element--focused`, `element--enabled`);
+the native/visual disabled state stays `disabled`.
+The same mapping is exported for custom components:
+
+```tsx
+import { colorClass, fillClass, sizeClass, variantClasses } from "kitty";
+
+classNames("my-control", variantClasses({ colorMode, fill, size }));
+// or individually: colorClass(colorMode), fillClass(fill), sizeClass(size)
+```
 
 Use the exported enums (`colorOptions`, `fillOptions`, `sizeOptions`) rather
-than string literals. The enums keep TypeScript and SCSS class generation in
-sync.
+than string literals. Components share the `colorMode` / `fill` / `size` prop names;
+where a component only implements part of an enum (for example chip fills) the
+prop type narrows to the supported values.
 
 ### Customizing hues
 
@@ -372,11 +387,11 @@ manually.
 
 | Component     | Required props                          | Notes                                                                 |
 | ------------- | --------------------------------------- | --------------------------------------------------------------------- |
-| `Button`      | —                                       | `mode`, `fill`, `size`, `icon`, `iconSide`, `fullWidth`, `disabled`.  |
-| `IconButton`  | `Icon`, `fill`, `size`                  | `fill` excludes `elevated`; `enable` fills the icon and colors it.    |
+| `Button`      | —                                       | `colorMode`, `fill`, `size` (`small \| medium \| large`), `icon`, `iconSide`, `fullWidth`, `disabled`. |
+| `IconButton`  | `Icon`                                  | `colorMode`, `fill` (incl. `elevated`), `size`, `enable`, `dataFocused`. |
 | `AssistChip`  | `assist` (true), `fill`                 | `fill` is `outline` or `elevated`; optional `Icon`, `iconSide`.       |
 | `FilterChip`  | `enable`, `fill`                        | Shows a check icon when `enable`; optional custom `Icon`.             |
-| `GroupButton` | `children`                              | Visual grouping only; `size` is `xs \| s \| m \| l \| xl`.            |
+| `GroupButton` | `children`                              | Visual grouping only; `size` is `small \| medium \| large`.            |
 
 ```tsx
 import { AssistChip, FilterChip, fillOptions } from "kitty";
@@ -394,24 +409,22 @@ import { AssistChip, FilterChip, fillOptions } from "kitty";
 
 | Component        | Required props        | Notes                                                                                   |
 | ---------------- | --------------------- | --------------------------------------------------------------------------------------- |
-| `Input`          | `id`                  | `color`, `fill`, `label`, `supportText`, `hasError`, `iconStart`, `iconEnd`, `fullWidth`. |
-| `SearchInput`    | `mode`, `fill`        | `fill` is typed as `outline`; supports start/end icons.                                   |
+| `Input`          | `id`                  | `colorMode`, `fill`, `label`, `supportText`, `hasError`, `iconStart`, `iconEnd`, `fullWidth`. |
+| `SearchInput`    | —                     | `colorMode` and `fill` default to `primary`/`outline`; supports start/end icons.               |
 | `MultiItemInput` | `value`, `onChange`   | Tag input. Separates tags with spaces or commas; `onChange` receives the full string.     |
-| `Checkbox`       | `mode`                | Native checkbox plus decorative icons; supports `indeterminate`.                          |
-| `RadioButton`    | `mode`                | Native radio input with decorative icons.                                                 |
-| `Switch`         | —                     | Controlled via the hidden input's `checked`/`onChange`; `checkedColor`, `uncheckedColor`, icon flags. |
-| `Select`         | `options`             | Combobox + listbox. `value`/`defaultValue`, `onChange(value)`, `label`, `placeholder`, `mode`, `fill`, `fullWidth`, `name`, `disabled`, `required`. |
+| `Checkbox`       | —                     | `colorMode` defaults to `primary`; native checkbox plus decorative icons; supports `indeterminate`. |
+| `RadioButton`    | —                     | `colorMode` defaults to `primary`; native radio input with decorative icons.                   |
+| `Switch`         | —                     | Controlled via the hidden input's `checked`/`onChange`; `checkedColorMode`, `uncheckedColorMode`, icon flags. |
+| `Select`         | `options`             | Combobox + listbox. `value`/`defaultValue`, `onChange(value)`, `label`, `placeholder`, `colorMode`, `fill`, `fullWidth`, `name`, `disabled`, `required`. |
 | `CSwitch`        | —                     | Small demo helper that owns its own `Switch` state.                                       |
 
-`Input`'s type currently still requires a `mode` prop even though the
-implementation uses `color`; pass the same value to both to keep TypeScript
-happy:
+All input controls use the same `colorMode` / `fill` props:
 
 ```tsx
 <Input
   id="email"
-  mode={colorOptions.primary}
-  color={colorOptions.primary}
+  colorMode={colorOptions.primary}
+  fill={fillOptions.fill}
   label="Email"
   supportText="We never share it"
   hasError={invalid}
@@ -444,11 +457,11 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 
 | Component   | Required props | Notes                                                                      |
 | ----------- | -------------- | -------------------------------------------------------------------------- |
-| `Badge`     | `value`, `children` | Positions a badge with CSS anchor positioning. Only numeric or node values render text; strings render nothing. `maxValue` defaults to `999`. |
+| `Badge`     | `value`, `children` | Positions a badge with CSS anchor positioning. `colorMode` defaults to `error`; `maxValue` defaults to `999`. |
 | `Divider`   | —              | `type` is `intent` (default), `center`, or `fullWidth`.                     |
-| `Toast`     | `children`     | Presentational toast; `action` is `{ content, onClick, position, mode }`.   |
+| `Toast`     | `children`     | Presentational toast; `action` is `{ content, onClick, position, colorMode }`. |
 | `LoadingIndicator` | —       | Cycles through SVG shapes; `size` defaults to `4rem`, `frame` defaults to `true`. |
-| `ProgressIndicator` | `type`, `value` | `type` is `linear` or `circular`; `max` defaults to `1`. **Not exported from the package root yet.** |
+| `ProgressIndicator` | `type`, `value` | `type` is `linear` or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`. **Not exported from the package root yet.** |
 | `Tooltip`   | `children`, `title` | Clones a single element and shows content on hover; requires `TooltipProvider`. |
 
 `Tooltip` and `Badge` clone their child and need a single element (not a

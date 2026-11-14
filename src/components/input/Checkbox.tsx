@@ -11,17 +11,19 @@ import {
   SquareLogoIcon,
 } from "@phosphor-icons/react";
 import { colorOptions } from "../../providers/theme/types";
+import { colorClass } from "../../providers/theme/variants";
 import "./Checkbox.scss";
 
 export interface ICheckBoxProps
   extends Omit<ComponentPropsWithRef<"input">, "type"> {
-  mode: colorOptions;
+  /** @default colorOptions.primary */
+  colorMode?: colorOptions;
   /** Renders the mixed state (the native `indeterminate` DOM property). */
   indeterminate?: boolean;
 }
 
 export const Checkbox = ({
-  mode,
+  colorMode = colorOptions.primary,
   indeterminate,
   disabled,
   className,
@@ -57,12 +59,7 @@ export const Checkbox = ({
       className={classNames(
         "checkbox",
         disabled && "disabled",
-        mode === colorOptions.primary && "element--primary",
-        mode === colorOptions.secondary && "element--secondary",
-        mode === colorOptions.tertiary && "element--tertiary",
-        mode === colorOptions.error && "element--error",
-        mode === colorOptions.warning && "element--warning",
-        mode === colorOptions.success && "element--success",
+        colorClass(colorMode),
         className,
       )}
     >

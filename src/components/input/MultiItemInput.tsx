@@ -64,7 +64,7 @@ export const MultiItemInput = ({
   );
 
   const inputVal = useMemo<string>(
-    () => value.split(/(,|\s)/).slice(-1)[0],
+    () => value.split(/(,|\s)/).slice(-1)[0] ?? "",
     [value],
   );
 

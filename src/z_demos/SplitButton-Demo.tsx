@@ -13,30 +13,29 @@ export const MultiButtonDemo = () => {
   return (
     <div style={{ margin: "10px" }}>
       {/*<GroupButton>
-        <Button mode={colorOptions.error}>First</Button>
+        <Button colorMode={colorOptions.error}>First</Button>
         <Button> Second</Button>
         <Button>{">"}</Button>
         <IconButton
           size={sizeOptions.small}
-          mode={colorOptions.primary}
+          colorMode={colorOptions.primary}
           fill={fillOptions.fill}
           Icon={CaretDownIcon}
           enable
         />
       </GroupButton>*/}
-      {/*<Button mode={colorOptions.error} fill={fillOptions.outline} disabled>
+      {/*<Button colorMode={colorOptions.error} fill={fillOptions.outline} disabled>
         First
       </Button>
-      <Button mode={colorOptions.error} fill={fillOptions.outline}>
+      <Button colorMode={colorOptions.error} fill={fillOptions.outline}>
         First
       </Button>
-      <Button mode={colorOptions.error}> First</Button>*/}
+      <Button colorMode={colorOptions.error}> First</Button>*/}
 
       <Input
         id={"oi"}
-        mode={colorOptions.primary}
+        colorMode={colorOptions.secondary}
         fill={fillOptions.fill}
-        color={colorOptions.secondary}
         placeholder="Help me!"
         hasError={hasError}
         supportText={text}
@@ -45,7 +44,7 @@ export const MultiButtonDemo = () => {
         iconEnd={
           <IconButton
             size={sizeOptions.small}
-            // mode={colorOptions.secondary}
+            // colorMode={colorOptions.secondary}
             fill={fillOptions.fill}
             Icon={DiceOneIcon}
             enable
@@ -57,7 +56,7 @@ export const MultiButtonDemo = () => {
         }
         // iconStart={
         //   <Button
-        //     // mode={colorOptions.secondary}
+        //     // colorMode={colorOptions.secondary}
         //     fill={fillOptions.fill}
         //     icon={<CaretDownIcon />}
         //     iconSide="start"
@@ -71,7 +70,7 @@ export const MultiButtonDemo = () => {
       {/*<Button>{">"}</Button>
       <IconButton
         size={sizeOptions.small}
-        mode={colorOptions.primary}
+        colorMode={colorOptions.primary}
         fill={fillOptions.fill}
         Icon={CaretDownIcon}
         enable

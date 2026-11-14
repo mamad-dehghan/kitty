@@ -20,12 +20,12 @@ export const ModalDemoPage = () => {
       }}
     >
       <h1>Wouter Modal Transition Demo</h1>
-      <Button mode={colorOptions.warning} fill={fillOptions.outline}>
+      <Button colorMode={colorOptions.warning} fill={fillOptions.outline}>
         open modal
       </Button>
       <Button
         ref={rr}
-        mode={colorOptions.error}
+        colorMode={colorOptions.error}
         fill={fillOptions.outline}
         onClick={() => {
           setIsOpen(true);
@@ -35,7 +35,7 @@ export const ModalDemoPage = () => {
       </Button>
       <Button
         ref={rr2}
-        mode={colorOptions.primary}
+        colorMode={colorOptions.primary}
         fill={fillOptions.fill}
         onClick={() => {
           setIsOpen2(true);

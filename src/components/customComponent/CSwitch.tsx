@@ -9,7 +9,7 @@ export const CSwitch = () => {
       onClick={() => setActive((pre) => !pre)}
       checked={active}
       hasCheckedIcon={true}
-      checkedColor={colorOptions.primary}
+      checkedColorMode={colorOptions.primary}
     />
   );
 };

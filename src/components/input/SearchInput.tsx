@@ -1,23 +1,25 @@
-import { InputHTMLAttributes, ReactNode } from "react";
+import { type InputHTMLAttributes, type ReactNode } from "react";
 import classNames from "classnames";
-import { fillOptions, colorOptions } from "../../providers/theme/types";
+import { colorOptions, fillOptions } from "../../providers/theme/types";
+import { colorClass, fillClass } from "../../providers/theme/variants";
 
 export interface ISearchInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
-  mode: colorOptions;
+  /** @default colorOptions.primary */
+  colorMode?: colorOptions;
   iconStart?: ReactNode;
   iconEnd?: ReactNode;
-  // fill: fillOptions.shadow | fillOptions.outline;
-  fill: fillOptions.outline;
+  /** @default fillOptions.outline */
+  fill?: fillOptions.outline;
 }
 
 export const SearchInput = ({
   iconEnd,
-  fill,
+  fill = fillOptions.outline,
   iconStart,
   disabled,
-  mode,
+  colorMode = colorOptions.primary,
   ...others
 }: ISearchInputProps) => {
   return (
@@ -29,17 +31,14 @@ export const SearchInput = ({
     >
       {iconStart}
       <input
-        className={classNames("search-input", {
-          "search-input--disabled": disabled,
-          "element--primary": mode === colorOptions.primary,
-          "element--error": mode === colorOptions.error,
-          "element--warning": mode === colorOptions.warning,
-          "element--success": mode === colorOptions.success,
-          "search-input--outline": fill === fillOptions.outline,
-          // "search-input--shadow": fill === fillOptions.shadow,
-          "search-input--with-start-icon": iconStart,
-          "search-input--with-end-icon": iconEnd,
-        })}
+        className={classNames(
+          "search-input",
+          colorClass(colorMode),
+          fillClass(fill),
+          disabled && "search-input--disabled",
+          Boolean(iconStart) && "search-input--with-start-icon",
+          Boolean(iconEnd) && "search-input--with-end-icon",
+        )}
         type="search"
         {...others}
       />

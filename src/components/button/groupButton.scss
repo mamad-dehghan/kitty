@@ -65,7 +65,12 @@
     --focus-radius: 12px;
     --outside-radius: 8px;
     border-radius: 4px;
-    &.m {
+
+    &.element--small {
+        height: 40px;
+    }
+
+    &.element--medium {
         height: 56px;
         gap: 2px;
         --inside-radius: 4px;
@@ -76,6 +81,10 @@
                 /* font-size: 26px; */
             }
         }
+    }
+
+    &.element--large {
+        height: 64px;
     }
     /* .button:hover,
         .icon-button:hover,

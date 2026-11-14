@@ -25,12 +25,12 @@
     &.assist-chip {
       color: hsla(var(--on-surface), 0.38);
 
-      &.element-outline {
+      &.element--outline {
         border-color: hsla(var(--on-surface), 0.12);
         background-color: transparent;
       }
 
-      &.element-elevated {
+      &.element--elevated {
         @include elevation.elevation-shadow-0();
         background-color: hsla(var(--on-surface), 0.12);
         border-color: transparent;
@@ -38,21 +38,21 @@
     }
 
     &.filter-chip {
-      &.element-outline {
+      &.element--outline {
         color: hsla(var(--on-surface), 0.38);
 
-        &.enable {
+        &.element--enabled {
           background-color: hsla(var(--on-surface), 0.12);
           border-color: transparent;
         }
 
-        &:not(.enable) {
+        &:not(.element--enabled) {
           background-color: transparent;
           border-color: hsla(var(--on-surface), 0.12);
         }
       }
 
-      &.element-elevated {
+      &.element--elevated {
         @include elevation.elevation-shadow-0();
         background-color: hsla(var(--on-surface), 0.12);
         color: hsla(var(--on-surface), 0.38);
@@ -73,12 +73,12 @@
         color: hsl(var(--primary));
       }
 
-      &.element-outline {
+      &.element--outline {
         @include elevation.elevation-shadow-0();
         border-color: hsl(var(--outline));
       }
 
-      &.element-elevated {
+      &.element--elevated {
         @include elevation.elevation-shadow-1();
         border-color: transparent;
 
@@ -94,16 +94,16 @@
     }
 
     &.filter-chip {
-      &.element-outline {
+      &.element--outline {
         @include elevation.elevation-shadow-0();
 
-        &.enable {
+        &.element--enabled {
           border-color: transparent;
           background-color: hsl(var(--secondary-container));
 
         }
 
-        &:not(.enable) {
+        &:not(.element--enabled) {
           border-color: hsl(var(--outline));
           background-color: hsl(var(--surface));
 
@@ -113,27 +113,27 @@
         }
       }
 
-      &.element-elevated {
+      &.element--elevated {
         @include elevation.elevation-shadow-1();
         border-color: transparent;
 
-        &.enable {
+        &.element--enabled {
           background-color: hsl(var(--secondary-container));
         }
 
-        &:not(.enable) {
+        &:not(.element--enabled) {
 
           background-color: hsl(var(--surface));
 
         }
       }
 
-      &.enable {
+      &.element--enabled {
         color: hsl(var(--on-secondary-container));
         @include palette.state-layer(var(--on-secondary-container));
       }
 
-      &:not(.enable) {
+      &:not(.element--enabled) {
         color: hsl(var(--on-surface-variant));
         @include palette.state-layer(var(--on-surface-variant));
       }

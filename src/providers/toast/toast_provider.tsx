@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { memo, type ReactNode, useCallback, useState } from "react";
 import { colorOptions } from "../theme/types";
+import { colorClass } from "../theme/variants";
 
 import { XIcon } from "@phosphor-icons/react";
 import { AppLayer } from "../appLayer/appLayer";
@@ -20,7 +21,7 @@ export const ToastProvider = ({ children }: props) => {
   const [availableToasts, setAvailableToasts] = useState<
     (toastT & {
       addedTime: number;
-      timeOutId: number;
+      timeOutId: ReturnType<typeof setTimeout>;
     })[]
   >([]);
   const closeAllToasts = useCallback(() => setAvailableToasts([]), []);
@@ -108,15 +109,7 @@ const Alert = memo(
   ({ id, onClose, severity, children }: alertT) => {
     return (
       <div
-        className={classNames(
-          "toast",
-          severity === colorOptions.primary && "element-primary",
-          severity === colorOptions.error && "element-error",
-          severity === colorOptions.warning && "element-warning",
-          severity === colorOptions.success && "element-success",
-          severity === colorOptions.secondary && "element-secondary",
-          severity === colorOptions.tertiary && "element-tertiary",
-        )}
+        className={classNames("toast", colorClass(severity))}
       >
         <p>{children}</p>
         <button className="toast-icon" onClick={() => onClose(id)}>
