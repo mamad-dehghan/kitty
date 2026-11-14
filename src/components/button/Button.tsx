@@ -14,7 +14,6 @@ import {
 import "./Button.scss";
 
 // TODO: add sizing
-// TODO: add disabled
 export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: sizeOptions;
   disabled?: boolean;
@@ -70,7 +69,7 @@ export const Button = forwardRef(
             }`,
         )}
         ref={ref}
-        // disabled={disabled}
+        disabled={disabled}
         {...others}
       >
         {icon}

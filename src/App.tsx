@@ -6,6 +6,7 @@ import {
   FlyingSaucerIcon,
   FootballHelmetIcon,
   HandFistIcon,
+  ListDashesIcon,
   MagnetStraightIcon,
   NumberFiveIcon,
   PaperPlaneIcon,
@@ -21,6 +22,7 @@ import { MultiContentDemo } from "./z_demos/MultiContnet-Demo";
 import { MultiButtonDemo } from "./z_demos/SplitButton-Demo";
 import { SplitterDemoPage } from "./z_demos/Splitter-Demo";
 import { SwitchDemo } from "./z_demos/Switch-Demo";
+import { SelectDemo } from "./z_demos/Select-Demo";
 import { ModalDemoPage } from "./z_demos/TrModal-Demo";
 // import { NavBarDemoPage } from "./z_demos/Appbar-Demo";
 import { NavBar } from "./components/appBar/NavBar";
@@ -71,6 +73,11 @@ const otherSection = [
     title: "Switch",
     Icon: DiamondIcon,
     PageContent: SwitchDemo,
+  },
+  {
+    title: "Select",
+    Icon: ListDashesIcon,
+    PageContent: SelectDemo,
   },
   {
     title: "Group Button",

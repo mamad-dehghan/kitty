@@ -18,6 +18,8 @@ export { SearchInput } from "./input/SearchInput";
 export { Switch } from "./input/Switch";
 export { Menu } from "./menu/Menu";
 export { MenuItem } from "./menu/menuItem";
+export { Select } from "./select/Select";
+export type { ISelectProps, SelectOption } from "./select/Select";
 export { Modal } from "./modal/Modal";
 export { Toast } from "./modal/Toast";
 export { MultiContent } from "./mulitContent/MultiContent";

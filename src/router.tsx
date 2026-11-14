@@ -8,6 +8,7 @@ import { LoadingDemoPage } from "./z_demos/Loading-Demo";
 import { MenuDemoPage } from "./z_demos/Menu-Demo";
 import { MultiContentDemo } from "./z_demos/MultiContnet-Demo";
 import { MultiButtonDemo } from "./z_demos/SplitButton-Demo";
+import { SelectDemo } from "./z_demos/Select-Demo";
 import { SplitterDemoPage } from "./z_demos/Splitter-Demo";
 import { SwitchDemo } from "./z_demos/Switch-Demo";
 import { ModalDemoPage } from "./z_demos/TrModal-Demo";
@@ -29,6 +30,7 @@ export const Router = () => {
         <Route path="/demo/splitter" component={SplitterDemoPage} />
         <Route path="/demo/multi-content" component={MultiContentDemo} />
         <Route path="/demo/switch" component={SwitchDemo} />
+        <Route path="/demo/select" component={SelectDemo} />
         <Route path="/demo/multi-button" component={MultiButtonDemo} />
         <Route path="/demo/modal" component={ModalDemoPage} />
         <Route path="/demo/loading" component={LoadingDemoPage} />

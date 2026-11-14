@@ -400,6 +400,7 @@ import { AssistChip, FilterChip, fillOptions } from "kitty";
 | `Checkbox`       | `mode`                | Native checkbox plus decorative icons; supports `indeterminate`.                          |
 | `RadioButton`    | `mode`                | Native radio input with decorative icons.                                                 |
 | `Switch`         | —                     | Controlled via the hidden input's `checked`/`onChange`; `checkedColor`, `uncheckedColor`, icon flags. |
+| `Select`         | `options`             | Combobox + listbox. `value`/`defaultValue`, `onChange(value)`, `label`, `placeholder`, `mode`, `fill`, `fullWidth`, `name`, `disabled`, `required`. |
 | `CSwitch`        | —                     | Small demo helper that owns its own `Switch` state.                                       |
 
 `Input`'s type currently still requires a `mode` prop even though the
@@ -419,6 +420,25 @@ happy:
 
 Controlled `Checkbox`/`RadioButton` inputs are set to `readOnly` automatically
 when they receive `checked` without an `onChange`.
+
+`Select` implements the ARIA select-only combobox pattern: the trigger is a
+`role="combobox"` button with `aria-expanded`, `aria-controls` and
+`aria-activedescendant`; the popup is a portalled `role="listbox"` of
+`role="option"` rows. Arrow keys, Home/End, Enter/Space, Escape, Tab and
+type-ahead are supported. Always give it a visible `label` or an `aria-label`.
+
+```tsx
+<Select
+  label="Priority"
+  options={[
+    { label: "Low", value: "low" },
+    { label: "Medium", value: "medium" },
+    { label: "High", value: "high", icon: FireIcon },
+  ]}
+  value={priority}
+  onChange={setPriority}
+/>
+```
 
 ### Display
 
@@ -539,6 +559,7 @@ Available names include `arch`, `arrow`, `boom`, `bun`, `burst`, `circle`,
 | `/demo/splitter`         | `z_demos/Splitter-Demo.tsx`       |
 | `/demo/multi-content`    | `z_demos/MultiContnet-Demo.tsx`   |
 | `/demo/switch`           | `z_demos/Switch-Demo.tsx`         |
+| `/demo/select`           | `z_demos/Select-Demo.tsx`         |
 | `/demo/multi-button`     | `z_demos/SplitButton-Demo.tsx`    |
 | `/demo/modal`            | `z_demos/TrModal-Demo.tsx`        |
 | `/demo/loading`          | `z_demos/Loading-Demo.tsx`        |
@@ -566,6 +587,7 @@ packages/kitty/
 │   │   ├── input/          # Input, SearchInput, MultiItemInput, Checkbox, RadioButton, Switch
 │   │   ├── modal/          # Modal, Toast
 │   │   ├── menu/           # Menu, MenuItem
+│   │   ├── select/         # Select combobox
 │   │   ├── drawer/         # Drawer
 │   │   ├── PlaceFinder/    # collision-aware positioning helper
 │   │   ├── mulitContent/   # MultiContent transition helper
