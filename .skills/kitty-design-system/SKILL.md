@@ -20,15 +20,17 @@ not published. Read `README.md` in this package first for the public API.
 - `src/providers/index.ts` — `AppLayer`, `ThemeProvider`, `ToastProvider`,
   `TooltipProvider`, and the `colorOptions` / `fillOptions` / `sizeOptions` /
   `breakPoints` enums.
-- `src/components/<group>/` — component + its own `.scss` file. The TSX file
-  imports the SCSS.
-- `src/providers/theme/` — palette, typography, elevation, breakpoint,
+- `src/components/<Component>/` — one folder per component. The main file
+  matches the folder (`Select/Select.tsx`) and imports its own SCSS
+  (`Select.scss`). Folders with several public components may add an
+  `index.ts` barrel (for example `Chip/`).
+- `src/providers/Theme/` — palette, typography, elevation, breakpoint,
   animation, and `ThemeProvider`.
-- `src/providers/appLayer/appLayer.tsx` — shared overlay wrapper used by
+- `src/providers/AppLayer/AppLayer.tsx` — shared overlay wrapper used by
   Drawer, Modal, Menu, BottomSheet, toasts, and tooltips.
-- `src/z_demos/` — demo pages; `src/App.tsx` + `src/router.tsx` wire them up.
-- `src/styles/shapes/` — SVGs exported as URL strings through
-  `src/styles/shapes/index.ts`.
+- `src/demos/` — demo pages; `src/App.tsx` + `src/router.tsx` wire them up.
+- `src/assets/shapes/` — SVGs exported as URL strings through
+  `src/assets/shapes/index.ts`.
 
 ## Commands
 
@@ -68,7 +70,7 @@ focused change. Vite `build` succeeds without type checking.
    `icon-button--outline`, `input--elevated`, `chip` + `element-outline`.
 6. Export the component from `src/components/index.ts` (alphabetical-ish by
    group is not required, but keep the file tidy).
-7. Add a demo in `src/z_demos/`, a route in `src/router.tsx`, and an entry in
+7. Add a demo in `src/demos/`, a route in `src/router.tsx`, and an entry in
    `src/App.tsx` when the component needs interactive verification.
 8. Verify in the demo at `/demo`.
 
@@ -154,7 +156,7 @@ Root provider order in `src/main.tsx` and consumers:
 ### Changing the palette
 
 1. Add numbered tokens (`--<family>-10` … `--<family>-100`) in
-   `src/providers/theme/palette.scss`.
+   `src/providers/Theme/palette.scss`.
 2. Map them to role tokens inside `light-theme()` and `dark-theme()`.
 3. Add or update the corresponding `@mixin` (for example `errorTheme`) and the
    `colorMode` selector mapping.

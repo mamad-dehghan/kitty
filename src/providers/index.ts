@@ -1,13 +1,13 @@
-export { AppLayer } from "./appLayer/appLayer";
-export { ThemeProvider } from "./theme/theme_provider";
+export { AppLayer } from "./AppLayer/AppLayer";
+export { ThemeProvider } from "./Theme/ThemeProvider";
 export {
   colorClass,
   elementClass,
   fillClass,
   sizeClass,
   variantClasses,
-} from "./theme/variants";
-export type { ColorMode, Fill, Size, VariantProps } from "./theme/variants";
-export { colorOptions, fillOptions, sizeOptions } from "./theme/types";
-export { ToastProvider } from "./toast/toast_provider";
-export { TooltipProvider } from "./tooltip/TooltipProvider";
+} from "./Theme/variants";
+export type { ColorMode, Fill, Size, VariantProps } from "./Theme/variants";
+export { colorOptions, fillOptions, sizeOptions } from "./Theme/types";
+export { ToastProvider } from "./Toast/ToastProvider";
+export { TooltipProvider } from "./Tooltip/TooltipProvider";

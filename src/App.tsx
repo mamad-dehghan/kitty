@@ -1,4 +1,4 @@
-// import { NavBar } from "./components/appBar/NavBar";
+// import { NavBar } from "./components/NavBar/NavBar";
 import {
   DiamondIcon,
   DotsNineIcon,
@@ -15,52 +15,52 @@ import {
   SquareSplitHorizontalIcon,
   StackOverflowLogoIcon,
 } from "@phosphor-icons/react";
-import { TabBar } from "./components/appBar/TabBar";
-import { DrawerDemoPage } from "./z_demos/Drawer-Demo";
-import { MenuDemoPage } from "./z_demos/Menu-Demo";
-import { MultiContentDemo } from "./z_demos/MultiContnet-Demo";
-import { MultiButtonDemo } from "./z_demos/SplitButton-Demo";
-import { SplitterDemoPage } from "./z_demos/Splitter-Demo";
-import { SwitchDemo } from "./z_demos/Switch-Demo";
-import { SelectDemo } from "./z_demos/Select-Demo";
-import { ModalDemoPage } from "./z_demos/TrModal-Demo";
-// import { NavBarDemoPage } from "./z_demos/Appbar-Demo";
-import { NavBar } from "./components/appBar/NavBar";
-import { BottomSheetDemoPage } from "./z_demos/BottomSheet-Demo";
-import { LoadingDemoPage } from "./z_demos/Loading-Demo";
-import { breakPoints } from "./providers/theme/types";
-import { AppbarDemoPage } from "./z_demos/Appbar-Demo";
+import { TabBar } from "./components/TabBar/TabBar";
+import { DrawerDemo } from "./demos/DrawerDemo";
+import { MenuDemo } from "./demos/MenuDemo";
+import { MultiContentDemo } from "./demos/MultiContentDemo";
+import { SplitButtonDemo } from "./demos/SplitButtonDemo";
+import { SplitterDemo } from "./demos/SplitterDemo";
+import { SwitchDemo } from "./demos/SwitchDemo";
+import { SelectDemo } from "./demos/SelectDemo";
+import { ModalDemo } from "./demos/ModalDemo";
+
+import { NavBar } from "./components/NavBar/NavBar";
+import { BottomSheetDemo } from "./demos/BottomSheetDemo";
+import { LoadingDemo } from "./demos/LoadingDemo";
+import { breakPoints } from "./providers/Theme/types";
+import { AppBarDemo } from "./demos/AppBarDemo";
 
 const overlaySection = [
   {
     title: "Menu",
     Icon: FlyingSaucerIcon,
-    PageContent: MenuDemoPage,
+    PageContent: MenuDemo,
   },
   {
     title: "Drawer",
     Icon: MagnetStraightIcon,
-    PageContent: DrawerDemoPage,
+    PageContent: DrawerDemo,
   },
   {
     title: "Split View",
     Icon: SquareSplitHorizontalIcon,
-    PageContent: SplitterDemoPage,
+    PageContent: SplitterDemo,
   },
   {
     title: "Modal",
     Icon: FilesIcon,
-    PageContent: ModalDemoPage,
+    PageContent: ModalDemo,
   },
   {
     title: "App Bar",
     Icon: FootballHelmetIcon,
-    PageContent: AppbarDemoPage,
+    PageContent: AppBarDemo,
   },
   {
     title: "Sheet",
     Icon: PaperPlaneIcon,
-    PageContent: BottomSheetDemoPage,
+    PageContent: BottomSheetDemo,
   },
 ];
 const otherSection = [
@@ -82,12 +82,12 @@ const otherSection = [
   {
     title: "Group Button",
     Icon: HandFistIcon,
-    PageContent: MultiButtonDemo,
+    PageContent: SplitButtonDemo,
   },
   {
     title: "Loading",
     Icon: DotsNineIcon,
-    PageContent: LoadingDemoPage,
+    PageContent: LoadingDemo,
   },
 ];
 const sections = [

@@ -1,28 +1,40 @@
-// export { BottomSheet } from "./appBar/BottomSheet";
-export { NavBar } from "./appBar/NavBar";
-export { Splitter } from "./appBar/Splitter";
-export { TabBar } from "./appBar/TabBar";
-export { Badge } from "./badge/Badge";
-export { Button } from "./button/Button";
-export { AssistChip, FilterChip } from "./button/Chip";
-export { GroupButton } from "./button/GroupButton";
-export { IconButton } from "./button/IconButton";
-export { CSwitch } from "./customComponent/CSwitch";
-export { Divider } from "./divider/Divider";
-export { Drawer } from "./drawer/Drawer";
-export { Checkbox } from "./input/Checkbox";
-export { Input } from "./input/Input";
-export { MultiItemInput } from "./input/MultiItemInput";
-export { RadioButton } from "./input/RadioButton";
-export { SearchInput } from "./input/SearchInput";
-export { Switch } from "./input/Switch";
-export { Menu } from "./menu/Menu";
-export { MenuItem } from "./menu/menuItem";
-export { Select } from "./select/Select";
-export type { ISelectProps, SelectOption } from "./select/Select";
-export { Modal } from "./modal/Modal";
-export { Toast } from "./modal/Toast";
-export { MultiContent } from "./mulitContent/MultiContent";
+// Actions
+export { Button } from "./Button/Button";
+export { IconButton } from "./IconButton/IconButton";
+export { AssistChip, FilterChip } from "./Chip";
+export { GroupButton } from "./GroupButton/GroupButton";
+
+// Inputs
+export { Input } from "./Input/Input";
+export { SearchInput } from "./SearchInput/SearchInput";
+export { MultiItemInput } from "./MultiItemInput/MultiItemInput";
+export { Checkbox } from "./Checkbox/Checkbox";
+export { RadioButton } from "./RadioButton/RadioButton";
+export { Switch } from "./Switch/Switch";
+export { Select } from "./Select/Select";
+export type { ISelectProps, SelectOption } from "./Select/Select";
+
+// Display
+export { Badge } from "./Badge/Badge";
+export { Divider } from "./Divider/Divider";
+export { Toast } from "./Toast/Toast";
+export { LoadingIndicator } from "./LoadingIndicator/LoadingIndicator";
+export { ProgressIndicator } from "./ProgressIndicator/ProgressIndicator";
+export { Tooltip } from "./Tooltip/Tooltip";
+
+// Navigation and layout
+export { AppBar } from "./AppBar/AppBar";
+export { NavBar } from "./NavBar/NavBar";
+export { TabBar } from "./TabBar/TabBar";
+export { Splitter } from "./Splitter/Splitter";
+export { BottomSheet } from "./BottomSheet/BottomSheet";
+
+// Overlays
+export { Drawer } from "./Drawer/Drawer";
+export { Modal } from "./Modal/Modal";
+export { Menu } from "./Menu/Menu";
+export { MenuItem } from "./Menu/MenuItem";
+
+// Helpers
+export { MultiContent } from "./MultiContent/MultiContent";
 export { PlaceFinder } from "./PlaceFinder/PlaceFinder";
-export { Tooltip } from "./tooltip/Tooltip";
-export { LoadingIndicator } from "./loading/LoadingIndicator";

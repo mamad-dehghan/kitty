@@ -8,11 +8,11 @@
   "exports": {
     ".": "./lib.ts",
     "./scss": "./lib.scss",
-    "./scss/palette": "./src/providers/theme/palette.scss",
-    "./scss/typography": "./src/providers/theme/typography.scss",
-    "./scss/elevation": "./src/providers/theme/elevation.scss",
-    "./scss/breakpoint": "./src/providers/theme/breakpoint.scss",
-    "./scss/animation": "./src/providers/theme/animation.scss"
+    "./scss/palette": "./src/providers/Theme/palette.scss",
+    "./scss/typography": "./src/providers/Theme/typography.scss",
+    "./scss/elevation": "./src/providers/Theme/elevation.scss",
+    "./scss/breakpoint": "./src/providers/Theme/breakpoint.scss",
+    "./scss/animation": "./src/providers/Theme/animation.scss"
   },
   "scripts": {
     "dev": "vite",

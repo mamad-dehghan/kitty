@@ -5,4 +5,4 @@ export {
   useHistoryLockAbility,
 } from "./src/hooks/useHistoryLock";
 export * from "./src/providers";
-export * as Shapes from "./src/styles/shapes";
+export * as Shapes from "./src/assets/shapes";

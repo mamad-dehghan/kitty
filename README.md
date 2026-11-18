@@ -104,16 +104,16 @@ The exported SCSS subpaths are declared in `package.json`:
 | Import                  | File                                     |
 | ----------------------- | ---------------------------------------- |
 | `kitty/scss`            | `lib.scss` (forwards the theme modules)  |
-| `kitty/scss/palette`    | `src/providers/theme/palette.scss`       |
-| `kitty/scss/typography` | `src/providers/theme/typography.scss`    |
-| `kitty/scss/elevation`  | `src/providers/theme/elevation.scss`     |
-| `kitty/scss/breakpoint` | `src/providers/theme/breakpoint.scss`    |
-| `kitty/scss/animation`  | `src/providers/theme/animation.scss`     |
+| `kitty/scss/palette`    | `src/providers/Theme/palette.scss`       |
+| `kitty/scss/typography` | `src/providers/Theme/typography.scss`    |
+| `kitty/scss/elevation`  | `src/providers/Theme/elevation.scss`     |
+| `kitty/scss/breakpoint` | `src/providers/Theme/breakpoint.scss`    |
+| `kitty/scss/animation`  | `src/providers/Theme/animation.scss`     |
 
 ## Component gallery
 
 These captures show selected Kitty components and their variants. The
-interactive versions live in the demo pages under `src/z_demos/`.
+interactive versions live in the demo pages under `src/demos/`.
 
 ### Buttons
 
@@ -416,7 +416,6 @@ import { AssistChip, FilterChip, fillOptions } from "kitty";
 | `RadioButton`    | —                     | `colorMode` defaults to `primary`; native radio input with decorative icons.                   |
 | `Switch`         | —                     | Controlled via the hidden input's `checked`/`onChange`; `checkedColorMode`, `uncheckedColorMode`, icon flags. |
 | `Select`         | `options`             | Combobox + listbox. `value`/`defaultValue`, `onChange(value)`, `label`, `placeholder`, `colorMode`, `fill`, `fullWidth`, `name`, `disabled`, `required`. |
-| `CSwitch`        | —                     | Small demo helper that owns its own `Switch` state.                                       |
 
 All input controls use the same `colorMode` / `fill` props:
 
@@ -461,7 +460,7 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 | `Divider`   | —              | `type` is `intent` (default), `center`, or `fullWidth`.                     |
 | `Toast`     | `children`     | Presentational toast; `action` is `{ content, onClick, position, colorMode }`. |
 | `LoadingIndicator` | —       | Cycles through SVG shapes; `size` defaults to `4rem`, `frame` defaults to `true`. |
-| `ProgressIndicator` | `type`, `value` | `type` is `linear` or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`. **Not exported from the package root yet.** |
+| `ProgressIndicator` | `type`, `value` | `type` is `linear` or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`. |
 | `Tooltip`   | `children`, `title` | Clones a single element and shows content on hover; requires `TooltipProvider`. |
 
 `Tooltip` and `Badge` clone their child and need a single element (not a
@@ -474,7 +473,7 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 | `NavBar`   | `items`, `initialActiveItem`    | Collapsible vertical nav; each item has `title`, `Icon`, `content`, optional `onClick`.       |
 | `TabBar`   | `tabs`                          | Swipeable tabs; each tab has `title`, `PageContent`, optional `Icon` and `PageLoadder`.       |
 | `Splitter` | `panels`, `layout`              | Exactly two panels; `minSize` strings use `px`; supports `hideable` and `grow`.               |
-| `AppBar`   | `left`, `center`, `right`       | `center` is either `{ type: "search" }` or a heading block. **Not exported from the package root yet.** |
+| `AppBar`   | `left`, `center`, `right`       | `center` is either `{ type: "search" }` or a heading block. |
 
 `NavBar.media` and `mediaToClass` generate `sm-to-*`/`md-to-*`/etc. classes,
 which can be styled with the breakpoint mixins.
@@ -500,7 +499,7 @@ All overlays portal into `#theme-provider`, block lower layers with
 | `Drawer`      | `direction`, `onClose`| `direction` is `left \| right \| top \| bottom`; `isOpen` defaults to `true`.                |
 | `Modal`       | `isOpen`, `onClose`, `children` | Uses `document.startViewTransition`; compose with `Modal.Title`, `Modal.HelpText`, `Modal.Body`, `Modal.Actions`. |
 | `Menu`        | `isOpen`, `onClose`, `items` | Needs `targetEl` (a `DOMRect`) or it renders nothing. Items are action items, nested items, or `"separator"`. |
-| `BottomSheet` | `open`, `onClose`, `children` | Pull-down sheet; closes when the wrapper is scrolled back to the top. **Not exported from the package root yet.** |
+| `BottomSheet` | `open`, `onClose`, `children` | Pull-down sheet; closes when the wrapper is scrolled back to the top. |
 | `AppLayer`    | —                     | Low-level overlay wrapper. `blockBottomLayers` locks history; `closeOnEscape` calls `onClose`. |
 
 `Menu` example:
@@ -541,7 +540,7 @@ layer on `AppLayer`, use `blockBottomLayers` and make sure
 
 ## Shapes
 
-All SVGs in `src/styles/shapes` are exported as URL strings under the `Shapes`
+All SVGs in `src/assets/shapes` are exported as URL strings under the `Shapes`
 namespace, suitable for `react-inlinesvg` or `<img src>`:
 
 ```tsx
@@ -552,9 +551,9 @@ import { Shapes } from "kitty";
 ```
 
 Available names include `arch`, `arrow`, `boom`, `bun`, `burst`, `circle`,
-`clamshel`, `diamond`, `fan`, `flower`, `gem`, `goustish`, `heart`, `oval`,
-`pentagon`, `pill`, `pixel_triangle`, `pixle_circle`, `puffy`,
-`puffy_diamond`, `slanted`, `soft_boom`, `soft_burst`, `sqare`, `sunny`,
+`clamshell`, `diamond`, `fan`, `flower`, `gem`, `ghostish`, `heart`, `oval`,
+`pentagon`, `pill`, `pixel_triangle`, `pixel_circle`, `puffy`,
+`puffy_diamond`, `slanted`, `soft_boom`, `soft_burst`, `square`, `sunny`,
 `triangle`, `very_sunny`, and the `_4_side_cookie`, `_6_side_cookie`,
 `_7_side_cookie`, `_9_side_cookie`, `_12_side_cookie`,
 `_4_leaf_clover`, `_8_leaf_clover` families.
@@ -567,17 +566,17 @@ Available names include `arch`, `arrow`, `boom`, `bun`, `burst`, `circle`,
 | Route                    | Demo file                         |
 | ------------------------ | --------------------------------- |
 | `/demo`                  | `src/App.tsx` (tabbed overview)   |
-| `/demo/menu`             | `z_demos/Menu-Demo.tsx`           |
-| `/demo/drawer`           | `z_demos/Drawer-Demo.tsx`         |
-| `/demo/splitter`         | `z_demos/Splitter-Demo.tsx`       |
-| `/demo/multi-content`    | `z_demos/MultiContnet-Demo.tsx`   |
-| `/demo/switch`           | `z_demos/Switch-Demo.tsx`         |
-| `/demo/select`           | `z_demos/Select-Demo.tsx`         |
-| `/demo/multi-button`     | `z_demos/SplitButton-Demo.tsx`    |
-| `/demo/modal`            | `z_demos/TrModal-Demo.tsx`        |
-| `/demo/loading`          | `z_demos/Loading-Demo.tsx`        |
-| `/demo/bottom-sheet`     | `z_demos/BottomSheet-Demo.tsx`    |
-| `/demo/app-bar`          | `z_demos/Appbar-Demo.tsx`         |
+| `/demo/menu`             | `demos/MenuDemo.tsx`           |
+| `/demo/drawer`           | `demos/DrawerDemo.tsx`         |
+| `/demo/splitter`         | `demos/SplitterDemo.tsx`       |
+| `/demo/multi-content`    | `demos/MultiContentDemo.tsx`   |
+| `/demo/switch`           | `demos/SwitchDemo.tsx`         |
+| `/demo/select`           | `demos/SelectDemo.tsx`         |
+| `/demo/multi-button`     | `demos/SplitButtonDemo.tsx`    |
+| `/demo/modal`            | `demos/ModalDemo.tsx`        |
+| `/demo/loading`          | `demos/LoadingDemo.tsx`        |
+| `/demo/bottom-sheet`     | `demos/BottomSheetDemo.tsx`    |
+| `/demo/app-bar`          | `demos/AppBarDemo.tsx`         |
 
 Add a demo when adding a component; the router and demo overview are the
 fastest way to verify responsive and overlay behavior.
@@ -594,24 +593,40 @@ packages/kitty/
 │   ├── App.tsx             # demo shell
 │   ├── main.tsx            # demo root providers
 │   ├── router.tsx          # demo routes + history-lock listener
-│   ├── components/         # components grouped by kind
-│   │   ├── appBar/         # NavBar, TabBar, Splitter, AppBar, BottomSheet
-│   │   ├── button/         # Button, IconButton, Chip, GroupButton
-│   │   ├── input/          # Input, SearchInput, MultiItemInput, Checkbox, RadioButton, Switch
-│   │   ├── modal/          # Modal, Toast
-│   │   ├── menu/           # Menu, MenuItem
-│   │   ├── select/         # Select combobox
-│   │   ├── drawer/         # Drawer
-│   │   ├── PlaceFinder/    # collision-aware positioning helper
-│   │   ├── mulitContent/   # MultiContent transition helper
-│   │   ├── loading/        # LoadingIndicator, ProgressIndicator
-│   │   ├── tooltip/        # Tooltip
+│   ├── components/         # one folder per component
+│   │   ├── AppBar/         # AppBar.tsx + AppBar.scss
+│   │   ├── Badge/
+│   │   ├── BottomSheet/
+│   │   ├── Button/
+│   │   ├── Checkbox/
+│   │   ├── Chip/           # AssistChip.tsx, FilterChip.tsx, index.ts
+│   │   ├── Divider/
+│   │   ├── Drawer/
+│   │   ├── GroupButton/
+│   │   ├── IconButton/
+│   │   ├── Input/
+│   │   ├── LoadingIndicator/
+│   │   ├── Menu/           # Menu.tsx, MenuItem.tsx, DrawerMenu.tsx
+│   │   ├── Modal/
+│   │   ├── MultiContent/
+│   │   ├── MultiItemInput/
+│   │   ├── NavBar/
+│   │   ├── PlaceFinder/    # PlaceFinder.tsx + finder.ts
+│   │   ├── ProgressIndicator/
+│   │   ├── RadioButton/
+│   │   ├── SearchInput/
+│   │   ├── Select/
+│   │   ├── Splitter/
+│   │   ├── Switch/
+│   │   ├── TabBar/
+│   │   ├── Toast/
+│   │   ├── Tooltip/
 │   │   └── index.ts        # component barrel
-│   ├── providers/          # ThemeProvider, TooltipProvider, ToastProvider, AppLayer
+│   ├── providers/          # AppLayer/, Theme/, Toast/, Tooltip/
 │   ├── hooks/              # useDeferredState, useHistoryLock
-│   ├── styles/             # globals, shapes, legacy modules
-│   ├── utils/              # internal helpers
-│   └── z_demos/            # demo pages
+│   ├── assets/shapes/      # SVG shapes
+│   ├── styles/             # globals only
+│   └── demos/              # demo pages
 └── tsconfig.json
 ```
 
