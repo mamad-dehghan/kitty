@@ -460,11 +460,16 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 | `Divider`   | —              | `type` is `intent` (default), `center`, or `fullWidth`.                     |
 | `Toast`     | `children`     | Presentational toast; `action` is `{ content, onClick, position, colorMode }`. |
 | `LoadingIndicator` | —       | Cycles through SVG shapes; `size` defaults to `4rem`, `frame` defaults to `true`. |
-| `ProgressIndicator` | `type`, `value` | `type` is `linear` or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`. |
+| `ProgressIndicator` | `value` | `type` is `linear` (default) or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`; `colorMode`; `wave` enables the M3 Expressive wavy geometry. |
 | `Tooltip`   | `children`, `title` | Clones a single element and shows content on hover; requires `TooltipProvider`. |
 
 `Tooltip` and `Badge` clone their child and need a single element (not a
 `Fragment`). Give the child a stable layout wrapper.
+
+`ProgressIndicator` builds the flat linear layers with `::before` / `::after`
+and `clip-path`; circular and wavy variants use inline SVG. It does not create
+a shadow root. `wave` applies to both `linear` and `circular`, and the track
+stays flat on the wavy linear variant to match Material 3.
 
 ### Navigation and layout
 
@@ -646,8 +651,8 @@ Run them from the workspace root with
   `verbatimModuleSyntax` imports). Avoid treating a successful Vite build as a
   clean type check.
 - **Barrel exports matter.** `lib.ts` re-exports `src/components/index.ts`;
-  add new public components there. Some components (`AppBar`, `BottomSheet`,
-  `ProgressIndicator`) exist but are not exported yet.
+  add new public components there. A few helpers (`MultiContentCss`,
+  `ToastContext`) remain internal.
 - **Keep enums and classes in sync.** New `colorOptions` values need matching
   `element--*` class handling in each component and palette roles.
 - **Scoped SCSS.** Each component imports its own SCSS file. Add new shared

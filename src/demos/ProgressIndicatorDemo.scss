@@ -1,0 +1,30 @@
+@use "../providers/Theme/typography" as typography;
+
+.progress-demo__grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.progress-demo__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+  min-inline-size: 12rem;
+}
+
+.progress-demo__item--compact {
+  min-inline-size: 0;
+}
+
+.progress-demo__label {
+  @include typography.labelMedium();
+  color: hsl(var(--on-surface-variant));
+}
+
+.progress-demo__range {
+  inline-size: 100%;
+  accent-color: hsl(var(--primary));
+}

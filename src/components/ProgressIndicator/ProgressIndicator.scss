@@ -1,97 +1,175 @@
-.progress-indicator {
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    border-radius: 4px;
-    height: var(--size);
-    width: 12rem;
-    display: flex;
-    align-items: stretch;
+@use "../../providers/Theme/palette" as palette;
 
-    &.element--small {
-        --size: 2px;
-    }
-
-    &.element--medium {
-        --size: 4px;
-    }
-
-    &.element--large {
-        --size: 8px;
-    }
-
-    .progress-indicator--empty {
-        background-color: hsl(var(--primary));
-        height: var(--size);
-        flex-grow: 1;
-        margin-left: 4px;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: row-reverse;
-        container-type: inline-size;
-        min-width: 4px;
-
-        .progress-indicator--stop-marker {
-            background-color: hsl(var(--on-primary));
-            height: 4px;
-            width: 4px;
-            aspect-ratio: 1;
-            border-radius: 4px;
-            /*@container (width < 8px) {
-            display: none;
-        }*/
-        }
-    }
-
-    .progress-indicator--value {
-        background-color: hsl(var(--on-primary));
-        flex: 0 1;
-        position: relative;
-        border-radius: 4px;
-    }
+@property --kitty-progress-ratio {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
-// .loading {
-//     position: relative;
-//     width: 12rem;
-//     height: 12rem;
-//     animation: loading-rotate 5s ease-in-out infinite;
-//     transform-origin: center;
+.progress-indicator {
+  @include palette.colorMode();
 
-//     .loading-svg {
-//         width: 100%;
-//         height: 100%;
+  --pi-thickness: 4px;
+  --pi-gap: 4px;
+  --pi-track-gap: calc(
+    var(--pi-gap) * clamp(0, var(--kitty-progress-ratio) * 100, 1)
+  );
+  --pi-active-color: hsl(var(--color));
+  --pi-track-color: hsl(var(--container));
+  --pi-dot-x: calc(100% - var(--pi-thickness) / 2);
 
-//         mask-image: conic-gradient(from -75deg,
-//                 transparent 0deg 150deg,
-//                 black 150deg 360deg);
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
 
-//         -webkit-mask-image: conic-gradient(from -75deg,
-//                 transparent 0deg 150deg,
-//                 black 150deg 360deg);
-//     }
-// }
+  &.element--surface {
+    --pi-track-color: hsl(var(--surface-variant));
+  }
 
-// .loading {
-//     --loading-size: 48px;
+  &.progress-indicator--linear {
+    inline-size: 12rem;
+    block-size: var(--pi-thickness);
+    transition: --kitty-progress-ratio 450ms cubic-bezier(0.2, 0, 0, 1);
 
-//     width: var(--loading-size);
-//     height: var(--loading-size);
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      border-radius: 999px;
+      pointer-events: none;
+      transition:
+        background-color 200ms,
+        opacity 200ms;
+    }
 
-//     display: grid;
-//     place-items: center;
+    // Track and the M3 stop indicator.
+    &::before {
+      inset-block: 0;
+      background-color: var(--pi-track-color);
+      background-image: radial-gradient(
+        circle at var(--pi-dot-x) 50%,
+        var(--pi-active-color) 0 calc(var(--pi-thickness) / 2),
+        hsla(var(--color), 0) calc(var(--pi-thickness) / 2)
+      );
+      background-repeat: no-repeat;
+      clip-path: inset(
+        0 0 0 calc(var(--kitty-progress-ratio) * 100% + var(--pi-track-gap))
+          round 999px
+      );
+    }
 
-//     &__svg {
-//         width: 100%;
-//         height: 100%;
-//         overflow: visible;
+    // Active indicator for the flat variant.
+    &::after {
+      inset-block: 0;
+      background-color: var(--pi-active-color);
+      clip-path: inset(
+        0 calc(100% - var(--kitty-progress-ratio) * 100%) 0 0 round 999px
+      );
+    }
 
-//         // The rotation is independent from the shape morph.
-//         animation: loading-rotate 5s linear infinite;
-//     }
+    &.progress-indicator--wave {
+      block-size: var(--pi-height);
 
-//     &__path {
-//         fill: royalblue;
-//         transform-origin: center;
-//     }
-// }
+      &::before {
+        inset-block: calc(50% - var(--pi-thickness) / 2);
+      }
+
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  &:dir(rtl) {
+    --pi-dot-x: calc(var(--pi-thickness) / 2);
+
+    &.progress-indicator--linear {
+      &::before {
+        clip-path: inset(
+          0 calc(var(--kitty-progress-ratio) * 100% + var(--pi-track-gap)) 0 0
+            round 999px
+        );
+      }
+
+      &::after {
+        clip-path: inset(
+          0 0 0 calc(100% - var(--kitty-progress-ratio) * 100%) round 999px
+        );
+      }
+    }
+
+    .progress-indicator__wave,
+    .progress-indicator__circular {
+      transform: scaleX(-1);
+    }
+  }
+
+  &.progress-indicator--circular {
+    inline-size: var(--pi-size);
+    block-size: var(--pi-size);
+  }
+
+  .progress-indicator__wave {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .progress-indicator__wave-path {
+    fill: none;
+    stroke: var(--pi-active-color);
+    stroke-linecap: round;
+    transition:
+      stroke 200ms,
+      stroke-dasharray 450ms cubic-bezier(0.2, 0, 0, 1),
+      stroke-dashoffset 450ms cubic-bezier(0.2, 0, 0, 1),
+      opacity 200ms;
+  }
+
+  .progress-indicator__circular {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .progress-indicator__circular-track {
+    fill: none;
+    stroke: var(--pi-track-color);
+    stroke-linecap: round;
+    transition:
+      stroke 200ms,
+      stroke-dasharray 450ms cubic-bezier(0.2, 0, 0, 1),
+      stroke-dashoffset 450ms cubic-bezier(0.2, 0, 0, 1),
+      opacity 200ms;
+  }
+
+  .progress-indicator__circular-active {
+    fill: none;
+    stroke: var(--pi-active-color);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition:
+      stroke 200ms,
+      stroke-dasharray 450ms cubic-bezier(0.2, 0, 0, 1),
+      stroke-dashoffset 450ms cubic-bezier(0.2, 0, 0, 1),
+      opacity 200ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-indicator,
+  .progress-indicator::before,
+  .progress-indicator::after,
+  .progress-indicator .progress-indicator__wave-path,
+  .progress-indicator .progress-indicator__circular-track,
+  .progress-indicator .progress-indicator__circular-active {
+    transition: none;
+  }
+}

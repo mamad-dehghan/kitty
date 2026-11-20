@@ -189,9 +189,6 @@ literal HSL triplets.
 
 These exist but are **not** exported from `lib.ts` today:
 
-- `AppBar`
-- `BottomSheet` (commented out in `src/components/index.ts`)
-- `ProgressIndicator`
 - `MultiContentCss` (only `MultiContent` is exported)
 - `ToastContext`
 

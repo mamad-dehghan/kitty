@@ -20,6 +20,7 @@ export { Divider } from "./Divider/Divider";
 export { Toast } from "./Toast/Toast";
 export { LoadingIndicator } from "./LoadingIndicator/LoadingIndicator";
 export { ProgressIndicator } from "./ProgressIndicator/ProgressIndicator";
+export type { IProgressIndicatorProps } from "./ProgressIndicator/ProgressIndicator";
 export { Tooltip } from "./Tooltip/Tooltip";
 
 // Navigation and layout
