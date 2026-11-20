@@ -497,7 +497,7 @@ All overlays portal into `#theme-provider`, block lower layers with
 | Component     | Required props        | Notes                                                                                       |
 | ------------- | --------------------- | ------------------------------------------------------------------------------------------- |
 | `Drawer`      | `direction`, `onClose`| `direction` is `left \| right \| top \| bottom`; `isOpen` defaults to `true`.                |
-| `Modal`       | `isOpen`, `onClose`, `children` | Uses `document.startViewTransition`; compose with `Modal.Title`, `Modal.HelpText`, `Modal.Body`, `Modal.Actions`. |
+| `Modal`       | `isOpen`, `onClose`, `children` | Optional `transitionSourceRef` morphs the dialog from/to the element that opened it. Uses `document.startViewTransition`; compose with `Modal.Title`, `Modal.HelpText`, `Modal.Body`, `Modal.Actions`. |
 | `Menu`        | `isOpen`, `onClose`, `items` | Needs `targetEl` (a `DOMRect`) or it renders nothing. Items are action items, nested items, or `"separator"`. |
 | `BottomSheet` | `open`, `onClose`, `children` | Pull-down sheet; closes when the wrapper is scrolled back to the top. |
 | `AppLayer`    | —                     | Low-level overlay wrapper. `blockBottomLayers` locks history; `closeOnEscape` calls `onClose`. |

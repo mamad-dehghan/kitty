@@ -24,11 +24,6 @@
     //max-width
     min-width: 280px;
     max-width: 560px;
-    /* animation: show-modal 100ms linear; */
-
-    &::view-transition-group(*) {
-        animation-duration: 250ms;
-    }
 
     .modal-header {
         padding-inline: 24px;
@@ -65,25 +60,3 @@
         padding-block-start: 8px;
     }
 }
-
-/* ::view-transition-group(*) {
-    animation-duration: 300ms;
-} */
-
-/* *:active-view-transition() {
-    z-index: 1000;
-} */
-/* ::view-transition-old() {
-    z-index: 1000;
-}
-::view-transition-new() {
-    z-index: 1000;
-} */
-/* @keyframes show-modal {
-    0% {
-        scale: 0.1;
-    }
-    100% {
-        scale: unset;
-    }
-} */

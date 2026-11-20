@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, Modal } from "../components";
 import { colorOptions, fillOptions } from "../providers/Theme/types";
 import {
@@ -11,6 +11,12 @@ import {
 export const ModalDemo = () => {
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const profileButtonRef = useRef<HTMLButtonElement>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
+  const [boundOpen, setBoundOpen] = useState(false);
+  const [boundTrigger, setBoundTrigger] = useState<"profile" | "settings">(
+    "profile",
+  );
 
   return (
     <DemoPage
@@ -47,6 +53,65 @@ export const ModalDemo = () => {
             </Button>
           </Modal.Actions>
         </Modal>
+      </DemoSection>
+
+      <DemoSection
+        title="Bound to the trigger button"
+        description="Pass the clicked button ref to transitionSourceRef so the modal morphs out of it when opening and back into it when closing."
+      >
+        <DemoRow>
+          <Button
+            ref={profileButtonRef}
+            onClick={() => {
+              setBoundTrigger("profile");
+              setBoundOpen(true);
+            }}
+          >
+            Open profile
+          </Button>
+          <Button
+            ref={settingsButtonRef}
+            fill={fillOptions.outline}
+            onClick={() => {
+              setBoundTrigger("settings");
+              setBoundOpen(true);
+            }}
+          >
+            Open settings
+          </Button>
+        </DemoRow>
+
+        <Modal
+          isOpen={boundOpen}
+          onClose={() => setBoundOpen(false)}
+          transitionSourceRef={
+            boundTrigger === "profile" ? profileButtonRef : settingsButtonRef
+          }
+        >
+          <Modal.Title>Account settings</Modal.Title>
+          <Modal.HelpText>
+            Opened from the {boundTrigger === "profile" ? "profile" : "settings"}{" "}
+            button.
+          </Modal.HelpText>
+          <Modal.Body>
+            <p>
+              The view transition starts on the clicked button and returns to it
+              on close.
+            </p>
+          </Modal.Body>
+          <Modal.Actions>
+            <Button fill={fillOptions.link} onClick={() => setBoundOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setBoundOpen(false)}>Save</Button>
+          </Modal.Actions>
+        </Modal>
+
+        <DemoNote>
+          transitionSourceRef receives the ref of whichever button opened the
+          modal. Swap between the two buttons to see the transition morph from
+          each one.
+        </DemoNote>
       </DemoSection>
 
       <DemoSection title="Confirmation flow">
