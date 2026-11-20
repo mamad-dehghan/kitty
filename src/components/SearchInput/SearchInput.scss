@@ -1,0 +1,68 @@
+@use "../../providers/Theme/palette" as palette;
+@use "../../providers/Theme/typography" as typography;
+
+.search-input--wrapper {
+  @include palette.colorMode();
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  max-width: 24rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--surface-container-highest));
+
+  &--with-start-icon > :first-child {
+    position: absolute;
+    inset-inline-start: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    color: hsl(var(--on-surface-variant));
+  }
+
+  &--with-end-icon > :last-child {
+    position: absolute;
+    inset-inline-end: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    color: hsl(var(--on-surface-variant));
+  }
+
+  .search-input {
+    @include typography.bodyLarge();
+    width: 100%;
+    height: 100%;
+    padding-inline: 1.25rem;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    outline: none;
+    color: hsl(var(--on-surface));
+    background-color: transparent;
+
+    &::placeholder {
+      color: hsl(var(--on-surface-variant));
+    }
+
+    &.element--outline {
+      background-color: hsl(var(--surface));
+      border-color: hsl(var(--outline));
+
+      &:focus-visible {
+        border-color: hsl(var(--color));
+      }
+    }
+
+    &--disabled {
+      color: hsla(var(--on-surface), 0.38);
+      cursor: default;
+    }
+
+    &--with-start-icon {
+      padding-inline-start: 2.75rem;
+    }
+
+    &--with-end-icon {
+      padding-inline-end: 2.75rem;
+    }
+  }
+}

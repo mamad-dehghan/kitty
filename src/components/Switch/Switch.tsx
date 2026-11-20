@@ -1,5 +1,5 @@
 import { CheckIcon, XIcon } from "@phosphor-icons/react";
-import { type InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes, useState } from "react";
 
 import classNames from "classnames";
 import { colorOptions } from "../../providers/Theme/types";
@@ -16,6 +16,9 @@ export interface ISwitchProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 // TODO: always has icon but not show, color
 export const Switch = ({
+  checked,
+  defaultChecked,
+  onChange,
   checkedColorMode = colorOptions.primary,
   uncheckedColorMode = colorOptions.surface,
   hasCheckedIcon = true,
@@ -23,31 +26,43 @@ export const Switch = ({
   className,
   ...others
 }: ISwitchProps) => {
+  const [internalChecked, setInternalChecked] = useState(
+    defaultChecked ?? false,
+  );
+  const isChecked = checked ?? internalChecked;
+
   return (
     <button
       tabIndex={-1}
       className={classNames(
         "switch",
-        others.checked && "checked",
+        isChecked && "checked",
         others.disabled && "disabled",
-        colorClass(
-          others.checked ? checkedColorMode : uncheckedColorMode,
-        ),
+        colorClass(isChecked ? checkedColorMode : uncheckedColorMode),
         className,
       )}
       disabled={others.disabled}
     >
-      <input {...others} type="checkbox" className="hidden-checkbox" />
+      <input
+        {...others}
+        type="checkbox"
+        className="hidden-checkbox"
+        checked={isChecked}
+        onChange={(event) => {
+          if (checked === undefined) setInternalChecked(event.currentTarget.checked);
+          onChange?.(event);
+        }}
+      />
       <div className="switch--thumb--wrapper">
         <div
           className={classNames({
             "switch--thumb": true,
             "checked-icon": hasCheckedIcon,
             "unchecked-icon": hasUncheckedIcon,
-            checked: others.checked,
+            checked: isChecked,
           })}
         >
-          {others.checked ? (
+          {isChecked ? (
             <CheckIcon weight={"regular"} />
           ) : (
             <XIcon weight={"regular"} />

@@ -1,0 +1,32 @@
+@use "../../providers/Theme/typography" as typography;
+
+.tags-input {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  max-width: 30rem;
+
+  .input--outer-wrapper {
+    width: 100%;
+  }
+
+  .tags-wrapper {
+    position: absolute;
+    inset-block-start: 0.5rem;
+    inset-inline-start: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    pointer-events: none;
+
+    & > * {
+      pointer-events: auto;
+    }
+
+    .chip {
+      height: 2rem;
+      padding-inline: 0.5rem;
+      @include typography.labelMedium();
+    }
+  }
+}

@@ -1,68 +1,90 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button, Modal } from "../components";
 import { colorOptions, fillOptions } from "../providers/Theme/types";
-import "./ModalDemo.scss";
+import {
+  DemoNote,
+  DemoPage,
+  DemoRow,
+  DemoSection,
+} from "./DemoLayout";
 
 export const ModalDemo = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpen2, setIsOpen2] = useState(false);
-  const rr = useRef<HTMLButtonElement>(null);
-  const rr2 = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   return (
-    <div
-      style={{
-        padding: "40px",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+    <DemoPage
+      title="Modal"
+      description="View-transition powered dialog composed from Title, HelpText, Body and Actions."
     >
-      <h1>Wouter Modal Transition Demo</h1>
-      <Button colorMode={colorOptions.warning} fill={fillOptions.outline}>
-        open modal
-      </Button>
-      <Button
-        ref={rr}
-        colorMode={colorOptions.error}
-        fill={fillOptions.outline}
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        open modal
-      </Button>
-      <Button
-        ref={rr2}
-        colorMode={colorOptions.primary}
-        fill={fillOptions.fill}
-        onClick={() => {
-          setIsOpen2(true);
-        }}
-      >
-        open modal
-      </Button>
+      <DemoSection title="Basic modal">
+        <DemoRow>
+          <Button onClick={() => setOpen(true)}>Open modal</Button>
+        </DemoRow>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-        bindButton={rr}
-      >
-        <p>Hello</p>
-      </Modal>
+        <Modal isOpen={open} onClose={() => setOpen(false)}>
+          <Modal.Title>Delete message?</Modal.Title>
+          <Modal.HelpText>
+            This action cannot be undone.
+          </Modal.HelpText>
+          <Modal.Body>
+            <p>The message and its attachments will be removed for everyone.</p>
+          </Modal.Body>
+          <Modal.Actions>
+            <Button
+              fill={fillOptions.link}
+              colorMode={colorOptions.primary}
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              fill={fillOptions.fill}
+              colorMode={colorOptions.error}
+              onClick={() => setOpen(false)}
+            >
+              Delete
+            </Button>
+          </Modal.Actions>
+        </Modal>
+      </DemoSection>
 
-      <Modal
-        isOpen={isOpen2}
-        onClose={() => {
-          setIsOpen2(false);
-        }}
-        bindButton={rr2}
-      >
-        <p>Hello</p>
-      </Modal>
-    </div>
+      <DemoSection title="Confirmation flow">
+        <DemoRow>
+          <Button
+            colorMode={colorOptions.warning}
+            fill={fillOptions.outline}
+            onClick={() => setConfirmOpen(true)}
+          >
+            Leave without saving
+          </Button>
+        </DemoRow>
+
+        <Modal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)}>
+          <Modal.Title>Unsaved changes</Modal.Title>
+          <Modal.Body>
+            <p>Do you want to discard the draft?</p>
+          </Modal.Body>
+          <Modal.Actions>
+            <Button
+              fill={fillOptions.link}
+              onClick={() => setConfirmOpen(false)}
+            >
+              Keep editing
+            </Button>
+            <Button
+              colorMode={colorOptions.error}
+              onClick={() => setConfirmOpen(false)}
+            >
+              Discard
+            </Button>
+          </Modal.Actions>
+        </Modal>
+
+        <DemoNote>
+          Modals block lower layers and close on Escape or a backdrop click.
+        </DemoNote>
+      </DemoSection>
+    </DemoPage>
   );
 };

@@ -15,6 +15,9 @@
         position: relative;
         display: flex;
         flex-flow: row nowrap;
+        flex-shrink: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
         @include elevation.elevation-0();
         border-bottom: 1px solid hsl(var(--surface-variant));
 
@@ -23,7 +26,6 @@
 
             right: calc(anchor(right) + 2px);
             left: calc(anchor(left) + 2px);
-            bottom: calc(anchor(bottom) - 8px);
 
             pointer-events: none;
             border: none;
@@ -55,14 +57,21 @@
 
                 &+.tab-indicator {
                     height: 3px;
+                    bottom: calc(anchor(bottom) - 8px);
                 }
             }
 
             &:not(.has-icon) {
                 height: 48px;
 
+                .tab-title{
+                    margin-block-start: 2px;
+                    margin-block-end: 6px;
+                }
+
                 &+.tab-indicator {
-                    height: 2px;
+                    height: 3px;
+                    bottom: calc(anchor(bottom) - 14px);
                 }
             }
 
@@ -95,7 +104,6 @@
                 padding-block-end: 4px;
 
                 .tab-content {
-                    margin-block-end: 4px;
                     padding-block-end: 4px;
                 }
             }

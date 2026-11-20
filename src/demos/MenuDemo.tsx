@@ -1,96 +1,111 @@
-import { useState } from "react";
-import { Link } from "wouter";
-import { Button, Menu, Modal } from "../components";
-import { Tooltip } from "../components/Tooltip/Tooltip";
 import {
-  colorOptions,
-  fillOptions,
-  sizeOptions,
-} from "../providers/Theme/types";
+  CopyIcon,
+  PencilSimpleIcon,
+  ShareNetworkIcon,
+  TrashIcon,
+} from "@phosphor-icons/react";
+import { useState } from "react";
+import { Button, Menu } from "../components";
+import { fillOptions } from "../providers/Theme/types";
+import {
+  DemoNote,
+  DemoPage,
+  DemoRow,
+  DemoSection,
+} from "./DemoLayout";
+
+const items = [
+  {
+    label: "Edit",
+    leadingIcon: PencilSimpleIcon,
+    onClick: () => undefined,
+  },
+  {
+    label: "Duplicate",
+    leadingIcon: CopyIcon,
+    onClick: () => undefined,
+  },
+  "separator" as const,
+  {
+    label: "Share",
+    leadingIcon: ShareNetworkIcon,
+    items: [
+      { label: "Copy link", onClick: () => undefined },
+      { label: "Email", onClick: () => undefined },
+      { label: "Message", onClick: () => undefined },
+    ],
+  },
+  {
+    label: "Delete",
+    leadingIcon: TrashIcon,
+    onClick: () => undefined,
+  },
+];
 
 export const MenuDemo = () => {
-  const [targetEl, setTargetEl] = useState<HTMLElement | null>(null);
-  const [openM, setOpenM] = useState(false);
+  const [targetEl, setTargetEl] = useState<DOMRect>();
+  const [compactTargetEl, setCompactTargetEl] = useState<DOMRect>();
 
-  const menuSections = [
-    {
-      label: "first",
-      onClick: () => {
-        console.log("clicked-1!");
-      },
-    },
-    {
-      label: "not first",
-      onClick: () => {
-        console.log("clicked-2!");
-      },
-    },
-    {
-      label: "second",
-      items: [
-        {
-          label: "third",
-          onClick: () => {
-            console.log("clicked-3!");
-          },
-        },
-        {
-          label: "fourth",
-          onClick: (event: any) => {
-            event.stopPropagation();
-            setOpenM(true);
-          },
-        },
-      ],
-    },
-  ];
+  const close = () => setTargetEl(undefined);
+  const closeCompact = () => setCompactTargetEl(undefined);
 
   return (
-    <>
-      <Link to="/demo/drawer">To</Link>
-      <Tooltip title="start">
-        <Button
-          fill={fillOptions.outline}
-          colorMode={colorOptions.error}
-          onClick={(event) => {
-            setTargetEl(event.currentTarget);
-          }}
-        >
-          Open
-        </Button>
-      </Tooltip>
-      <Menu
-        isOpen={Boolean(targetEl)}
-        onClose={() => {
-          setTargetEl(null);
-        }}
-        fitContent
-        // compact
-        hideLeadingIcon
-        position={[{ horizontal: "left", vertical: "bottom" }]}
-        margins={{
-          container: { X: 4, Y: 4 },
-          targetEl: { X: 4, Y: 4 },
-        }}
-        targetEl={targetEl?.getBoundingClientRect()}
-        items={menuSections}
-      />
-      <Modal isOpen={openM} onClose={() => setOpenM(false)}>
-        <Modal.Title>It's a modal</Modal.Title>
-        <Modal.Actions>
+    <DemoPage
+      title="Menu"
+      description="Portalled menu with icons, separators and nested submenus."
+    >
+      <DemoSection title="Nested menu">
+        <DemoRow>
           <Button
-            size={sizeOptions.small}
             fill={fillOptions.outline}
-            colorMode={colorOptions.warning}
-            onClick={() => {
-              setOpenM(false);
-            }}
+            onClick={(event) =>
+              setTargetEl(event.currentTarget.getBoundingClientRect())
+            }
           >
-            close
+            Open menu
           </Button>
-          <Link to="/demo/drawer">To</Link>
-        </Modal.Actions>
-      </Modal>
-    </>
+        </DemoRow>
+
+        <Menu
+          isOpen={Boolean(targetEl)}
+          targetEl={targetEl}
+          onClose={close}
+          items={items}
+          hideLeadingIcon={false}
+        />
+
+        <DemoNote>
+          Nested items open a second menu; selecting an action closes the root
+          menu.
+        </DemoNote>
+      </DemoSection>
+
+      <DemoSection title="Compact, fit content">
+        <DemoRow>
+          <Button
+            fill={fillOptions.tonal}
+            onClick={(event) =>
+              setCompactTargetEl(event.currentTarget.getBoundingClientRect())
+            }
+          >
+            Compact menu
+          </Button>
+        </DemoRow>
+
+        <Menu
+          isOpen={Boolean(compactTargetEl)}
+          targetEl={compactTargetEl}
+          onClose={closeCompact}
+          compact
+          fitContent
+          hideLeadingIcon
+          items={[
+            { label: "First", onClick: closeCompact },
+            { label: "Second", onClick: closeCompact },
+          ]}
+          position={[{ vertical: "bottom", horizontal: "right" }]}
+        />
+      </DemoSection>
+    </DemoPage>
   );
 };

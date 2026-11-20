@@ -1,100 +1,79 @@
-import { useEffect, useState, type JSX } from "react";
-import { MultiContent } from "../components/MultiContent/MultiContent";
-import { DiceFiveIcon, DiceFourIcon } from "@phosphor-icons/react";
+import { useState } from "react";
+import { Button, MultiContent } from "../components";
+import { fillOptions } from "../providers/Theme/types";
+import {
+  DemoNote,
+  DemoPage,
+  DemoRow,
+  DemoSection,
+} from "./DemoLayout";
 
-const ElOptions1: JSX.Element[] = [
-  <DiceFourIcon
-    width="12rem"
-    height="12rem"
-    fill="blue"
-    style={{ background: "brown" }}
-  />,
-  <DiceFiveIcon
-    width="12rem"
-    height="12rem"
-    fill="red"
-    style={{ background: "navy" }}
-  />,
-];
-// const ElOptions2 = [<DiceOne width="12rem" height="12rem" fill="blue" />, <DiceTwo width="12rem" height="12rem" fill="red" />]
-const ElOptions2: JSX.Element[] = [
-  <span style={{ background: "brown" }} />,
-  <span style={{ background: "grey" }} />,
+const transitions = ["left", "right", "top", "bottom"] as const;
+type transition = (typeof transitions)[number];
+
+const slides = [
+  { label: "One", background: "hsl(var(--primary-container))" },
+  { label: "Two", background: "hsl(var(--secondary-container))" },
+  { label: "Three", background: "hsl(var(--tertiary-container))" },
 ];
 
 export const MultiContentDemo = () => {
-  const [El1, setEl1] = useState<JSX.Element>(ElOptions1[0]!);
-  const [El2, setEl2] = useState<JSX.Element>(ElOptions2[0]!);
-  useEffect(() => {
-    const interval1 = setInterval(() => {
-      setEl1((pre) =>
-        pre === ElOptions1[0] ? ElOptions1[1]! : ElOptions1[0]!,
-      );
-    }, 4000);
-    const interval2 = setInterval(() => {
-      setEl2((pre) =>
-        pre === ElOptions2[0] ? ElOptions2[1]! : ElOptions2[0]!,
-      );
-    }, 6000);
-    return () => {
-      clearInterval(interval1);
-      clearInterval(interval2);
-    };
-  }, []);
+  const [index, setIndex] = useState(0);
+  const [transitionTo, setTransitionTo] = useState<transition>("left");
+
+  const next = () => setIndex((current) => (current + 1) % slides.length);
+  const slide = slides[index]!;
 
   return (
-    <div style={{}}>
-      <MultiContent
-        transitionTo="bottom"
-        width="12rem"
-        height="12rem"
-        wrapperProps={{
-          style: {},
-        }}
-      >
-        {El1}
-      </MultiContent>
-      <MultiContent
-        transitionTo="bottom"
-        width="100%"
-        height="8rem"
-        wrapperProps={{
-          style: {
-            // width: "12rem",
-            // height: "12rem"
-          },
-        }}
-      >
-        {El2}
-      </MultiContent>
-      {/*<MultiContentCss
-        transitionTo="left"
-      // direction="horizontal"
-      >
-        {
-          El1
-        }
-      </MultiContentCss>*/}
-      {/*<MultiContentCss
-        transitionTo={
-          (() => {
-            const r =Math.random()
-if(r<0.25) return "left"
-if(r<0.5) return "top"
-            if (r < 0.75) return "right"
-    return "bottom"
-          })()
-          }
-      >
-        {
-          <div style={{
-            width: "12rem",
-            height: "12rem",
-          }}>
-          {activeNumber}
+    <DemoPage
+      title="MultiContent"
+      description="Cross-fades and slides the current child when it changes."
+    >
+      <DemoSection title="Transition direction">
+        <DemoRow>
+          {transitions.map((transition) => (
+            <Button
+              key={transition}
+              fill={
+                transition === transitionTo
+                  ? fillOptions.tonal
+                  : fillOptions.outline
+              }
+              onClick={() => setTransitionTo(transition)}
+            >
+              {transition}
+            </Button>
+          ))}
+          <Button onClick={next}>Next slide</Button>
+        </DemoRow>
+
+        <MultiContent
+          transitionTo={transitionTo}
+          width="100%"
+          height="12rem"
+          wrapperProps={{ style: { borderRadius: "var(--radius-large)" } }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+              background: slide.background,
+              color: "hsl(var(--on-surface))",
+              fontSize: "2rem",
+            }}
+          >
+            {slide.label}
           </div>
-}
-      </MultiContentCss>*/}
-    </div>
+        </MultiContent>
+
+        <DemoNote>
+          `transitionTo` sets the direction the old content leaves and the new
+          content enters from.
+        </DemoNote>
+      </DemoSection>
+    </DemoPage>
   );
 };

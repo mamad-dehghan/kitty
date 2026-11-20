@@ -6,7 +6,7 @@ export default defineConfig({
   appType: "spa",
   server: {
     // hmr: false,
-    open: "/demo",
+    open: "/",
     strictPort: true,
     host: "0.0.0.0",
     port: 2000,

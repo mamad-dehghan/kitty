@@ -38,7 +38,7 @@ bun install
 bun run --cwd packages/kitty dev
 ```
 
-The demo server runs Vite on <http://localhost:2000> and opens `/demo`. The
+The demo server runs Vite on <http://localhost:2000> and opens `/`. The
 demo is a development harness; it is not part of the published package.
 
 ## Using Kitty in an app
@@ -560,26 +560,22 @@ Available names include `arch`, `arrow`, `boom`, `bun`, `burst`, `circle`,
 
 ## Demo app
 
-`src/App.tsx` and `src/router.tsx` render a demo shell with routes under
-`/demo`:
+`src/App.tsx` and `src/router.tsx` render a demo shell with routes at the
+root:
 
-| Route                    | Demo file                         |
-| ------------------------ | --------------------------------- |
-| `/demo`                  | `src/App.tsx` (tabbed overview)   |
-| `/demo/menu`             | `demos/MenuDemo.tsx`           |
-| `/demo/drawer`           | `demos/DrawerDemo.tsx`         |
-| `/demo/splitter`         | `demos/SplitterDemo.tsx`       |
-| `/demo/multi-content`    | `demos/MultiContentDemo.tsx`   |
-| `/demo/switch`           | `demos/SwitchDemo.tsx`         |
-| `/demo/select`           | `demos/SelectDemo.tsx`         |
-| `/demo/multi-button`     | `demos/SplitButtonDemo.tsx`    |
-| `/demo/modal`            | `demos/ModalDemo.tsx`        |
-| `/demo/loading`          | `demos/LoadingDemo.tsx`        |
-| `/demo/bottom-sheet`     | `demos/BottomSheetDemo.tsx`    |
-| `/demo/app-bar`          | `demos/AppBarDemo.tsx`         |
+| Category        | Routes                                                                 |
+| --------------- | ---------------------------------------------------------------------- |
+| Actions         | `/button`, `/icon-button`, `/chip`, `/group-button` |
+| Inputs          | `/input`, `/search-input`, `/multi-item-input`, `/checkbox`, `/radio-button`, `/switch`, `/select` |
+| Display         | `/badge`, `/divider`, `/toast`, `/loading-indicator`, `/progress-indicator`, `/tooltip` |
+| Navigation      | `/app-bar`, `/nav-bar`, `/tab-bar`, `/splitter`     |
+| Overlays        | `/modal`, `/drawer`, `/menu`, `/bottom-sheet`       |
+| Helpers         | `/place-finder`, `/multi-content`                             |
 
-Add a demo when adding a component; the router and demo overview are the
-fastest way to verify responsive and overlay behavior.
+`/` renders the tabbed overview. Demos are registered once in
+`src/demos/registry.tsx`; `App.tsx` builds the NavBar/TabBar sections from it
+and `router.tsx` derives the routes, so adding a component means adding a demo
+file and one registry entry.
 
 ## Project structure
 
@@ -588,7 +584,7 @@ packages/kitty/
 ├── lib.ts                  # package entry: components, hooks, providers, shapes
 ├── lib.scss                # package SCSS entry (forwards theme modules)
 ├── index.html              # Vite demo HTML
-├── vite.config.ts          # dev server on :2000, opens /demo
+├── vite.config.ts          # dev server on :2000, opens /
 ├── src/
 │   ├── App.tsx             # demo shell
 │   ├── main.tsx            # demo root providers
@@ -626,7 +622,7 @@ packages/kitty/
 │   ├── hooks/              # useDeferredState, useHistoryLock
 │   ├── assets/shapes/      # SVG shapes
 │   ├── styles/             # globals only
-│   └── demos/              # demo pages
+│   └── demos/              # demo pages + registry.tsx + DemoLayout
 └── tsconfig.json
 ```
 

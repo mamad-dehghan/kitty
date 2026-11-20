@@ -2,6 +2,7 @@ import { type InputHTMLAttributes, type ReactNode } from "react";
 import classNames from "classnames";
 import { colorOptions, fillOptions } from "../../providers/Theme/types";
 import { colorClass, fillClass } from "../../providers/Theme/variants";
+import "./SearchInput.scss";
 
 export interface ISearchInputProps
   extends InputHTMLAttributes<HTMLInputElement> {

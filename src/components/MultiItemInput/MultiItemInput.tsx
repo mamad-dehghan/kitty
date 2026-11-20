@@ -9,6 +9,7 @@ import {
 import { fillOptions } from "../../providers/Theme/types";
 import { FilterChip } from "../Chip";
 import { type IInputProps, Input } from "../Input/Input";
+import "./MultiItemInput.scss";
 
 type multiItemInputProps = Omit<
   IInputProps,

@@ -1,79 +1,70 @@
-import { MusicNotesMinusIcon } from "@phosphor-icons/react";
-import { AppBar } from "../components/AppBar/AppBar";
-import { fillOptions, sizeOptions } from "../providers";
-import { IconButton } from "../components";
-import { ArrowArcLeftIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  BellIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+  type Icon,
+} from "@phosphor-icons/react";
+import { AppBar, IconButton } from "../components";
+import {
+  colorOptions,
+  fillOptions,
+  sizeOptions,
+} from "../providers/Theme/types";
+import {
+  DemoPage,
+  DemoSection,
+} from "./DemoLayout";
+
+const iconButton = (icon: Icon, label: string) => (
+  <IconButton
+    key={label}
+    Icon={icon}
+    size={sizeOptions.small}
+    fill={fillOptions.link}
+    colorMode={colorOptions.primary}
+    aria-label={label}
+  />
+);
 
 export const AppBarDemo = () => {
-  return (<div style={{ height: "100%", overflow: "scroll" }}>
-    <AppBar
-      left={[
-        <>
-          <IconButton size={sizeOptions.small} fill={fillOptions.fill} Icon={ArrowArcLeftIcon} />
-          <MusicNotesMinusIcon />
-        </>
-      ]}
-      center={{
-        align: "center",
-        type: sizeOptions.large,
-        heading: "Heading",
-        subtitle: "Lorem ipsun."
-      }}
-      right={[]}
-    />
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??s
-    <br />??s
-    <br />??s
-    <br />??s
-    <br />??sc
-    <br />??sct
-    <br />??scty
-    <br />??sctyu
-    <br />??sctyu
-    <br />??ctyui
-    <br />??ctyuil
-    <br />??
-    <br />??
-    <br />??
-    <br />??
-    <br />??s
-    <br />??s
-    <br />??s
-    <br />??s
-    <br />??sc
-    <br />??sct
-    <br />??scty
-    <br />??sctyu
-    <br />??sctyu
-    <br />??ctyui
-    <br />??ctyuil
-    <br />??ctyuil
-    <br />??ctyuil
-    <br />??tyuil
-    <br />??yuil
-    <br />??uil
-    <br />??il
-    <br />??il
-    <br />??l
-    <br />??
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-    <div style={{ height: "100vh" }}></div>
-  </div>)
-}
+  return (
+    <DemoPage
+      title="AppBar"
+      description="Sticky top bar with start/end actions and a heading block."
+    >
+      <DemoSection title="Start aligned heading">
+        <AppBar
+          left={[iconButton(ArrowLeftIcon, "Back")]}
+          center={{
+            type: sizeOptions.medium,
+            heading: "Inbox",
+            subtitle: "3 unread messages",
+          }}
+          right={[iconButton(PlusIcon, "New")]}
+        />
+      </DemoSection>
+
+      <DemoSection title="Centered large heading">
+        <AppBar
+          left={[iconButton(ArrowLeftIcon, "Back")]}
+          center={{
+            type: sizeOptions.large,
+            align: "center",
+            heading: "Project",
+            subtitle: "Design system",
+          }}
+          right={[iconButton(MagnifyingGlassIcon, "Search")]}
+        />
+      </DemoSection>
+
+      <DemoSection title="Search mode">
+        <AppBar
+          left={[iconButton(ArrowLeftIcon, "Back")]}
+          center={{ type: "search" }}
+          right={[iconButton(BellIcon, "Notifications")]}
+        />
+      </DemoSection>
+    </DemoPage>
+  );
+};

@@ -409,6 +409,13 @@
   --on-container: var(--on-natural-variant-container);
 }
 
+@mixin surfaceTheme {
+  --color: var(--surface-container-highest);
+  --on-color: var(--on-surface);
+  --container: var(--surface-container-highest);
+  --on-container: var(--on-surface);
+}
+
 @mixin inverseTheme {
   --color: var(--inverse-on-surface);
   --on-color: var(--inverse-surface);
@@ -437,7 +444,7 @@
   &:is(.element--success) {
     @include successTheme();
   }
-  /* &:is(.element--surace) {
-        @include successTheme();
-    } */
+  &:is(.element--surface) {
+    @include surfaceTheme();
+  }
 }

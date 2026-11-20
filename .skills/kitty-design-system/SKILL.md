@@ -28,7 +28,7 @@ not published. Read `README.md` in this package first for the public API.
   animation, and `ThemeProvider`.
 - `src/providers/AppLayer/AppLayer.tsx` — shared overlay wrapper used by
   Drawer, Modal, Menu, BottomSheet, toasts, and tooltips.
-- `src/demos/` — demo pages; `src/App.tsx` + `src/router.tsx` wire them up.
+- `src/demos/` — one demo per component plus `registry.tsx` and shared `DemoLayout`; `App.tsx` + `router.tsx` derive tabs and routes from the registry.
 - `src/assets/shapes/` — SVGs exported as URL strings through
   `src/assets/shapes/index.ts`.
 
@@ -38,7 +38,7 @@ Run from the workspace root (`C:/Code/root`):
 
 ```bash
 bun install
-bun run --cwd packages/kitty dev      # vite on :2000, opens /demo
+bun run --cwd packages/kitty dev      # vite on :2000, opens /
 bun run --cwd packages/kitty build    # vite build only; no tsc
 bun run --cwd packages/kitty lint     # eslint (repo config required)
 ```
@@ -57,22 +57,24 @@ focused change. Vite `build` succeeds without type checking.
 
 ## Adding or changing a component
 
-1. Create `src/components/<group>/<Name>.tsx`.
-2. Create `<name>.scss` beside it and `import "./<name>.scss";` in the TSX.
+1. Create `src/components/<Name>/<Name>.tsx` (one PascalCase folder per
+   component).
+2. Create `<Name>.scss` beside it and `import "./<Name>.scss";` in the TSX.
 3. Extend the relevant native attributes (`ButtonHTMLAttributes`,
    `InputHTMLAttributes`, etc.) and use `forwardRef` for form controls.
 4. Use `classNames` and the exported enums (`colorOptions`, `fillOptions`,
    `sizeOptions`). Do not accept free-form color strings for the standard
-   modes.
-5. Map props to the established classes:
-   `element--primary|secondary|tertiary|error|warning|success|surface`,
-   plus component-specific fills such as `button--tonal`,
-   `icon-button--outline`, `input--elevated`, `chip` + `element-outline`.
-6. Export the component from `src/components/index.ts` (alphabetical-ish by
-   group is not required, but keep the file tidy).
-7. Add a demo in `src/demos/`, a route in `src/router.tsx`, and an entry in
-   `src/App.tsx` when the component needs interactive verification.
-8. Verify in the demo at `/demo`.
+   variants.
+5. Use the shared variant helpers, which emit the `element--*` classes
+   (`element--primary`, `element--outline`, `element--small`, …):
+   `variantClasses({ colorMode, fill, size })` or `colorClass` / `fillClass` /
+   `sizeClass` individually.
+6. Export the component from `src/components/index.ts` (keep the grouped
+   sections tidy).
+7. Add a `<Name>Demo` in `src/demos/` and register it in
+   `src/demos/registry.tsx`; `App.tsx` and `router.tsx` derive the tab and
+   route from the registry.
+8. Verify in the demo at `/<path>`.
 
 Useful existing patterns:
 

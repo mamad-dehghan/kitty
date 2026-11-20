@@ -5,12 +5,18 @@ import {
   LeafIcon,
 } from "@phosphor-icons/react";
 import { useId, useState } from "react";
+import { Button, Select } from "../components";
+import { type SelectOption } from "../components";
 import {
-  type SelectOption,
-  Button,
-  Select,
-} from "../components";
-import { colorOptions, fillOptions } from "../providers/Theme/types";
+  colorOptions,
+  fillOptions,
+} from "../providers/Theme/types";
+import {
+  DemoNote,
+  DemoPage,
+  DemoRow,
+  DemoSection,
+} from "./DemoLayout";
 
 type Priority = "low" | "medium" | "high" | "archived";
 
@@ -29,42 +35,18 @@ const frameworks: SelectOption<string>[] = [
   { label: "Angular", value: "angular" },
 ];
 
-const sectionStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "flex-start",
-  gap: "0.5rem",
-} as const;
-
 export const SelectDemo = () => {
   const hintId = useId();
   const [priority, setPriority] = useState<Priority>("medium");
-  const [framework, setFramework] = useState<string>("react");
+  const [framework, setFramework] = useState("react");
   const [submitted, setSubmitted] = useState<string>();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: "2rem",
-        padding: "1.5rem",
-        maxWidth: "40rem",
-      }}
+    <DemoPage
+      title="Select"
+      description="Select-only combobox with a portalled listbox, keyboard navigation and type-ahead."
     >
-      <header style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-        <h1 style={{ margin: 0 }}>Select</h1>
-        <p id={hintId} style={{ margin: 0, opacity: 0.7 }}>
-          A select-only combobox. Keyboard: <kbd>ArrowDown</kbd>/
-          <kbd>ArrowUp</kbd> to open and move, <kbd>Home</kbd>/<kbd>End</kbd>,
-          <kbd>Enter</kbd>/<kbd>Space</kbd> to select, <kbd>Escape</kbd> to
-          close and type-ahead to jump to an option.
-        </p>
-      </header>
-
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Controlled</h2>
+      <DemoSection title="Controlled">
         <Select
           label="Priority"
           options={priorities}
@@ -72,81 +54,48 @@ export const SelectDemo = () => {
           onChange={setPriority}
           aria-describedby={hintId}
         />
-        <code>value: {priority}</code>
-      </section>
+        <p id={hintId} className="demo-note">
+          Arrow keys move, Home/End jump, Enter/Space select, Escape closes,
+          and typing a letter jumps to a matching option.
+        </p>
+      </DemoSection>
 
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Uncontrolled (defaultValue)</h2>
-        <Select
-          label="Framework"
-          options={frameworks}
-          defaultValue="svelte"
-          onChange={(value) => setFramework(value)}
-        />
-        <code>onChange: {framework}</code>
-      </section>
-
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Fill and color mode</h2>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "1rem",
-          }}
-        >
+      <DemoSection title="Variants">
+        <DemoRow>
           <Select
-            aria-label="Primary tonal"
+            label="Default"
             options={frameworks}
             defaultValue="react"
+          />
+          <Select
+            label="Tonal"
+            options={frameworks}
+            defaultValue="vue"
             fill={fillOptions.tonal}
           />
           <Select
-            aria-label="Warning fill"
-            options={frameworks}
-            defaultValue="vue"
-            colorMode={colorOptions.warning}
-            fill={fillOptions.fill}
-          />
-          <Select
-            aria-label="Error outline"
+            label="Error"
             options={frameworks}
             defaultValue="angular"
             colorMode={colorOptions.error}
+            fill={fillOptions.outline}
           />
           <Select
-            aria-label="Surface elevated"
+            label="Disabled"
             options={frameworks}
             defaultValue="solid"
-            colorMode={colorOptions.surface}
-            fill={fillOptions.elevated}
+            disabled
           />
-        </div>
-      </section>
-
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Disabled</h2>
+        </DemoRow>
         <Select
-          label="Disabled select"
+          label="Full width"
           options={frameworks}
-          defaultValue="react"
-          disabled
-        />
-      </section>
-
-      <section style={{ ...sectionStyle, width: "100%" }}>
-        <h2 style={{ margin: 0 }}>Full width</h2>
-        <Select
-          label="Full width select"
-          options={frameworks}
-          defaultValue="react"
+          defaultValue="svelte"
           fullWidth
         />
-      </section>
+      </DemoSection>
 
-      <section style={sectionStyle}>
-        <h2 style={{ margin: 0 }}>Form value</h2>
+      <DemoSection title="Form value">
         <form
           style={{ display: "flex", alignItems: "flex-end", gap: "1rem" }}
           onSubmit={(event) => {
@@ -160,12 +109,17 @@ export const SelectDemo = () => {
             label="Framework"
             name="framework"
             options={frameworks}
-            defaultValue="react"
+            value={framework}
+            onChange={setFramework}
           />
           <Button type="submit">Submit</Button>
         </form>
         {submitted ? <code>submitted: {submitted}</code> : undefined}
-      </section>
-    </div>
+        <DemoNote>
+          `name` renders a hidden input so the selected value participates in
+          normal form submission.
+        </DemoNote>
+      </DemoSection>
+    </DemoPage>
   );
 };
