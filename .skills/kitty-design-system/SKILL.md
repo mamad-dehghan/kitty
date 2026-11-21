@@ -5,9 +5,9 @@ description: Work on the kitty React + SCSS design system in packages/kitty — 
 
 # Kitty Design System
 
-`packages/kitty` is a private React 19 + TypeScript + SCSS component library for
-the workspace. It is consumed by `talk-ui` as `"kitty": "workspace:*"` and is
-not published. Read `README.md` in this package first for the public API.
+This repository is a private React 19 + TypeScript + SCSS component library.
+It is consumed by `talk-ui` as `"kitty": "file:../kitty"` and is not published.
+Read `README.md` here first for the public API.
 
 ## Source map
 
@@ -34,20 +34,13 @@ not published. Read `README.md` in this package first for the public API.
 
 ## Commands
 
-Run from the workspace root (`C:/Code/root`):
+Run from this repository root (`C:/Code/root/packages/kitty`):
 
 ```bash
 bun install
-bun run --cwd packages/kitty dev      # vite on :2000, opens /
-bun run --cwd packages/kitty build    # vite build only; no tsc
-bun run --cwd packages/kitty lint     # eslint (repo config required)
-```
-
-Type check from the package:
-
-```bash
-cd packages/kitty
-../../node_modules/.bin/tsc --noEmit
+bun run dev        # vite on :2000, opens /
+bun run build      # vite build only; no tsc
+bun run typecheck  # tsc --noEmit (known pre-existing errors)
 ```
 
 The package currently has **pre-existing `tsc` errors** (PlaceFinder,
@@ -215,22 +208,21 @@ Other API quirks:
 
 - `talk-ui` imports runtime APIs from `"kitty"` and SCSS from
   `"kitty/scss/<module>"` (`@use "kitty/scss/elevation" as elevation;`).
-- Do not publish kitty or replace the workspace reference with a version.
-- Add new runtime dependencies to `packages/kitty/package.json`, then run
-  `bun install` from the repository root. The root `bun.lock` is the source of
-  truth for resolved versions.
-- `peerDependencies` is currently empty. Kitty assumes React 19 and a bundler
-  that handles SCSS imports.
+- `talk-ui` consumes kitty through `"kitty": "file:../kitty"`. Both projects keep
+  independent lockfiles; run `bun install` in kitty first, then in talk-ui.
+- Add or change dependencies in this package's `package.json`, then run
+  `bun install` here. `packages/kitty/bun.lock` is the source of truth.
+- React 19 and React DOM are peer dependencies. Keep them in dev dependencies
+  for the demo, and keep `talk-ui`'s Vite `resolve.dedupe` in place.
 
 ## Verification checklist
 
-- [ ] Demo route renders in `bun run --cwd packages/kitty dev`.
+- [ ] Demo route renders in `bun run dev`.
 - [ ] Light and dark themes both look correct (toggle via `ThemeProvider`).
 - [ ] Keyboard: Tab order, `:focus-visible`, Escape, and Back-to-close.
 - [ ] Overlay portals mount under `#theme-provider` and block lower layers.
 - [ ] Responsive behavior checked at `sm`, `md`, `lg`, `xl`.
 - [ ] New public API added to `src/components/index.ts` / `src/providers/index.ts`.
 - [ ] README component table and SCSS export table updated when the API changes.
-- [ ] `bun run --cwd packages/kitty build` succeeds; note that it does not
-      type check, so run `tsc --noEmit` separately and compare with the known
-      pre-existing errors.
+- [ ] `bun run build` succeeds; note that it does not type check, so run
+      `bun run typecheck` separately and compare with the known pre-existing errors.
