@@ -546,10 +546,17 @@ which can be styled with the breakpoint mixins.
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------- |
 | `MenuItem`    | `title`           | Standalone menu row; `LeadingIcon`, `TrailingIcon`, `onClick`, `disable`.                    |
 | `PlaceFinder` | —                 | Positions a container against a `DOMRect`; accepts `targetEl`, `position`, `margins`, `disablePositioning`. |
-| `MultiContent`| `transitionTo`, `children`, `width`, `height` | Cross-fades/slides a single child when it changes.                             |
+| `MultiContent`| `transitionTo`, `children`, `width`, `height` | Slides a single child when its content changes. `transitionTo` is a direction or `(prev, next) => direction`. |
 
 `PlaceFinder` is the collision-aware positioning primitive behind `Menu`. It
 returns a positioned `<div>` and is safe to use for custom popovers.
+
+`MultiContent` requires explicit `width`/`height`; both the outgoing and the
+incoming child fill that box. `transitionTo` is where the outgoing content
+travels (`"left" | "right" | "top" | "bottom"`) or a resolver called with the
+previous and next child when the content changes. Give the child a stable `key`
+to make change detection exact and cheap; without a key the component compares
+the rendered values, so unrelated parent re-renders do not animate.
 
 ### Overlays
 

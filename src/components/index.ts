@@ -45,4 +45,8 @@ export { MenuItem } from "./Menu/MenuItem";
 
 // Helpers
 export { MultiContent } from "./MultiContent/MultiContent";
+export type {
+  MultiContentDirection,
+  MultiContentTransitionTo,
+} from "./MultiContent/MultiContent";
 export { PlaceFinder } from "./PlaceFinder/PlaceFinder";
