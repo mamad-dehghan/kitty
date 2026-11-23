@@ -1,0 +1,48 @@
+@use "../providers/Theme/typography" as typography;
+
+.fab-demo-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-block-size: 10rem;
+  padding: 1.5rem;
+  border: 1px solid hsl(var(--outline-variant));
+  border-radius: var(--radius-medium);
+  background-color: hsl(var(--surface-container-highest));
+  overflow: hidden;
+}
+
+.fab-demo-scroll {
+  position: relative;
+  block-size: 18rem;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid hsl(var(--outline-variant));
+  border-radius: var(--radius-medium);
+  background-color: hsl(var(--surface));
+}
+
+.fab-demo-scroll__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-block-end: 6rem;
+
+  p {
+    @include typography.bodyMedium();
+    color: hsl(var(--on-surface-variant));
+  }
+}
+
+.fab-demo-scroll__anchor {
+  position: sticky;
+  z-index: 1;
+  inset-block-end: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}

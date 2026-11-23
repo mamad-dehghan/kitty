@@ -388,6 +388,8 @@ manually.
 | Component     | Required props                          | Notes                                                                 |
 | ------------- | --------------------------------------- | --------------------------------------------------------------------- |
 | `Button`      | —                                       | `colorMode`, `fill`, `size` (`small \| medium \| large`), `icon`, `iconSide`, `fullWidth`, `disabled`. |
+| `FAB`         | `Icon`                                  | `label` turns it into an extended FAB; `colorMode`, `size`, `hidden`, `condensed`. |
+| `FABMenu`     | `Icon`, `items`                         | Fixed bottom-end menu with 2–6 actions, a 56px close button, and an M3 scrim. `label` extends the closed FAB; `hidden`/`condensed` affect the closed trigger. |
 | `IconButton`  | `Icon`                                  | `colorMode`, `fill` (incl. `elevated`), `size`, `enable`, `dataFocused`. |
 | `AssistChip`  | `assist` (true), `fill`                 | `fill` is `outline` or `elevated`; optional `Icon`, `iconSide`.       |
 | `FilterChip`  | `enable`, `fill`                        | Shows a check icon when `enable`; optional custom `Icon`.             |
@@ -404,6 +406,61 @@ import { AssistChip, FilterChip, fillOptions } from "kitty";
   Filter
 </FilterChip>
 ```
+
+`FAB` is the M3 floating action button. Give an icon-only FAB an
+`aria-label`; `label` creates an extended FAB. `condensed` collapses the label
+back to a regular FAB, and `hidden` slides it out of view and sets `inert`.
+
+```tsx
+<FAB
+  Icon={PlusIcon}
+  label="Compose"
+  colorMode={colorOptions.primary}
+  condensed={scrolledDown}
+  hidden={hidden}
+/>
+
+<FABMenu
+  Icon={PencilSimpleIcon}
+  colorMode={colorOptions.tertiary}
+  triggerLabel="Open create menu"
+  items={[
+    { label: "New chat", Icon: UserIcon, onClick: newChat },
+    { label: "New group", Icon: UsersThreeIcon, onClick: newGroup },
+  ]}
+/>
+```
+
+`FABMenu` owns its open/close state, focus management, Escape/backdrop
+dismissal, and browser-back lock. It portals to `#theme-provider`, so the
+`ThemeProvider` must be mounted. M3 recommends pairing the menu with an
+icon-only FAB; an extended `label` is supported for custom patterns. Scroll
+adaptivity is intentionally not baked into `FAB` or `FABMenu`; drive
+`hidden`/`condensed` from any source. For convenience, `useScrollBehavior`
+derives both states from a scroll container:
+
+```tsx
+const scroll = useScrollBehavior({
+  target: scrollerRef, // defaults to window
+  hideWhen: "down", // "down" | "up" | "distance" | false
+  hideAfter: 64,
+  condenseWhen: "down",
+  condenseAfter: 8,
+});
+
+<FAB
+  Icon={PlusIcon}
+  label="Compose"
+  hidden={scroll.hidden}
+  condensed={scroll.condensed}
+/>
+```
+
+CSS-only alternatives: `scroll-state(scrolled: block-end)` handles the
+direction trigger in Chromium 144+, and scroll-driven animations
+(`animation-timeline: scroll()`) handle a fixed distance threshold in current
+browsers. Neither covers every target browser, which is why the demo uses the
+small hook.
 
 ### Inputs
 
@@ -536,6 +593,7 @@ const [target, setTarget] = useState<DOMRect>();
 | Hook                     | Description                                                                                     |
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
 | `useDeferredState`       | Delays a value update, used by overlays to keep exit animations mounted.                         |
+| `useScrollBehavior`      | Tracks a scroll container and returns `{ direction, hidden, condensed }` for FAB-style components. |
 | `useHistoryLock`         | Locks a layer to the browser back button. Returns `{ lock, unlock }` and accepts a release callback. |
 | `useHistoryLockAbility`  | Installs the global `popstate` listener. Mount it once at the app root (`router.tsx` does this). |
 
@@ -570,7 +628,7 @@ root:
 
 | Category        | Routes                                                                 |
 | --------------- | ---------------------------------------------------------------------- |
-| Actions         | `/button`, `/icon-button`, `/chip`, `/group-button` |
+| Actions         | `/button`, `/icon-button`, `/fab`, `/chip`, `/group-button` |
 | Inputs          | `/input`, `/search-input`, `/multi-item-input`, `/checkbox`, `/radio-button`, `/switch`, `/select` |
 | Display         | `/badge`, `/divider`, `/toast`, `/loading-indicator`, `/progress-indicator`, `/tooltip` |
 | Navigation      | `/app-bar`, `/nav-bar`, `/tab-bar`, `/splitter`     |

@@ -1,0 +1,171 @@
+@use "../../providers/Theme/elevation" as elevation;
+@use "../../providers/Theme/palette" as palette;
+@use "../../providers/Theme/typography" as typography;
+
+.fab-menu-anchor {
+  position: fixed;
+  inset-block-end: var(--fab-menu-offset-block, 1rem);
+  inset-inline-end: var(--fab-menu-offset-inline, 1rem);
+  z-index: 40;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.fab-menu-layer {
+  z-index: 50;
+  background-color: hsla(var(--natural-0), 0.32);
+  backdrop-filter: blur(2px);
+  animation: fab-menu-scrim-in 160ms ease-out both;
+}
+
+.fab-menu {
+  @include palette.colorMode();
+
+  position: fixed;
+  inset-block-end: var(--fab-menu-offset-block, 1rem);
+  inset-inline-end: var(--fab-menu-offset-inline, 1rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.fab-menu__items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.fab-menu__item-wrap {
+  display: inline-flex;
+  transform-origin: bottom right;
+  animation: fab-menu-item-in 240ms cubic-bezier(0.2, 0, 0, 1) both;
+  animation-delay: calc(var(--fab-item-index, 0) * 25ms);
+}
+
+.fab-menu__item {
+  @include typography.titleMedium();
+  @include elevation.elevation-shadow-0();
+  @include palette.state-layer(var(--on-container));
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  block-size: 3.5rem;
+  padding-inline: 1.5rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--container));
+  color: hsl(var(--on-container));
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  svg {
+    flex: 0 0 auto;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  &:not(:disabled, .disabled) {
+    &:hover {
+      @include elevation.elevation-shadow-4();
+    }
+
+    &:focus,
+    &:active {
+      @include elevation.elevation-shadow-3();
+    }
+  }
+
+  &:is(:disabled, .disabled) {
+    @include elevation.elevation-shadow-0();
+
+    cursor: default;
+    color: hsla(var(--on-surface), 0.38);
+    background-color: hsla(var(--on-surface), 0.12);
+  }
+}
+
+.fab-menu__close {
+  @include elevation.elevation-shadow-3();
+  @include palette.state-layer(var(--on-color));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: hsl(var(--color));
+  color: hsl(var(--on-color));
+  cursor: pointer;
+  user-select: none;
+  scale: 1;
+  opacity: 1;
+
+  transition:
+    scale 180ms cubic-bezier(0.2, 0, 0, 1),
+    opacity 180ms linear;
+
+  svg {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    font-size: 1.25rem;
+  }
+
+  &:hover {
+    @include elevation.elevation-shadow-4();
+  }
+
+  &:focus-visible {
+    @include elevation.elevation-shadow-3();
+  }
+}
+
+@starting-style {
+  .fab-menu__close {
+    scale: 0.85;
+    opacity: 0;
+  }
+}
+
+@keyframes fab-menu-scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fab-menu-item-in {
+  from {
+    opacity: 0;
+    translate: 0 0.5rem;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab-menu-layer,
+  .fab-menu__item-wrap {
+    animation: none;
+  }
+
+  .fab-menu__close {
+    transition: none;
+  }
+}

@@ -1,5 +1,12 @@
 // Actions
 export { Button } from "./Button/Button";
+export { FAB, FABMenu } from "./FAB";
+export type {
+  FABMenuColorMode,
+  FABMenuItem,
+  IFABMenuProps,
+  IFABProps,
+} from "./FAB";
 export { IconButton } from "./IconButton/IconButton";
 export { AssistChip, FilterChip } from "./Chip";
 export { GroupButton } from "./GroupButton/GroupButton";

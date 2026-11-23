@@ -15,6 +15,7 @@ import {
   ListDashesIcon,
   ListIcon,
   MinusIcon,
+  PlusIcon,
   RadioButtonIcon,
   SealIcon,
   SidebarIcon,
@@ -39,6 +40,7 @@ import { CheckboxDemo } from "./CheckboxDemo";
 import { ChipDemo } from "./ChipDemo";
 import { DividerDemo } from "./DividerDemo";
 import { DrawerDemo } from "./DrawerDemo";
+import { FABDemo } from "./FABDemo";
 import { GroupButtonDemo } from "./GroupButtonDemo";
 import { IconButtonDemo } from "./IconButtonDemo";
 import { InputDemo } from "./InputDemo";
@@ -79,6 +81,7 @@ export const demoCategories: DemoCategory[] = [
     demos: [
       { title: "Button", Icon: CursorClickIcon, path: "button", PageContent: ButtonDemo },
       { title: "Icon Button", Icon: DotsNineIcon, path: "icon-button", PageContent: IconButtonDemo },
+      { title: "FAB", Icon: PlusIcon, path: "fab", PageContent: FABDemo },
       { title: "Chip", Icon: TagIcon, path: "chip", PageContent: ChipDemo },
       { title: "Group Button", Icon: SquaresFourIcon, path: "group-button", PageContent: GroupButtonDemo },
     ],
