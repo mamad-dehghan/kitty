@@ -1,0 +1,86 @@
+.collapse {
+  --collapse-collapsed-size: 0px;
+
+  overflow: hidden;
+  overflow-anchor: none;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+
+  &.collapse--vertical {
+    min-height: var(--collapse-collapsed-size);
+    transition-property: height;
+  }
+
+  &.collapse--horizontal {
+    width: fit-content;
+    min-width: var(--collapse-collapsed-size);
+    transition-property: width;
+  }
+
+  &.collapse--vertical.collapse--exited,
+  &.collapse--vertical.collapse--exiting {
+    height: var(--collapse-collapsed-size);
+  }
+
+  // While animating, the inline height/width set by the component wins over
+  // these rules. They define the resting collapsed size.
+  &.collapse--horizontal.collapse--exited,
+  &.collapse--horizontal.collapse--exiting {
+    width: var(--collapse-collapsed-size);
+  }
+
+  &.collapse--entered {
+    // Do not clip menus, tooltips, or shadows once fully open.
+    overflow: visible;
+  }
+
+  &.collapse--vertical.collapse--entered {
+    height: auto;
+  }
+
+  &.collapse--horizontal.collapse--entered {
+    width: fit-content;
+  }
+
+  &.collapse--exited.collapse--collapsed-empty {
+    // Visibility (instead of display) removes the closed content from the tab
+    // order without losing its state.
+    visibility: hidden;
+  }
+
+  &.collapse--entering,
+  &.collapse--exiting {
+    will-change: height;
+  }
+
+  &.collapse--horizontal.collapse--entering,
+  &.collapse--horizontal.collapse--exiting {
+    will-change: width;
+  }
+}
+
+.collapse__wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.collapse__inner {
+  width: 100%;
+  min-width: 0;
+}
+
+.collapse--horizontal > .collapse__wrapper {
+  width: auto;
+  height: 100%;
+}
+
+.collapse--horizontal .collapse__inner {
+  width: auto;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapse {
+    transition-duration: 0s;
+  }
+}

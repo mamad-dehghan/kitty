@@ -544,9 +544,39 @@ which can be styled with the breakpoint mixins.
 
 | Component     | Required props    | Notes                                                                                       |
 | ------------- | ----------------- | ------------------------------------------------------------------------------------------- |
+| `Collapse`    | `isOpen`, `children` | Animates between a collapsed size and the content's auto height/width. `orientation`, `collapsedSize`, `duration="auto"`, `easing`, `unmountOnExit`, `onOpened`, `onClosed`. |
 | `MenuItem`    | `title`           | Standalone menu row; `LeadingIcon`, `TrailingIcon`, `onClick`, `disable`.                    |
 | `PlaceFinder` | —                 | Positions a container against a `DOMRect`; accepts `targetEl`, `position`, `margins`, `disablePositioning`. |
 | `MultiContent`| `transitionTo`, `children`, `width`, `height` | Slides a single child when its content changes. `transitionTo` is a direction or `(prev, next) => direction`. |
+
+`Collapse` is a controlled motion primitive for expandable content. It
+measures the child's natural size, so auto-height (and auto-width) content
+transitions correctly even when `unmountOnExit` had removed it.
+`duration="auto"` scales the duration with the measured size; pass a number to
+fix it. With `collapsedSize` at zero, closed content becomes
+`visibility: hidden` and `inert`, so it leaves the tab order, cannot receive
+pointer events, and is removed from the accessibility tree while keeping its
+state. A non-zero `collapsedSize` leaves a visible preview interactive; keep
+focusable controls out of the clipped portion.
+
+Pair it with a button that owns `aria-expanded` and `aria-controls` (the
+Material 3 expandable-list pattern):
+
+```tsx
+const [open, setOpen] = useState(false);
+const id = useId();
+
+<button
+  aria-expanded={open}
+  aria-controls={`${id}-panel`}
+  onClick={() => setOpen((value) => !value)}
+>
+  Details
+</button>
+<Collapse isOpen={open} id={`${id}-panel`} role="region">
+  <p>Auto-height content...</p>
+</Collapse>
+```
 
 `PlaceFinder` is the collision-aware positioning primitive behind `Menu`. It
 returns a positioned `<div>` and is safe to use for custom popovers.
@@ -640,7 +670,7 @@ root:
 | Display         | `/badge`, `/divider`, `/toast`, `/loading-indicator`, `/progress-indicator`, `/tooltip` |
 | Navigation      | `/app-bar`, `/nav-bar`, `/tab-bar`, `/splitter`     |
 | Overlays        | `/modal`, `/drawer`, `/menu`, `/bottom-sheet`       |
-| Helpers         | `/place-finder`, `/multi-content`                             |
+| Helpers         | `/place-finder`, `/collapse`, `/multi-content`                |
 
 `/` renders the tabbed overview. Demos are registered once in
 `src/demos/registry.tsx`; `App.tsx` builds the NavBar/TabBar sections from it

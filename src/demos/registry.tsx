@@ -3,6 +3,7 @@ import {
   ArrowLineUpIcon,
   ArrowsLeftRightIcon,
   BellIcon,
+  CaretDownIcon,
   ChartBarIcon,
   ChatTeardropTextIcon,
   CheckSquareIcon,
@@ -38,6 +39,7 @@ import { BottomSheetDemo } from "./BottomSheetDemo";
 import { ButtonDemo } from "./ButtonDemo";
 import { CheckboxDemo } from "./CheckboxDemo";
 import { ChipDemo } from "./ChipDemo";
+import { CollapseDemo } from "./CollapseDemo";
 import { DividerDemo } from "./DividerDemo";
 import { DrawerDemo } from "./DrawerDemo";
 import { FABDemo } from "./FABDemo";
@@ -136,6 +138,7 @@ export const demoCategories: DemoCategory[] = [
     Icon: WrenchIcon,
     demos: [
       { title: "Place Finder", Icon: CrosshairIcon, path: "place-finder", PageContent: PlaceFinderDemo },
+      { title: "Collapse", Icon: CaretDownIcon, path: "collapse", PageContent: CollapseDemo },
       { title: "Multi Content", Icon: ArrowsLeftRightIcon, path: "multi-content", PageContent: MultiContentDemo },
     ],
   },

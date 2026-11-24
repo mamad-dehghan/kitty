@@ -1,0 +1,127 @@
+@use "../providers/Theme/palette" as palette;
+@use "../providers/Theme/typography" as typography;
+
+.collapse-demo__list {
+  overflow: hidden;
+  border: 1px solid hsl(var(--outline-variant));
+  border-radius: var(--radius-large);
+  background-color: hsl(var(--surface-container-low));
+}
+
+.collapse-demo__item + .collapse-demo__item {
+  border-block-start: 1px solid hsl(var(--outline-variant));
+}
+
+.collapse-demo__trigger {
+  @include typography.titleSmall();
+  @include palette.state-layer(var(--on-surface));
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  inline-size: 100%;
+  padding: 1rem 1.25rem;
+  border: 0;
+  background-color: transparent;
+  color: hsl(var(--on-surface));
+  text-align: start;
+  cursor: pointer;
+
+  svg {
+    flex: 0 0 auto;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    transition: rotate 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  &[aria-expanded="true"] svg {
+    rotate: 180deg;
+  }
+
+  &:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: -2px;
+  }
+}
+
+.collapse-demo__body {
+  @include typography.bodyMedium();
+
+  padding: 0 1.25rem 1.25rem;
+  color: hsl(var(--on-surface-variant));
+}
+
+.collapse-demo__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.collapse-demo__cards {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.collapse-demo__card {
+  @include typography.labelLarge();
+
+  display: grid;
+  place-items: center;
+  inline-size: 7rem;
+  block-size: 2.5rem;
+  border-radius: var(--radius-medium);
+  background-color: hsl(var(--secondary-container));
+  color: hsl(var(--on-secondary-container));
+  white-space: nowrap;
+}
+
+.collapse-demo__peek {
+  padding: 1rem 1.25rem;
+  border: 1px solid hsl(var(--outline-variant));
+  border-radius: var(--radius-medium);
+  background-color: hsl(var(--surface-container));
+
+  h3 {
+    @include typography.titleSmall();
+  }
+
+  p {
+    @include typography.bodyMedium();
+
+    margin-block-start: 0.5rem;
+    color: hsl(var(--on-surface-variant));
+  }
+}
+
+.collapse-demo__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding-block: 0.25rem;
+
+  label {
+    @include typography.labelLarge();
+  }
+
+  input {
+    @include typography.bodyMedium();
+
+    padding: 0.75rem 1rem;
+    border: 1px solid hsl(var(--outline));
+    border-radius: var(--radius-small);
+    background-color: hsl(var(--surface-container));
+    color: hsl(var(--on-surface));
+
+    &::placeholder {
+      color: hsl(var(--on-surface-variant));
+    }
+
+    &:focus-visible {
+      outline: 2px solid hsl(var(--primary));
+      outline-offset: 1px;
+    }
+  }
+}

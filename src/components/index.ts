@@ -44,6 +44,11 @@ export { Menu } from "./Menu/Menu";
 export { MenuItem } from "./Menu/MenuItem";
 
 // Helpers
+export { Collapse } from "./Collapse/Collapse";
+export type {
+  CollapseOrientation,
+  ICollapseProps,
+} from "./Collapse/Collapse";
 export { MultiContent } from "./MultiContent/MultiContent";
 export type {
   MultiContentDirection,
