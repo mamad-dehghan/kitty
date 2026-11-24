@@ -201,6 +201,7 @@ export const FABDemo = () => {
           Icon={PencilSimpleIcon}
           colorMode={colorOptions.tertiary}
           triggerLabel="Open create menu"
+          offsetBlock="calc(var(--demo-bottom-bar-height, 0px) + 1rem)"
           items={[
             {
               label: "New chat",
