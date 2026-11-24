@@ -19,19 +19,11 @@ const sections = demoCategories.map((category) => ({
 
 function App() {
   return (
-    <main
-      key="light"
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
-    >
-      <NavBar
-        items={sections}
-        initialActiveItem={demoCategories[0]?.title ?? "Actions"}
-        media={{ md: breakPoints.lg }}
-      />
-    </main>
+    <NavBar
+      items={sections}
+      initialActiveItem={demoCategories[0]?.title ?? "Actions"}
+      media={{ md: breakPoints.lg }}
+    />
   );
 }
 
