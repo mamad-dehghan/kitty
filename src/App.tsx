@@ -8,6 +8,7 @@ const sections = demoCategories.map((category) => ({
   content: (
     <TabBar
       key={category.title}
+      scrollable="lazy"
       tabs={category.demos.map(({ title, Icon, PageContent }) => ({
         title,
         Icon,

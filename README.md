@@ -533,12 +533,34 @@ stays flat on the wavy linear variant to match Material 3.
 | Component  | Required props                  | Notes                                                                                       |
 | ---------- | ------------------------------- | ------------------------------------------------------------------------------------------- |
 | `NavBar`   | `items`, `initialActiveItem`    | Collapsible vertical nav; each item has `title`, `Icon`, `content`, optional `onClick`.       |
-| `TabBar`   | `tabs`                          | Swipeable tabs; each tab has `title`, `PageContent`, optional `Icon` and `PageLoadder`.       |
+| `TabBar`   | `tabs`                          | Accessible tabs; each item has `title`, `PageContent`, optional `Icon` and `PageLoadder`. `scrollable` is `true` (native pages with swipe preview), `"settle"` (native pages, deferred mount), `"lazy"` (`MultiContent` plus swipe), or `false` (`MultiContent`, no swipe). |
 | `Splitter` | `panels`, `layout`              | Exactly two panels; `minSize` strings use `px`; supports `hideable` and `grow`.               |
 | `AppBar`   | `left`, `center`, `right`       | `center` is either `{ type: "search" }` or a heading block. |
 
 `NavBar.media` and `mediaToClass` generate `sm-to-*`/`md-to-*`/etc. classes,
 which can be styled with the breakpoint mixins.
+
+`TabBar` follows the WAI-ARIA tabs pattern (`tablist` / `tab` / `tabpanel`,
+roving `tabindex`, arrow keys, Home/End) and accepts `aria-label` or
+`aria-labelledby` to name the tab list. Inactive pages render no content at
+rest. During a preview swipe the adjacent page mounts temporarily; once
+scrolling settles only the active page remains. `PageLoadder` is used as the
+`Suspense` fallback while a page loads.
+
+`scrollable` supports four modes:
+
+- `true` — native horizontal pages with swipe preview. The current page stays
+  mounted and one adjacent page mounts after ~24px or 80ms of movement.
+- `"settle"` — native horizontal pages. Content mounts only when scrolling
+  settles, so intermediate tabs are never mounted during a multi-tab jump.
+- `"lazy"` — `MultiContent` plus horizontal swipe detection. Only the current
+  page is mounted; the target page mounts after a deliberate swipe passes the
+  distance/time threshold.
+- `false` — no swiping; clicks and keyboard switch the active page through
+  `MultiContent`.
+
+Interactive controls and `[data-tabbar-no-swipe]` targets are ignored by the
+`"lazy"` gesture detector.
 
 ### Helpers
 
@@ -742,7 +764,7 @@ Run them from the workspace root with
 
 - **No type-check in `build`.** Vite transpiles without type checking. The
   package currently reports pre-existing `tsc --noEmit` errors (notably in
-  `PlaceFinder/finder.ts`, `Splitter.tsx`, `TabBar.tsx`, and a few
+  `PlaceFinder/finder.ts`, `Splitter.tsx`, and a few
   `verbatimModuleSyntax` imports). Avoid treating a successful Vite build as a
   clean type check.
 - **Barrel exports matter.** `lib.ts` re-exports `src/components/index.ts`;
