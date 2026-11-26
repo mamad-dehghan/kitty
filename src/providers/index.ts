@@ -1,5 +1,6 @@
 export { AppLayer } from "./AppLayer/AppLayer";
-export { ThemeProvider } from "./Theme/ThemeProvider";
+export { ThemeProvider, themeContext, useTheme } from "./Theme/ThemeProvider";
+export type { themeT } from "./Theme/ThemeProvider";
 export {
   colorClass,
   elementClass,

@@ -35,22 +35,23 @@ const calcPanelWidth = (
 };
 
 const calcW = (el: [number, number], panels: readonly splitterPanelType[]) => {
-  const mins = [
-    +(panels[0].minSize ?? "0px").slice(0, -2),
-    +(panels[1].minSize ?? "0px").slice(0, -2),
+  const [panel0, panel1] = panels;
+  const mins: [number, number] = [
+    +(panel0?.minSize ?? "0px").slice(0, -2),
+    +(panel1?.minSize ?? "0px").slice(0, -2),
   ];
 
-  let w1 = calcPanelWidth(el[0], mins[0], panels[0].hideable ?? false);
+  let w1 = calcPanelWidth(el[0], mins[0], panel0?.hideable ?? false);
   const w2 = calcPanelWidth(
     el[1] + el[0] - w1,
     mins[1],
-    panels[1].hideable ?? false,
+    panel1?.hideable ?? false,
   );
   if (w2 !== el[1] + el[0] - w1)
     w1 = calcPanelWidth(
       el[0] + el[1] - w2,
       mins[0],
-      panels[0].hideable ?? false,
+      panel0?.hideable ?? false,
     );
   return [w1, w2];
 };
@@ -95,7 +96,8 @@ export const Splitter = ({ panels, layout }: props) => {
 
   const onTouchOver = useCallback(
     (e: TouchEvent<HTMLElement>) => {
-      over(e.changedTouches[0]);
+      const touch = e.changedTouches[0];
+      if (touch) over(touch);
     },
     [over],
   );
@@ -120,7 +122,8 @@ export const Splitter = ({ panels, layout }: props) => {
   const onTouchEnd = useCallback(
     (e: TouchEvent<HTMLElement>) => {
       // if (typeof e?.relatedTarget?.document === "undefined") {
-      over(e.changedTouches[0]);
+      const touch = e.changedTouches[0];
+      if (touch) over(touch);
       end();
       // }
     },
@@ -166,7 +169,8 @@ export const Splitter = ({ panels, layout }: props) => {
 
   const onTouchStart = useCallback(
     (e: TouchEvent<HTMLElement>) => {
-      onStart(e.changedTouches[0]);
+      const touch = e.changedTouches[0];
+      if (touch) onStart(touch);
     },
     [onStart],
   );
@@ -203,7 +207,7 @@ export const Splitter = ({ panels, layout }: props) => {
         className={classNames("splitter-panel-wrapper")}
         ref={firstChildRef}
       >
-        {panels[0].Element}
+        {panels[0]?.Element}
       </div>
       <div
         className="splitter-tumb"
@@ -219,7 +223,7 @@ export const Splitter = ({ panels, layout }: props) => {
         className={classNames("splitter-panel-wrapper")}
         ref={lastChildRef}
       >
-        {panels[1].Element}
+        {panels[1]?.Element}
       </div>
       {/*{panels.map((panel, index) => (
         <div key={index} className={classNames("splitter-panel-wrapper")}>

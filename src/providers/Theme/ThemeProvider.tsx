@@ -51,6 +51,8 @@ type themeContextT = {
 
 export const themeContext = createContext<themeContextT>({} as themeContextT);
 
+export const useTheme = () => useContext(themeContext);
+
 type themeProviderT = {
   children: ReactNode;
   modify?: Partial<themeT>;

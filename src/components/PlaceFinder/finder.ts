@@ -149,9 +149,9 @@ export const placeFinder = (
     );
   // merge all min and max for X and Y
 
-  for (const positionKey in position) {
+  for (const positionItem of position) {
     const pos: placeFinderOutputType = {};
-    switch (position[positionKey].vertical) {
+    switch (positionItem.vertical) {
       case "top":
         if (hasTopSpace())
           pos.bottom = Math.floor(
@@ -169,7 +169,7 @@ export const placeFinder = (
       // - currentEl.height / 2
       // pos.transform = 'translate(0, 50%)'
     }
-    switch (position[positionKey].horizontal) {
+    switch (positionItem.horizontal) {
       case "left":
         if (hasLeftSpace())
           pos.right = Math.floor(
@@ -196,7 +196,7 @@ export const placeFinder = (
 
   const pos: placeFinderOutputType = {};
 
-  switch (position[0].vertical) {
+  switch (position[0]?.vertical) {
     case "top":
       pos.bottom = Math.floor(
         container.height - (getYTop() + currentEl.height)
@@ -210,7 +210,7 @@ export const placeFinder = (
     // - currentEl.height / 2
     // pos.transform = 'translate(0, 50%)'
   }
-  switch (position[0].horizontal) {
+  switch (position[0]?.horizontal) {
     case "left":
       pos.right = Math.floor(container.width - (getXLeft() + currentEl.width));
       break;
