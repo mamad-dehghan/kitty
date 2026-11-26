@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   compareVersions,
   incrementVersion,
+  onlyChangelogDirty,
   parseArgs,
   promoteChangelog,
 } from "./release";
@@ -28,6 +29,19 @@ describe("compareVersions", () => {
     expect(compareVersions("0.2.0", "0.1.9")).toBeGreaterThan(0);
     expect(compareVersions("0.1.0", "0.1.0")).toBe(0);
     expect(compareVersions("0.1.0", "1.0.0")).toBeLessThan(0);
+  });
+});
+
+describe("onlyChangelogDirty", () => {
+  test("allows the changelog to be the only dirty file", () => {
+    expect(onlyChangelogDirty(" M CHANGELOG.md")).toBe(true);
+    expect(onlyChangelogDirty("M  CHANGELOG.md")).toBe(true);
+    expect(onlyChangelogDirty("")).toBe(true);
+  });
+
+  test("rejects other dirty files", () => {
+    expect(onlyChangelogDirty(" M CHANGELOG.md\n M README.md")).toBe(false);
+    expect(onlyChangelogDirty("M package.json")).toBe(false);
   });
 });
 

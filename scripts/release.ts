@@ -51,6 +51,12 @@ export const incrementVersion = (current: string, target: string) => {
   return next.join(".");
 };
 
+export const onlyChangelogDirty = (status: string) =>
+  status
+    .split("\n")
+    .filter(Boolean)
+    .every((line) => line.slice(3) === CHANGELOG);
+
 export const parseArgs = (argv: string[]): ReleaseArgs => {
   let target: string | undefined;
   let dryRun = false;
@@ -115,8 +121,12 @@ const run = (cmd: string[], inherit = false) => {
 
   return {
     exitCode: result.exitCode ?? 1,
-    stdout: result.stdout ? new TextDecoder().decode(result.stdout).trim() : "",
-    stderr: result.stderr ? new TextDecoder().decode(result.stderr).trim() : "",
+    stdout: result.stdout
+      ? new TextDecoder().decode(result.stdout).trimEnd()
+      : "",
+    stderr: result.stderr
+      ? new TextDecoder().decode(result.stderr).trimEnd()
+      : "",
   };
 };
 
@@ -144,12 +154,11 @@ const main = async () => {
     fail(status.stderr || "git status failed");
   }
 
-  const unexpected = status.stdout
-    .split("\n")
-    .filter(Boolean)
-    .filter((line) => line.slice(3) !== CHANGELOG);
-
-  if (unexpected.length > 0) {
+  if (!onlyChangelogDirty(status.stdout)) {
+    const unexpected = status.stdout
+      .split("\n")
+      .filter(Boolean)
+      .filter((line) => line.slice(3) !== CHANGELOG);
     fail(
       `commit or stash all changes first; only ${CHANGELOG} may be dirty:\n${unexpected.join("\n")}`,
     );
