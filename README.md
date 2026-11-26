@@ -48,12 +48,12 @@ tag (or a commit hash) after `#`:
 ```json
 {
   "dependencies": {
-    "kitty": "git+https://github.com/mamad-dehghan/kitty.git#v0.1.0"
+    "kitty": "git+https://github.com/mamad-dehghan/kitty.git#v0.2.0"
   }
 }
 ```
 
-Replace `v0.1.0` with the release you want. The consuming project's lockfile
+Replace `v0.2.0` with the release you want. The consuming project's lockfile
 pins the resolved commit; commit that lockfile. For a fully immutable
 reference, use the commit hash instead of the tag:
 

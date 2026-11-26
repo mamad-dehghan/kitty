@@ -25,17 +25,17 @@ git describe --tags --abbrev=0
 All feature and fix work must be committed. Only `CHANGELOG.md` may be dirty
 when the release script runs.
 
-The last release is `v0.1.0`. If the next release is the first since that tag,
-the likely bump is `minor` (`v0.2.0`) because components and public APIs have
-been added.
+Use the tag printed by `git describe --tags --abbrev=0` as the previous
+release. The current release is `v0.2.0`; choose the next bump from the changes
+since that tag.
 
 ## 2. Review changes
 
 Do not paste raw `git log` output into the changelog. Use it as input:
 
 ```bash
-git log --oneline v0.1.0..HEAD
-git diff --stat v0.1.0..HEAD
+git log --oneline <last-tag>..HEAD
+git diff --stat <last-tag>..HEAD
 ```
 
 Inspect the actual changes:
@@ -151,7 +151,7 @@ Build the consumer and commit its lockfile.
 ## Rules
 
 - Annotated tags only: `vX.Y.Z`.
-- `package.json` version and tag stay in sync (`0.2.0` ↔ `v0.2.0`).
+- `package.json` version and tag stay in sync (`X.Y.Z` ↔ `vX.Y.Z`).
 - No release from a dirty tree or a non-`main` branch.
 - Do not publish to npm; `"private": true` stays.
 - Update `CHANGELOG.md` as part of the release commit.
