@@ -33,6 +33,7 @@ export { Tooltip } from "./Tooltip/Tooltip";
 // Navigation and layout
 export { AppBar } from "./AppBar/AppBar";
 export { NavBar } from "./NavBar/NavBar";
+export type { INavBarPrimaryActionProps } from "./NavBar/NavBar";
 export type { TabBarScrollMode } from "./TabBar/TabBar";
 export { TabBar } from "./TabBar/TabBar";
 export { Splitter } from "./Splitter/Splitter";

@@ -107,6 +107,10 @@ Rules:
   `errorTheme`, `warningTheme`, `successTheme`) when a component must expose
   `--color`, `--on-color`, `--container`, `--on-container`.
 - Hover/focus/active state layers come from `palette.state-layer(...)`.
+- Do not use native `title` attributes for tooltips. Use the `<Tooltip>`
+  component instead (single child element, requires `TooltipProvider`), and keep
+  an `aria-label` on icon-only controls for their accessible name. This applies
+  to controls such as the NavBar rail toggle.
 - Component SCSS is imported by the component. `src/styles/modules/_index.scss`
   is effectively empty (all imports commented); do not put new component styles
   there.

@@ -300,8 +300,8 @@ outline: 1px solid hsla(var(--outline), 0.5);
 
 Role tokens include `--primary`, `--on-primary`, `--primary-container`,
 `--on-primary-container`, and matching `secondary`, `tertiary`, `error`,
-`warning`, `success`, `surface`, `surface-variant`, `outline`, and
-`inverse-*` roles. The numbered `--natural-*` and
+`warning`, `success`, `surface`, `surface-container`, `surface-variant`,
+`outline`, and `inverse-*` roles. The numbered `--natural-*` and
 `--natural-variant-*` scales supply the neutral roles.
 
 ### Element variant classes
@@ -523,6 +523,11 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 `Tooltip` and `Badge` clone their child and need a single element (not a
 `Fragment`). Give the child a stable layout wrapper.
 
+Use `Tooltip` instead of native `title` attributes for hover hints. Native
+`title` is not used in Kitty because it cannot be styled consistently and does
+not work on touch. `TooltipProvider` must be mounted for `Tooltip` to work;
+`NavBar` uses it for the rail toggle.
+
 `ProgressIndicator` builds the flat linear layers with `::before` / `::after`
 and `clip-path`; circular and wavy variants use inline SVG. It does not create
 a shadow root. `wave` applies to both `linear` and `circular`, and the track
@@ -532,13 +537,30 @@ stays flat on the wavy linear variant to match Material 3.
 
 | Component  | Required props                  | Notes                                                                                       |
 | ---------- | ------------------------------- | ------------------------------------------------------------------------------------------- |
-| `NavBar`   | `items`, `initialActiveItem`    | Collapsible vertical nav; each item has `title`, `Icon`, `content`, optional `onClick`.       |
+| `NavBar`   | `items`, `initialActiveItem`    | Collapsible vertical nav; each item has `title`, `Icon`, `content`, optional `onClick`. `ariaLabel` names the nav; optional `action` adds a rail-only primary action. |
 | `TabBar`   | `tabs`                          | Accessible tabs; each item has `title`, `PageContent`, optional `Icon` and `PageLoadder`. `scrollable` is `true` (native pages with swipe preview), `"settle"` (native pages, deferred mount), `"lazy"` (`MultiContent` plus swipe), or `false` (`MultiContent`, no swipe). |
 | `Splitter` | `panels`, `layout`              | Exactly two panels; `minSize` strings use `px`; supports `hideable` and `grow`.               |
 | `AppBar`   | `left`, `center`, `right`       | `center` is either `{ type: "search" }` or a heading block. |
 
 `NavBar.media` and `mediaToClass` generate `sm-to-*`/`md-to-*`/etc. classes,
 which can be styled with the breakpoint mixins.
+
+`NavBar` renders a `nav` landmark named by `ariaLabel`. Destinations expose
+`aria-current="page"` and support Home/End plus arrow-key movement. Pass
+`action` to add an optional rail-only primary action:
+
+```tsx
+<NavBar
+  ...
+  action={<NavBar.PrimaryAction Icon={PencilSimpleIcon} label="New" />}
+/>
+```
+
+`NavBar.PrimaryAction` wraps `FAB` and automatically condenses to an icon when
+the rail is collapsed and extends its label when expanded. Give it a `label` or
+an `aria-label` so the icon-only state keeps an accessible name. The action is
+hidden in the bottom-bar layouts. The rail toggle uses `Tooltip`, so
+`TooltipProvider` must be mounted.
 
 `TabBar` follows the WAI-ARIA tabs pattern (`tablist` / `tab` / `tabpanel`,
 roving `tabindex`, arrow keys, Home/End) and accepts `aria-label` or
