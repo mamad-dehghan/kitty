@@ -18,7 +18,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "bun run scripts/release.ts",
+    "test": "bun test"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
