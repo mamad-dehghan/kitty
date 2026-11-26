@@ -18,8 +18,8 @@ Read `README.md` here first for the public API.
 - `src/components/index.ts` — component barrel. **Public components must be
   exported here.**
 - `src/providers/index.ts` — `AppLayer`, `ThemeProvider`, `ToastProvider`,
-  `TooltipProvider`, and the `colorOptions` / `fillOptions` / `sizeOptions` /
-  `breakPoints` enums.
+  `useToast`, `TooltipProvider`, and the `colorOptions` / `fillOptions` /
+  `sizeOptions` / `breakPoints` enums.
 - `src/components/<Component>/` — one folder per component. The main file
   matches the folder (`Select/Select.tsx`) and imports its own SCSS
   (`Select.scss`). Folders with several public components may add an
@@ -148,9 +148,11 @@ Root provider order in `src/main.tsx` and consumers:
 - Use `useDeferredState(value, ms)` when an overlay needs to stay mounted for
   its exit animation.
 - `ToastContext` is internal: it lives in
-  `src/providers/toast/toast_context.ts` and is **not** re-exported from
-  `src/providers/index.ts`. Toast API: `toast(id, content, severity)`,
-  `closeToast(id)`, `closeAllToasts()`; auto-dismiss after 5s.
+  `src/providers/Toast/ToastContext.ts`. Use `useToast()`; `toast(content, options?)`
+  returns an id, and `closeToast(id)` / `closeAllToasts()` are also available.
+  One toast is visible at a time and the rest queue. Auto-dismiss defaults to
+  5s (10s with an action), pauses on hover/focus, and `duration: 0` is
+  persistent.
 
 ### Changing the palette
 
@@ -187,7 +189,7 @@ literal HSL triplets.
 These exist but are **not** exported from `lib.ts` today:
 
 - `MultiContentCss` (only `MultiContent` is exported)
-- `ToastContext`
+- `ToastContext` (use the exported `useToast()` hook instead)
 
 If a consumer needs one, export it deliberately and update the README table.
 

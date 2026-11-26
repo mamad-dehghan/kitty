@@ -1,10 +1,7 @@
-import { useContext } from "react";
-import { Button } from "../components";
-import {
-  colorOptions,
-  fillOptions,
-} from "../providers/Theme/types";
-import { ToastContext } from "../providers/Toast/ToastContext";
+import { useState } from "react";
+import { Button, Toast } from "../components";
+import { fillOptions } from "../providers/Theme/types";
+import { useToast } from "../providers";
 import {
   DemoNote,
   DemoPage,
@@ -12,52 +9,99 @@ import {
   DemoSection,
 } from "./DemoLayout";
 
-const severities = [
-  colorOptions.primary,
-  colorOptions.secondary,
-  colorOptions.success,
-  colorOptions.warning,
-  colorOptions.error,
-];
-
 export const ToastDemo = () => {
-  const { toast, closeAllToasts } = useContext(ToastContext);
+  const { toast, closeAllToasts } = useToast();
+  const [staticToastOpen, setStaticToastOpen] = useState(true);
 
   return (
     <DemoPage
       title="Toast"
-      description="Transient messages rendered by ToastProvider in an overlay layer."
+      description="Material 3 snackbar rendered by ToastProvider in an overlay layer."
     >
-      <DemoSection title="Severities">
+      <DemoSection title="Notifications">
         <DemoRow>
-          {severities.map((severity) => (
-            <Button
-              key={severity}
-              fill={fillOptions.outline}
-              colorMode={severity}
-              onClick={() => {
-                toast(
-                  `demo-toast-${Date.now()}`,
-                  `A ${severity} toast`,
-                  severity,
-                );
-              }}
-            >
-              {severity}
-            </Button>
-          ))}
-        </DemoRow>
-        <DemoRow>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() => toast("Changes saved.")}
+          >
+            Default
+          </Button>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() =>
+              toast("Message deleted.", {
+                action: {
+                  label: "Undo",
+                  onClick: () => toast("Message restored."),
+                },
+              })
+            }
+          >
+            With action
+          </Button>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() =>
+              toast("This toast stays until you close it.", { duration: 0 })
+            }
+          >
+            Persistent
+          </Button>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() => {
+              toast("First toast.");
+              toast("Second toast.");
+              toast("Third toast.");
+            }}
+          >
+            Queue three
+          </Button>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() =>
+              toast(
+                "A longer message that wraps onto a second line instead of being truncated, so the snackbar grows to the Material two-line height.",
+              )
+            }
+          >
+            Long text
+          </Button>
+          <Button
+            fill={fillOptions.outline}
+            onClick={() => toast("Timer restarted.", { id: "same-toast" })}
+          >
+            Update same id
+          </Button>
           <Button fill={fillOptions.tonal} onClick={closeAllToasts}>
             Dismiss all
           </Button>
         </DemoRow>
+        <DemoNote>
+          Only one toast is visible at a time; additional toasts wait in a
+          queue. The timer pauses while the toast is hovered or focused.
+        </DemoNote>
       </DemoSection>
 
-      <DemoNote>
-        Toasts auto-dismiss after 5 seconds. `ToastProvider` must wrap the
-        application root.
-      </DemoNote>
+      <DemoSection title="Static toast">
+        <DemoRow>
+          {staticToastOpen ? (
+            <Toast
+              action={{ label: "Undo", onClick: () => {} }}
+              onClose={() => setStaticToastOpen(false)}
+            >
+              Static toast with an action
+            </Toast>
+          ) : (
+            <Button
+              fill={fillOptions.outline}
+              onClick={() => setStaticToastOpen(true)}
+            >
+              Show static toast
+            </Button>
+          )}
+        </DemoRow>
+      </DemoSection>
     </DemoPage>
   );
 };

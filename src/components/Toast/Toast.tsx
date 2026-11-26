@@ -1,45 +1,70 @@
 import classNames from "classnames";
 import {
-  sizeOptions,
-  fillOptions,
-  colorOptions,
-} from "../../providers/Theme/types";
-import { type MouseEventHandler } from "react";
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
+import { XIcon } from "@phosphor-icons/react";
+import { fillOptions, sizeOptions } from "../../providers/Theme/types";
+import type { ToastAction } from "../../providers/Toast/ToastContext";
 import { Button } from "../Button/Button";
+import { IconButton } from "../IconButton/IconButton";
+import "./Toast.scss";
 
-export type IToastProps = {
-  children: string;
-  action?: {
-    content: string;
-    onClick: MouseEventHandler<HTMLButtonElement>;
-    position: "right" | "bottom";
-    colorMode: colorOptions;
-  };
+export type IToastProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children" | "onClose"
+> & {
+  children: ReactNode;
+  action?: ToastAction;
+  /** Renders the dismiss button when provided. */
+  onClose?: () => void;
+  /** @default "Dismiss" */
+  closeLabel?: string;
+  /** Plays the exit animation. */
+  isClosing?: boolean;
 };
-// TODO: change button size to compact
 
-export const Toast = ({ children, action }: IToastProps) => {
-  const className = classNames(
-    "toast",
-    action &&
-      classNames(
-        "toast--with-action",
-        action.position === "right" && "toast--with-action-on-right",
-        action.position === "bottom" && "toast--with-action-on-bottom",
-      ),
-  );
+export const Toast = ({
+  children,
+  action,
+  onClose,
+  closeLabel = "Dismiss",
+  isClosing = false,
+  className,
+  ...others
+}: IToastProps) => {
   return (
-    <div className={className}>
-      <p>{children}</p>
+    <div
+      className={classNames(
+        "toast",
+        !action && !onClose && "toast--text-only",
+        isClosing && "toast--closing",
+        className,
+      )}
+      {...others}
+    >
+      <p className="toast__text">{children}</p>
       {action && (
         <Button
-          onClick={action.onClick}
+          className="toast__action"
           size={sizeOptions.small}
           fill={fillOptions.link}
-          colorMode={action.colorMode}
+          onClick={action.onClick}
         >
-          {action?.content}
+          {action.label}
         </Button>
+      )}
+      {onClose && (
+        <IconButton
+          className="toast__close"
+          Icon={XIcon}
+          weight="regular"
+          size={sizeOptions.large}
+          fill={fillOptions.link}
+          enable
+          aria-label={closeLabel}
+          onClick={onClose}
+        />
       )}
     </div>
   );

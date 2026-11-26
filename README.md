@@ -252,24 +252,31 @@ present for `<Tooltip>` to work.
 
 ### `ToastProvider`
 
-Provides `ToastContext` and renders the toast stack. `ToastContext` is not
-re-exported from `lib.ts` yet; inside this package, import it from its module:
+Provides `useToast()` and renders the snackbar layer. Only one toast is visible
+at a time; additional toasts wait in a queue.
 
 ```tsx
-import { useContext } from "react";
-import { ToastContext } from "./toast/toast_context";
+import { useToast } from "kitty";
 
-const { toast } = useContext(ToastContext);
-toast("saved", "Changes saved", colorOptions.success);
+const { toast, closeToast, closeAllToasts } = useToast();
+
+const id = toast("Changes saved", {
+  action: { label: "Undo", onClick: undo },
+});
 ```
 
-To make it available to consumers, add
-`export { ToastContext } from "./toast/toast_context";` to
-`src/providers/index.ts`.
+`toast(content, options?)` returns the toast id.
 
-Toasts dismiss automatically after 5 seconds. `toast` takes
-`(id, content, severity)`; `closeToast(id)` and `closeAllToasts()` are also
-available on the context.
+| Option        | Type                 | Description                                                                          |
+| ------------- | -------------------- | ------------------------------------------------------------------------------------ |
+| `id`          | `string`             | Stable id; reusing it updates the toast and restarts its timer.                      |
+| `duration`    | `number`             | Auto-dismiss delay in ms. `0` keeps it open. Default `5000`, or `10000` with an action. |
+| `action`      | `{ label, onClick }` | Action button; activating it also dismisses the toast.                               |
+| `dismissible` | `boolean`            | Shows the dismiss button. Default `true`.                                            |
+| `closeLabel`  | `string`             | Accessible label for the dismiss button. Default `"Dismiss"`.                        |
+
+The timer pauses while the toast is hovered or focused. `closeToast(id)` and
+`closeAllToasts()` are also returned by the hook.
 
 ## Theming and CSS tokens
 
@@ -515,7 +522,7 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 | ----------- | -------------- | -------------------------------------------------------------------------- |
 | `Badge`     | `value`, `children` | Positions a badge with CSS anchor positioning. `colorMode` defaults to `error`; `maxValue` defaults to `999`. |
 | `Divider`   | —              | `type` is `intent` (default), `center`, or `fullWidth`.                     |
-| `Toast`     | `children`     | Presentational toast; `action` is `{ content, onClick, position, colorMode }`. |
+| `Toast`     | `children`     | Presentational M3 snackbar; optional `action` (`{ label, onClick }`) and `onClose` (dismiss button). |
 | `LoadingIndicator` | —       | Cycles through SVG shapes; `size` defaults to `4rem`, `frame` defaults to `true`. |
 | `ProgressIndicator` | `value` | `type` is `linear` (default) or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`; `colorMode`; `wave` enables the M3 Expressive wavy geometry. |
 | `Tooltip`   | `children`, `title` | Clones a single element and shows content on hover; requires `TooltipProvider`. |
@@ -790,8 +797,8 @@ Run them from the workspace root with
   `verbatimModuleSyntax` imports). Avoid treating a successful Vite build as a
   clean type check.
 - **Barrel exports matter.** `lib.ts` re-exports `src/components/index.ts`;
-  add new public components there. A few helpers (`MultiContentCss`,
-  `ToastContext`) remain internal.
+  add new public components there. `MultiContentCss` stays internal, and
+  `ToastContext` stays internal behind the public `useToast()` hook.
 - **Keep enums and classes in sync.** New `colorOptions` values need matching
   `element--*` class handling in each component and palette roles.
 - **Scoped SCSS.** Each component imports its own SCSS file. Add new shared

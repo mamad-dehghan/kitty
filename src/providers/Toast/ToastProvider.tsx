@@ -1,124 +1,205 @@
-import classNames from "classnames";
-import { memo, type ReactNode, useCallback, useState } from "react";
-import { colorOptions } from "../Theme/types";
-import { colorClass } from "../Theme/variants";
-
-import { XIcon } from "@phosphor-icons/react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Toast } from "../../components/Toast/Toast";
 import { AppLayer } from "../AppLayer/AppLayer";
-import { ToastContext } from "./ToastContext";
+import {
+  type ToastAction,
+  ToastContext,
+  type ToastOptions,
+} from "./ToastContext";
 import "./ToastProvider.scss";
 
-type toastT = {
+const EXIT_MS = 150;
+
+type ToastRecord = {
   id: string;
-  severity: colorOptions;
-  content: string;
+  content: ReactNode;
+  duration: number;
+  action?: ToastAction;
+  dismissible: boolean;
+  closeLabel?: string;
+  version: number;
+  status: "open" | "closing";
 };
+
 type props = {
   children: ReactNode;
 };
-//TODO: maybe add hide in css or setTimeout
+
 export const ToastProvider = ({ children }: props) => {
-  const [availableToasts, setAvailableToasts] = useState<
-    (toastT & {
-      addedTime: number;
-      timeOutId: ReturnType<typeof setTimeout>;
-    })[]
-  >([]);
-  const closeAllToasts = useCallback(() => setAvailableToasts([]), []);
+  const [toasts, setToasts] = useState<ToastRecord[]>([]);
+  const idRef = useRef(0);
+
+  const toast = useCallback((content: ReactNode, options: ToastOptions = {}) => {
+    const id = options.id ?? `toast-${++idRef.current}`;
+
+    setToasts((prev) => {
+      const index = prev.findIndex((item) => item.id === id);
+      const existing = index === -1 ? undefined : prev[index];
+      const record: ToastRecord = {
+        id,
+        content,
+        duration: Math.max(
+          0,
+          options.duration ?? (options.action ? 10000 : 5000),
+        ),
+        action: options.action,
+        dismissible: options.dismissible ?? true,
+        closeLabel: options.closeLabel,
+        version: (existing?.version ?? 0) + 1,
+        status: "open",
+      };
+
+      if (index === -1) return [...prev, record];
+
+      const next = [...prev];
+      next[index] = record;
+      return next;
+    });
+
+    return id;
+  }, []);
+
   const closeToast = useCallback((id: string) => {
-    console.log(id, "close");
-    setAvailableToasts((prevState) => {
-      const toastIndex = prevState.findIndex((toast) => toast.id === id);
-      if (toastIndex === -1) {
-        return [];
-      }
-      clearTimeout(prevState[toastIndex]?.timeOutId);
-      const newState = [...prevState];
-      newState.splice(toastIndex, 1);
-      // console.log(newState)
-      return newState;
+    setToasts((prev) => {
+      const index = prev.findIndex((item) => item.id === id);
+      if (index === -1) return prev;
+
+      if (index > 0) return prev.filter((item) => item.id !== id);
+
+      const visible = prev[0];
+      if (!visible || visible.status === "closing") return prev;
+
+      const next = [...prev];
+      next[0] = { ...visible, status: "closing" };
+      return next;
     });
   }, []);
-  const addToast = useCallback(
-    (id: string, content: string, severity: colorOptions) => {
-      console.log(id, "add");
-      setAvailableToasts((availableToasts) => {
-        const index = availableToasts.findIndex((toast) => toast.id === id);
-        if (index === -1) {
-          const timeOutId = setTimeout(() => {
-            closeToast(id);
-          }, 5000);
-          return [
-            ...availableToasts,
-            { id, severity, content, addedTime: Date.now(), timeOutId },
-          ];
-        } else {
-          closeToast(id);
-          // const toasts = availableToasts;
-          // clearTimeout(toasts[index].timeOutId)
-          const timeOutId = setTimeout(() => {
-            closeToast(id);
-          }, 5000);
-          // toasts[index] = {id, severity, content, addedTime: availableToasts[index].addedTime, timeOutId}
-          return [
-            ...availableToasts,
-            { id, severity, content, addedTime: Date.now(), timeOutId },
-          ];
-          // setAvailableToasts(toasts);
-        }
-      });
-    },
-    [],
+
+  const closeAllToasts = useCallback(() => {
+    setToasts((prev) => {
+      const visible = prev[0];
+      if (!visible) return prev;
+      if (visible.status === "closing") {
+        return prev.length === 1 ? prev : [visible];
+      }
+      return [{ ...visible, status: "closing" }];
+    });
+  }, []);
+
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => (prev[0]?.id === id ? prev.slice(1) : prev));
+  }, []);
+
+  const value = useMemo(
+    () => ({ toast, closeToast, closeAllToasts }),
+    [toast, closeToast, closeAllToasts],
   );
-  // console.log(availableToasts)
-  // useEffect(() => {
-  //     setAvailableToasts(prevState => prevState.filter(toast => Date.now() - toast.addedTime < 10000))
-  // }, [availableToasts.reduce((str, item) => str + "/" + item.id, "")])
+
+  const visible = toasts[0];
 
   return (
-    <ToastContext.Provider
-      value={{ closeAllToasts, closeToast, toast: addToast }}
-    >
-      <>
-        {children}
-        <AppLayer className="toasts-layer" preventBlock>
-          {availableToasts.map((toast) => (
-            <Alert
-              key={toast.id}
-              id={toast.id}
-              onClose={closeToast}
-              severity={toast.severity}
-            >
-              {toast.content}
-            </Alert>
-          ))}
-        </AppLayer>
-      </>
+    <ToastContext.Provider value={value}>
+      {children}
+      <AppLayer
+        className="toasts-layer"
+        preventBlock
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {visible && (
+          <ToastItem
+            key={visible.id}
+            toast={visible}
+            onClose={closeToast}
+            onRemove={removeToast}
+          />
+        )}
+      </AppLayer>
     </ToastContext.Provider>
   );
 };
 
-type alertT = {
-  id: string;
+type itemProps = {
+  toast: ToastRecord;
   onClose: (id: string) => void;
-  severity: colorOptions;
-  children: string;
+  onRemove: (id: string) => void;
 };
 
-const Alert = memo(
-  ({ id, onClose, severity, children }: alertT) => {
-    return (
-      <div
-        className={classNames("toast", colorClass(severity))}
-      >
-        <p>{children}</p>
-        <button className="toast-icon" onClick={() => onClose(id)}>
-          <XIcon weight="regular" />
-        </button>
-        {/*<IconButton Icon={X} onClick={() => onClose(id)} fill={fillOptions.link} enable={true} />*/}
-        <div className="time-bar" />
-      </div>
-    );
-  },
-  (a, b) => a.id === b.id,
-);
+const ToastItem = ({ toast, onClose, onRemove }: itemProps) => {
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const remainingRef = useRef(toast.duration);
+  const paused = hovered || focused;
+  const {
+    id,
+    version,
+    duration,
+    status,
+    action,
+    dismissible,
+    closeLabel,
+    content,
+  } = toast;
+
+  useEffect(() => {
+    remainingRef.current = duration;
+  }, [duration, version]);
+
+  useEffect(() => {
+    if (paused || status === "closing" || duration === 0) return;
+
+    const startedAt = Date.now();
+    const timeout = setTimeout(() => onClose(id), remainingRef.current);
+
+    return () => {
+      clearTimeout(timeout);
+      remainingRef.current = Math.max(
+        0,
+        remainingRef.current - (Date.now() - startedAt),
+      );
+    };
+  }, [duration, id, onClose, paused, status, version]);
+
+  useEffect(() => {
+    if (status !== "closing") return;
+
+    const timeout = setTimeout(() => onRemove(id), EXIT_MS);
+    return () => clearTimeout(timeout);
+  }, [id, onRemove, status]);
+
+  const toastAction = action
+    ? {
+        ...action,
+        onClick: () => {
+          onClose(id);
+          action.onClick();
+        },
+      }
+    : undefined;
+
+  return (
+    <Toast
+      action={toastAction}
+      onClose={dismissible ? () => onClose(id) : undefined}
+      closeLabel={closeLabel}
+      isClosing={status === "closing"}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setFocused(false);
+        }
+      }}
+    >
+      {content}
+    </Toast>
+  );
+};
