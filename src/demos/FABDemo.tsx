@@ -7,7 +7,7 @@ import {
   UsersThreeIcon,
 } from "@phosphor-icons/react";
 import { type ReactNode, type RefObject, useRef, useState } from "react";
-import { Button, FAB, FABMenu } from "../components";
+import { Button, FAB, FABMenu, Tooltip } from "../components";
 import { useScrollBehavior } from "../hooks/useScrollBehavior";
 import {
   colorOptions,
@@ -162,14 +162,15 @@ export const FABDemo = () => {
         </DemoRow>
 
         <DemoScrollStage stageRef={scrollerRef}>
-          <FAB
-            Icon={ArrowUpIcon}
-            colorMode={colorOptions.primary}
-            hidden={!toTopVisible}
-            onClick={scrollToTop}
-            aria-label="Scroll to top"
-            title="Scroll to top"
-          />
+          <Tooltip title="Scroll to top">
+            <FAB
+              Icon={ArrowUpIcon}
+              colorMode={colorOptions.primary}
+              hidden={!toTopVisible}
+              onClick={scrollToTop}
+              aria-label="Scroll to top"
+            />
+          </Tooltip>
         </DemoScrollStage>
 
         <DemoRow>

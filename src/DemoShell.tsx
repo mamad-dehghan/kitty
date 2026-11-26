@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { type ReactNode, useContext } from "react";
 import { MoonStarsIcon, SunIcon } from "@phosphor-icons/react";
 import { Link } from "wouter";
-import { MultiContent } from "./components";
+import { MultiContent, Tooltip } from "./components";
 import "./components/IconButton/IconButton.scss";
 import {
   colorOptions,
@@ -18,28 +18,29 @@ const ThemeToggle = () => {
   const label = darkMode ? "Switch to light theme" : "Switch to dark theme";
 
   return (
-    <button
-      type="button"
-      className={classNames(
-        "icon-button",
-        variantClasses({
-          colorMode: colorOptions.primary,
-          fill: fillOptions.link,
-          size: sizeOptions.medium,
-        }),
-      )}
-      aria-label={label}
-      title={label}
-      onClick={() => setDarkMode(!darkMode)}
-    >
-      <MultiContent transitionTo="top" width="1.5rem" height="1.5rem">
-        {darkMode ? (
-          <SunIcon key="sun" weight="regular" />
-        ) : (
-          <MoonStarsIcon key="moon" weight="regular" />
+    <Tooltip title={label}>
+      <button
+        type="button"
+        className={classNames(
+          "icon-button",
+          variantClasses({
+            colorMode: colorOptions.primary,
+            fill: fillOptions.link,
+            size: sizeOptions.medium,
+          }),
         )}
-      </MultiContent>
-    </button>
+        aria-label={label}
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        <MultiContent transitionTo="top" width="1.5rem" height="1.5rem">
+          {darkMode ? (
+            <SunIcon key="sun" weight="regular" />
+          ) : (
+            <MoonStarsIcon key="moon" weight="regular" />
+          )}
+        </MultiContent>
+      </button>
+    </Tooltip>
   );
 };
 
