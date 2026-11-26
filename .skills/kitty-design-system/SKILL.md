@@ -6,8 +6,8 @@ description: Work on the kitty React + SCSS design system in packages/kitty — 
 # Kitty Design System
 
 This repository is a private React 19 + TypeScript + SCSS component library.
-It is consumed by `talk-ui` as `"kitty": "file:../kitty"` and is not published.
-Read `README.md` here first for the public API.
+It is consumed as a pinned git dependency and is not published. Read
+`README.md` here first for the public API.
 
 ## Source map
 
@@ -27,8 +27,13 @@ Read `README.md` here first for the public API.
 - `src/providers/Theme/` — palette, typography, elevation, breakpoint,
   animation, and `ThemeProvider`.
 - `src/providers/AppLayer/AppLayer.tsx` — shared overlay wrapper used by
-  Drawer, Modal, Menu, BottomSheet, toasts, and tooltips.
-- `src/demos/` — one demo per component plus `registry.tsx` and shared `DemoLayout`; `App.tsx` + `router.tsx` derive tabs and routes from the registry.
+  Drawer, Modal, Menu, BottomSheet, FABMenu, toasts, and tooltips.
+- `src/DemoShell.tsx` / `.scss` — shared demo chrome (header, logo link,
+  theme toggle) wrapping every route.
+- `src/App.tsx` — tabbed home overview; `src/router.tsx` derives routes and
+  mounts them inside `DemoShell`.
+- `src/demos/` — one demo per component plus `registry.tsx` and shared
+  `DemoLayout`; the registry drives the home tabs and routes.
 - `src/assets/shapes/` — SVGs exported as URL strings through
   `src/assets/shapes/index.ts`.
 
@@ -40,13 +45,11 @@ Run from this repository root (`C:/Code/root/packages/kitty`):
 bun install
 bun run dev        # vite on :2000, opens /
 bun run build      # vite build only; no tsc
-bun run typecheck  # tsc --noEmit (known pre-existing errors)
+bun run typecheck  # tsc --noEmit
 ```
 
-The package currently has **pre-existing `tsc` errors** (PlaceFinder,
-Splitter, TabBar, some `verbatimModuleSyntax` imports, toast timeout typing).
-Do not claim a clean type check, and do not fix unrelated files while making a
-focused change. Vite `build` succeeds without type checking.
+`bun run typecheck` runs the full TypeScript check and should pass. Vite
+`build` succeeds without type checking, so do not treat it as a type check.
 
 ## Adding or changing a component
 
@@ -65,9 +68,8 @@ focused change. Vite `build` succeeds without type checking.
 6. Export the component from `src/components/index.ts` (keep the grouped
    sections tidy).
 7. Add a `<Name>Demo` in `src/demos/` and register it in
-   `src/demos/registry.tsx`; `App.tsx` and `router.tsx` derive the tab and
-   route from the registry.
-8. Verify in the demo at `/<path>`.
+   `src/demos/registry.tsx`; the home tabs and routes derive from the registry.
+8. Verify in the demo at `/<path>` (the route is wrapped by `DemoShell`).
 
 Useful existing patterns:
 
@@ -76,6 +78,9 @@ Useful existing patterns:
 - `Checkbox.tsx` / `RadioButton.tsx` — native input plus decorative icons,
   controlled `readOnly` fallback, `indeterminate`.
 - `Badge.tsx` / `Tooltip.tsx` — cloning a single child element.
+- `FAB.tsx` / `FABMenu.tsx` — M3 sizes, extended/condensed states, and a
+  portalled action menu with focus and history handling.
+- `Collapse.tsx` — measured auto-height/auto-width transitions.
 - `Drawer.tsx` / `Modal.tsx` / `Menu.tsx` — portals + `AppLayer` +
   `useDeferredState`.
 
@@ -107,6 +112,9 @@ Rules:
   `errorTheme`, `warningTheme`, `successTheme`) when a component must expose
   `--color`, `--on-color`, `--container`, `--on-container`.
 - Hover/focus/active state layers come from `palette.state-layer(...)`.
+- The demo shell wraps every route. The home route adds a 64px bottom NavBar
+  at sm/md/lg; fixed page UI such as `FABMenu` must clear it (`offsetBlock` in
+  the FAB demo).
 - Do not use native `title` attributes for tooltips. Use the `<Tooltip>`
   component instead (single child element, requires `TooltipProvider`), and keep
   an `aria-label` on icon-only controls for their accessible name. This applies
@@ -131,10 +139,12 @@ Root provider order in `src/main.tsx` and consumers:
 </ThemeProvider>
 ```
 
-- `ThemeProvider` renders `#theme-provider`; `Drawer`, `Modal`, `Menu`, and
-  `BottomSheet` portal into that element, so they fail without it. Toast and
-  tooltip layers render inline but still need the theme tokens and wrapper for
-  correct styling.
+- `ThemeProvider` renders `#theme-provider`; `Drawer`, `Modal`, `Menu`,
+  `BottomSheet`, and `FABMenu` portal into that element, so they fail without
+  it. Toast and tooltip layers render inline but still need the theme tokens
+  and wrapper for correct styling.
+- `useTheme()` returns the current `{ theme, overrideTheme, darkMode, setDarkMode }`
+  context.
 - `ThemeProvider` accepts `modify` (hue overrides) and `forceDarkMode`.
   Nested providers inherit the parent theme and do not touch the `darkMode`
   cookie or meta theme color.
@@ -183,6 +193,8 @@ literal HSL triplets.
   `"separator"`. `layerID` is generated internally.
 - `BottomSheet`: `open` + `onClose`; it closes when its wrapper is scrolled
   back to the top.
+- `FABMenu`: fixed bottom-end and portalled through `AppLayer`; pass
+  `offsetBlock` when a bottom navigation/app bar is present.
 
 ## Public export gotchas
 
@@ -195,9 +207,6 @@ If a consumer needs one, export it deliberately and update the README table.
 
 Other API quirks:
 
-- `Input` still requires `mode` in its type even though the implementation uses
-  `color`. Pass both to satisfy TypeScript; do not remove `mode` without
-  checking consumers.
 - `Badge` only renders text for numbers or nodes; string `value` renders an
   empty badge.
 - `Tooltip` and `Badge` require a single child element and warn/return the
@@ -212,14 +221,16 @@ Other API quirks:
 
 ## Consumer contract
 
-- `talk-ui` imports runtime APIs from `"kitty"` and SCSS from
+- Consumers import runtime APIs from `"kitty"` and SCSS from
   `"kitty/scss/<module>"` (`@use "kitty/scss/elevation" as elevation;`).
-- `talk-ui` consumes kitty through `"kitty": "file:../kitty"`. Both projects keep
-  independent lockfiles; run `bun install` in kitty first, then in talk-ui.
+- Consumers pin Kitty through
+  `"kitty": "git+https://github.com/mamad-dehghan/kitty.git#vX.Y.Z"` or a
+  commit hash. Commit the consumer's lockfile.
 - Add or change dependencies in this package's `package.json`, then run
   `bun install` here. `packages/kitty/bun.lock` is the source of truth.
 - React 19 and React DOM are peer dependencies. Keep them in dev dependencies
-  for the demo, and keep `talk-ui`'s Vite `resolve.dedupe` in place.
+  for the demo. If a consumer bundles Kitty source, keep React resolution
+  deduped in its Vite config.
 
 ## Verification checklist
 
@@ -230,5 +241,5 @@ Other API quirks:
 - [ ] Responsive behavior checked at `sm`, `md`, `lg`, `xl`.
 - [ ] New public API added to `src/components/index.ts` / `src/providers/index.ts`.
 - [ ] README component table and SCSS export table updated when the API changes.
-- [ ] `bun run build` succeeds; note that it does not type check, so run
-      `bun run typecheck` separately and compare with the known pre-existing errors.
+- [ ] `bun run build` succeeds; run `bun run typecheck` separately because the
+      build does not type check.

@@ -1,10 +1,9 @@
 # Kitty
 
-A React 19 + TypeScript + SCSS design system used by the packages in this
-workspace. Kitty provides Material Design 3–style components,
-theme tokens, overlay providers, and small hooks. It is a work in progress:
-components are added as the product needs them, so expect a few rough edges and
-unfinished TODOs.
+A React 19 + TypeScript + SCSS design system. Kitty provides Material Design
+3–style components, theme tokens, overlay providers, and small hooks. It is a
+work in progress: components are added as the product needs them, so expect a
+few rough edges and unfinished TODOs.
 
 - **Runtime:** React 19, `classnames`, `@phosphor-icons/react`,
   `react-inlinesvg`, `typescript-cookie`
@@ -17,7 +16,6 @@ unfinished TODOs.
 - [Getting started](#getting-started)
 - [Using Kitty in an app](#using-kitty-in-an-app)
 - [SCSS API](#scss-api)
-- [Component gallery](#component-gallery)
 - [Providers](#providers)
 - [Theming and CSS tokens](#theming-and-css-tokens)
 - [Components](#components)
@@ -26,16 +24,17 @@ unfinished TODOs.
 - [Demo app](#demo-app)
 - [Project structure](#project-structure)
 - [Scripts](#scripts)
+- [Release](#release)
 - [Development notes](#development-notes)
 
 ## Getting started
 
-Kitty lives in a Bun workspace. Install and run from the repository root
-(`C:/Code/root`), not from this package:
+Kitty is a standalone Bun project. Install and run from this repository root
+(`C:/Code/root/packages/kitty`):
 
 ```bash
 bun install
-bun run --cwd packages/kitty dev
+bun run dev
 ```
 
 The demo server runs Vite on <http://localhost:2000> and opens `/`. The
@@ -43,15 +42,23 @@ demo is a development harness; it is not part of the published package.
 
 ## Using Kitty in an app
 
-Kitty is a private workspace package, so consumers use a workspace dependency
-instead of a registry version:
+Kitty is a private package consumed as a pinned git dependency. Pin a release
+tag (or a commit hash) after `#`:
 
 ```json
 {
   "dependencies": {
-    "kitty": "workspace:*"
+    "kitty": "git+https://github.com/mamad-dehghan/kitty.git#v0.1.0"
   }
 }
+```
+
+Replace `v0.1.0` with the release you want. The consuming project's lockfile
+pins the resolved commit; commit that lockfile. For a fully immutable
+reference, use the commit hash instead of the tag:
+
+```json
+"kitty": "git+https://github.com/mamad-dehghan/kitty.git#<commit-sha>"
 ```
 
 Import components and enums from the package root:
@@ -109,105 +116,6 @@ The exported SCSS subpaths are declared in `package.json`:
 | `kitty/scss/elevation`  | `src/providers/Theme/elevation.scss`     |
 | `kitty/scss/breakpoint` | `src/providers/Theme/breakpoint.scss`    |
 | `kitty/scss/animation`  | `src/providers/Theme/animation.scss`     |
-
-## Component gallery
-
-These captures show selected Kitty components and their variants. The
-interactive versions live in the demo pages under `src/demos/`.
-
-### Buttons
-
-Light theme, fill and color variants:
-
-![Buttons with different fills and colors](https://ik.imagekit.io/zdldazk95/taski/Group%2011__O0IaiyBO.png?updatedAt=1709930042381)
-
-Full width:
-
-![Full-width buttons](https://ik.imagekit.io/zdldazk95/taski/chrome_QPHmTzRO7b_VhF0yG6R-.png?updatedAt=1709930041943)
-
-With icons:
-
-![Buttons with icons](https://ik.imagekit.io/zdldazk95/taski/Group%2013_sGHtKatIa.png?updatedAt=1709930039406)
-
-Dark theme and accessibility states:
-
-![Button dark theme and accessibility states](https://ik.imagekit.io/zdldazk95/taski/Group%2012_aVmzNYfOu.png?updatedAt=1709930038283)
-
-### Icon buttons
-
-Light and dark themes, active/inactive states, and colors:
-
-![Icon buttons with fill and color variants](https://ik.imagekit.io/zdldazk95/taski/Group%2019_aa20sW6CW.png?updatedAt=1709930037394)
-
-Outline and tonal fills:
-
-![Icon buttons with outline and tonal fills](https://ik.imagekit.io/zdldazk95/taski/Group%2018_Ltkz8Kp4M.png?updatedAt=1709930036377)
-
-### Group button
-
-Colors, fills, icons, disabled states, and accessibility:
-
-![Grouped buttons with fills, icons, and disabled states](https://ik.imagekit.io/zdldazk95/taski/Group%2021_MftABGYe2.png?updatedAt=1709930037117)
-
-### Filter chip
-
-Active/inactive states, icons, disabled states, and accessibility:
-
-![Filter chips in active, disabled, and icon variants](https://ik.imagekit.io/zdldazk95/taski/Group%2022_63ajo-Sy0.png?updatedAt=1709930035550)
-
-### Radio and checkbox
-
-Radio button colors and accessibility:
-
-![Radio button color variants](https://ik.imagekit.io/zdldazk95/taski/Group%2024_zcdvmO1_n.png?updatedAt=1709930032672)
-
-Checkbox colors and states:
-
-![Checkbox color and state variants](https://ik.imagekit.io/zdldazk95/taski/Group%2023_9XapF0IU_.png?updatedAt=1709930033594)
-
-### Switch
-
-Colors, icons, and accessibility:
-
-![Switch color and icon variants](https://ik.imagekit.io/zdldazk95/taski/Group%2025_I1lLACoF8.png?updatedAt=1709930028702)
-
-### Input
-
-Light theme — colors, icons, support text, and the error state:
-
-![Inputs in light mode](https://ik.imagekit.io/zdldazk95/taski/chrome_qV1YhFqRq1-1_leE4j94se.png?updatedAt=1709930017405)
-
-Dark theme:
-
-![Inputs in dark mode](https://ik.imagekit.io/zdldazk95/taski/chrome_qV1YhFqRq1_icjk4u1ne.png?updatedAt=1709930024612)
-
-### Badge
-
-Light theme:
-
-![Badges in light mode](https://ik.imagekit.io/zdldazk95/taski/chrome_X8cgbmNruv%201_PjNSk3Y_z.png?updatedAt=1709930033584)
-
-Dark theme:
-
-![Badges in dark mode](https://ik.imagekit.io/zdldazk95/taski/chrome_X8cgbmNruv%202_0MFfFL77e.png?updatedAt=1709930033587)
-
-### Divider
-
-![Divider variants](https://ik.imagekit.io/zdldazk95/taski/Group%2026_HPish0ikL.png?updatedAt=1709930027049)
-
-### Menu
-
-Light and dark themes, icons, and nested menus:
-
-![Menu variants](https://ik.imagekit.io/zdldazk95/taski/Group%2029_khrhFY2wH.png?updatedAt=1709930027070)
-
-![Nested menu variants](https://ik.imagekit.io/zdldazk95/taski/Group%2028_FBfo9--E9.png?updatedAt=1709930025630)
-
-### Tag input
-
-`MultiItemInput` in its light-theme variants:
-
-![Tag input variants](https://ik.imagekit.io/zdldazk95/taski/Group%2031_AOS0Cs0Jx.png?updatedAt=1709930023047)
 
 ## Providers
 
@@ -440,8 +348,11 @@ back to a regular FAB, and `hidden` slides it out of view and sets `inert`.
 
 `FABMenu` owns its open/close state, focus management, Escape/backdrop
 dismissal, and browser-back lock. It portals to `#theme-provider`, so the
-`ThemeProvider` must be mounted. M3 recommends pairing the menu with an
-icon-only FAB; an extended `label` is supported for custom patterns. Scroll
+`ThemeProvider` must be mounted. It is fixed to the viewport bottom-end; pass
+`offsetBlock` when a bottom navigation or app bar is present, for example
+`offsetBlock="calc(var(--bottom-bar-height, 0px) + 1rem)"`. M3 recommends
+pairing the menu with an icon-only FAB; an extended `label` is supported for
+custom patterns. Scroll
 adaptivity is intentionally not baked into `FAB` or `FABMenu`; drive
 `hidden`/`condensed` from any source. For convenience, `useScrollBehavior`
 derives both states from a scroll container:
@@ -522,7 +433,7 @@ type-ahead are supported. Always give it a visible `label` or an `aria-label`.
 | ----------- | -------------- | -------------------------------------------------------------------------- |
 | `Badge`     | `value`, `children` | Positions a badge with CSS anchor positioning. `colorMode` defaults to `error`; `maxValue` defaults to `999`. |
 | `Divider`   | —              | `type` is `intent` (default), `center`, or `fullWidth`.                     |
-| `Toast`     | `children`     | Presentational M3 snackbar; optional `action` (`{ label, onClick }`) and `onClose` (dismiss button). |
+| `Toast`     | `children`     | Presentational M3 snackbar; optional `action` (`{ label, onClick }`), `onClose` (dismiss button), `closeLabel`, and `isClosing`. |
 | `LoadingIndicator` | —       | Cycles through SVG shapes; `size` defaults to `4rem`, `frame` defaults to `true`. |
 | `ProgressIndicator` | `value` | `type` is `linear` (default) or `circular`; `max` defaults to `1`; `size` is `small`, `medium`, or `large`; `colorMode`; `wave` enables the M3 Expressive wavy geometry. |
 | `Tooltip`   | `children`, `title` | Clones a single element and shows content on hover; requires `TooltipProvider`. |
@@ -682,6 +593,8 @@ const [target, setTarget] = useState<DOMRect>();
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
 | `useDeferredState`       | Delays a value update, used by overlays to keep exit animations mounted.                         |
 | `useScrollBehavior`      | Tracks a scroll container and returns `{ direction, hidden, condensed }` for FAB-style components. |
+| `useTheme`               | Returns `{ theme, overrideTheme, darkMode, setDarkMode }` from `ThemeProvider`.                  |
+| `useToast`               | Snackbar queue API: `{ toast, closeToast, closeAllToasts }`. See ToastProvider above.             |
 | `useHistoryLock`         | Locks a layer to the browser back button. Returns `{ lock, unlock }` and accepts a release callback. |
 | `useHistoryLockAbility`  | Installs the global `popstate` listener. Mount it once at the app root (`router.tsx` does this). |
 
@@ -711,8 +624,9 @@ Available names include `arch`, `arrow`, `boom`, `bun`, `burst`, `circle`,
 
 ## Demo app
 
-`src/App.tsx` and `src/router.tsx` render a demo shell with routes at the
-root:
+`src/DemoShell.tsx` wraps every route with the shared header, logo link, and
+theme toggle. `src/App.tsx` renders the tabbed overview inside it, and
+`src/router.tsx` owns the routes:
 
 | Category        | Routes                                                                 |
 | --------------- | ---------------------------------------------------------------------- |
@@ -725,8 +639,9 @@ root:
 
 `/` renders the tabbed overview. Demos are registered once in
 `src/demos/registry.tsx`; `App.tsx` builds the NavBar/TabBar sections from it
-and `router.tsx` derives the routes, so adding a component means adding a demo
-file and one registry entry.
+and `router.tsx` derives the routes. Adding a component means adding a demo
+file and one registry entry. The theme toggle in `DemoShell` uses `Tooltip`, so
+`TooltipProvider` must be mounted in the demo root.
 
 ## Project structure
 
@@ -734,10 +649,16 @@ file and one registry entry.
 packages/kitty/
 ├── lib.ts                  # package entry: components, hooks, providers, shapes
 ├── lib.scss                # package SCSS entry (forwards theme modules)
+├── CHANGELOG.md            # curated release notes
 ├── index.html              # Vite demo HTML
+├── opencode.json           # registers .skills with OpenCode
 ├── vite.config.ts          # dev server on :2000, opens /
+├── .skills/                # project-local OpenCode skills (kitty-design-system, release)
+├── scripts/                # release tooling and tests
 ├── src/
-│   ├── App.tsx             # demo shell
+│   ├── App.tsx             # tabbed demo overview
+│   ├── DemoShell.tsx       # shared demo header, logo link, theme toggle
+│   ├── DemoShell.scss
 │   ├── main.tsx            # demo root providers
 │   ├── router.tsx          # demo routes + history-lock listener
 │   ├── components/         # one folder per component
@@ -747,8 +668,10 @@ packages/kitty/
 │   │   ├── Button/
 │   │   ├── Checkbox/
 │   │   ├── Chip/           # AssistChip.tsx, FilterChip.tsx, index.ts
+│   │   ├── Collapse/
 │   │   ├── Divider/
 │   │   ├── Drawer/
+│   │   ├── FAB/            # FAB.tsx, FABMenu.tsx, index.ts
 │   │   ├── GroupButton/
 │   │   ├── IconButton/
 │   │   ├── Input/
@@ -770,7 +693,7 @@ packages/kitty/
 │   │   ├── Tooltip/
 │   │   └── index.ts        # component barrel
 │   ├── providers/          # AppLayer/, Theme/, Toast/, Tooltip/
-│   ├── hooks/              # useDeferredState, useHistoryLock
+│   ├── hooks/              # useDeferredState, useHistoryLock, useScrollBehavior
 │   ├── assets/shapes/      # SVG shapes
 │   ├── styles/             # globals only
 │   └── demos/              # demo pages + registry.tsx + DemoLayout
@@ -784,18 +707,41 @@ packages/kitty/
 | `dev`           | `vite`         | Demo server on port 2000, strict port.             |
 | `build`         | `vite build`   | Bundles the demo. Does **not** run `tsc`.          |
 | `preview`       | `vite preview` | Serves the built demo.                             |
-| `lint`          | `eslint .`     | Uses the repository ESLint setup when available.   |
+| `typecheck`     | `tsc --noEmit` | Full TypeScript check.                             |
+| `test`          | `bun test`     | Runs the release script tests.                     |
+| `release`       | `bun run release <patch\|minor\|major>` | Bumps, promotes the changelog, commits, and tags; does not push. |
 
-Run them from the workspace root with
-`bun run --cwd packages/kitty <script>`.
+Run them from this repository root with `bun run <script>`.
+
+## Release
+
+Kitty is released by git tag, not npm. The project skill at
+`.skills/release/SKILL.md` reviews changes since the last tag and curates
+`CHANGELOG.md`; `scripts/release.ts` performs the mechanical release.
+
+```bash
+bun run release minor --dry-run
+bun run release minor
+```
+
+The script verifies `main` and a clean tree (except `CHANGELOG.md`), runs
+typecheck and build, bumps `package.json`, promotes `## [Unreleased]` in
+`CHANGELOG.md`, commits `chore: release vX.Y.Z`, and creates annotated tag
+`vX.Y.Z`. It stops before pushing.
+
+```bash
+git push origin main
+git push origin vX.Y.Z
+gh release create vX.Y.Z --generate-notes
+```
+
+Then update the dependency pin and verify a clean consumer install. See
+`.skills/release/SKILL.md` for the full checklist.
 
 ## Development notes
 
-- **No type-check in `build`.** Vite transpiles without type checking. The
-  package currently reports pre-existing `tsc --noEmit` errors (notably in
-  `PlaceFinder/finder.ts`, `Splitter.tsx`, and a few
-  `verbatimModuleSyntax` imports). Avoid treating a successful Vite build as a
-  clean type check.
+- **Type-check separately.** `build` only transpiles. Run
+  `bun run typecheck` for the full TypeScript check; it should pass.
 - **Barrel exports matter.** `lib.ts` re-exports `src/components/index.ts`;
   add new public components there. `MultiContentCss` stays internal, and
   `ToastContext` stays internal behind the public `useToast()` hook.
@@ -811,3 +757,9 @@ Run them from the workspace root with
   browsers that support it.
 - **Icons come from Phosphor.** Keep icon props typed as `Icon` from
   `@phosphor-icons/react` and render with a `weight`.
+- **Fixed demo UI and the bottom NavBar.** The home route uses a 64px bottom
+  NavBar at `sm`/`md`/`lg`. Fixed page-level UI such as `FABMenu` must clear it;
+  the FAB demo does this with `offsetBlock` and `--demo-bottom-bar-height`.
+- **Local skills.** `.skills/kitty-design-system` and `.skills/release` are
+  registered for OpenCode by `opencode.json`; keep the config if you want the
+  skills available.
